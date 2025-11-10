@@ -22,7 +22,7 @@ export const Route = createFileRoute("/api/preferences")({
 
 					// Parse request body
 					const body = await request.json();
-					const { genres, tropes, spiceLevel, pacing } =
+					const { genres, tropes, spiceLevel, pacing, sceneLength } =
 						body as UserPreferences;
 
 					// Validate inputs
@@ -70,7 +70,7 @@ export const Route = createFileRoute("/api/preferences")({
 						return json({ error: "Invalid pacing selection" }, { status: 400 });
 					}
 
-					// Save preferences to database
+					// Save preferences to database (sceneLength is optional, defaults to "medium")
 					await db
 						.updateTable("users")
 						.set({
@@ -79,6 +79,7 @@ export const Route = createFileRoute("/api/preferences")({
 								tropes,
 								spiceLevel,
 								pacing,
+								sceneLength: sceneLength || "medium",
 							}),
 							updated_at: new Date(),
 						})
@@ -87,7 +88,13 @@ export const Route = createFileRoute("/api/preferences")({
 
 					return json({
 						success: true,
-						preferences: { genres, tropes, spiceLevel, pacing },
+						preferences: {
+							genres,
+							tropes,
+							spiceLevel,
+							pacing,
+							sceneLength: sceneLength || "medium",
+						},
 					});
 				} catch (error) {
 					console.error("Preferences save error:", error);

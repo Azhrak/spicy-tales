@@ -417,17 +417,143 @@ function ProfilePage() {
 							</h2>
 						</div>
 
-						<p className="text-slate-600 mb-4">
-							Update your reading preferences to get better story
-							recommendations
-						</p>
+						{profile?.preferences ? (
+							<>
+								<div className="space-y-4 mb-6">
+									<div>
+										<h3 className="font-semibold text-slate-700 mb-2">
+											Favorite Genres
+										</h3>
+										<div className="flex flex-wrap gap-2">
+											{(() => {
+												try {
+													const prefs =
+														typeof profile.preferences === "string"
+															? JSON.parse(profile.preferences)
+															: profile.preferences;
+													return (prefs.genres || []).map((genre: string) => (
+														<span
+															key={genre}
+															className="px-3 py-1 bg-romance-100 text-romance-700 rounded-full text-sm"
+														>
+															{genre
+																.split("-")
+																.map(
+																	(word) =>
+																		word.charAt(0).toUpperCase() + word.slice(1),
+																)
+																.join(" ")}
+														</span>
+													));
+												} catch {
+													return <span className="text-slate-500">None set</span>;
+												}
+											})()}
+										</div>
+									</div>
 
-						<Link
-							to="/auth/onboarding"
-							className="inline-flex items-center px-6 py-3 border-2 border-romance-600 text-romance-600 rounded-lg font-semibold hover:bg-romance-50 transition-colors"
-						>
-							Update Preferences
-						</Link>
+									<div>
+										<h3 className="font-semibold text-slate-700 mb-2">
+											Favorite Tropes
+										</h3>
+										<div className="flex flex-wrap gap-2">
+											{(() => {
+												try {
+													const prefs =
+														typeof profile.preferences === "string"
+															? JSON.parse(profile.preferences)
+															: profile.preferences;
+													return (prefs.tropes || []).map((trope: string) => (
+														<span
+															key={trope}
+															className="px-3 py-1 bg-romance-100 text-romance-700 rounded-full text-sm"
+														>
+															{trope
+																.split("-")
+																.map(
+																	(word: string) =>
+																		word.charAt(0).toUpperCase() + word.slice(1),
+																)
+																.join(" ")}
+														</span>
+													));
+												} catch {
+													return <span className="text-slate-500">None set</span>;
+												}
+											})()}
+										</div>
+									</div>
+
+									<div className="grid grid-cols-2 gap-4">
+										<div>
+											<h3 className="font-semibold text-slate-700 mb-1">
+												Spice Level
+											</h3>
+											<p className="text-slate-600">
+												{(() => {
+													try {
+														const prefs =
+															typeof profile.preferences === "string"
+																? JSON.parse(profile.preferences)
+																: profile.preferences;
+														const level = prefs.spiceLevel || 3;
+														return `Level ${level} ${"🔥".repeat(level)}`;
+													} catch {
+														return "Not set";
+													}
+												})()}
+											</p>
+										</div>
+
+										<div>
+											<h3 className="font-semibold text-slate-700 mb-1">
+												Pacing
+											</h3>
+											<p className="text-slate-600">
+												{(() => {
+													try {
+														const prefs =
+															typeof profile.preferences === "string"
+																? JSON.parse(profile.preferences)
+																: profile.preferences;
+														return (prefs.pacing || "slow-burn")
+															.split("-")
+															.map(
+																(word: string) =>
+																	word.charAt(0).toUpperCase() + word.slice(1),
+															)
+															.join(" ");
+													} catch {
+														return "Not set";
+													}
+												})()}
+											</p>
+										</div>
+									</div>
+								</div>
+
+								<Link
+									to="/auth/onboarding"
+									className="inline-flex items-center px-6 py-3 border-2 border-romance-600 text-romance-600 rounded-lg font-semibold hover:bg-romance-50 transition-colors"
+								>
+									Update Preferences
+								</Link>
+							</>
+						) : (
+							<>
+								<p className="text-slate-600 mb-4">
+									Set up your reading preferences to get personalized story
+									recommendations
+								</p>
+
+								<Link
+									to="/auth/onboarding"
+									className="inline-flex items-center px-6 py-3 bg-romance-600 text-white rounded-lg font-semibold hover:bg-romance-700 transition-colors"
+								>
+									Set Up Preferences
+								</Link>
+							</>
+						)}
 					</div>
 
 					{/* Danger Zone */}
