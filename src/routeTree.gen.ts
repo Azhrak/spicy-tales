@@ -26,6 +26,7 @@ import { Route as ApiProfileIndexRouteImport } from './routes/api/profile/index'
 import { Route as StoryIdReadRouteImport } from './routes/story/$id.read'
 import { Route as ApiTemplatesIdRouteImport } from './routes/api/templates/$id'
 import { Route as ApiStoriesUserRouteImport } from './routes/api/stories/user'
+import { Route as ApiStoriesIdRouteImport } from './routes/api/stories/$id'
 import { Route as ApiProfilePasswordRouteImport } from './routes/api/profile/password'
 import { Route as ApiAuthSignupRouteImport } from './routes/api/auth/signup'
 import { Route as ApiAuthLogoutRouteImport } from './routes/api/auth/logout'
@@ -120,6 +121,11 @@ const ApiStoriesUserRoute = ApiStoriesUserRouteImport.update({
   path: '/api/stories/user',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiStoriesIdRoute = ApiStoriesIdRouteImport.update({
+  id: '/api/stories/$id',
+  path: '/api/stories/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiProfilePasswordRoute = ApiProfilePasswordRouteImport.update({
   id: '/api/profile/password',
   path: '/api/profile/password',
@@ -146,14 +152,14 @@ const ApiAuthGoogleRoute = ApiAuthGoogleRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiStoriesIdSceneRoute = ApiStoriesIdSceneRouteImport.update({
-  id: '/api/stories/$id/scene',
-  path: '/api/stories/$id/scene',
-  getParentRoute: () => rootRouteImport,
+  id: '/scene',
+  path: '/scene',
+  getParentRoute: () => ApiStoriesIdRoute,
 } as any)
 const ApiStoriesIdChooseRoute = ApiStoriesIdChooseRouteImport.update({
-  id: '/api/stories/$id/choose',
-  path: '/api/stories/$id/choose',
-  getParentRoute: () => rootRouteImport,
+  id: '/choose',
+  path: '/choose',
+  getParentRoute: () => ApiStoriesIdRoute,
 } as any)
 const ApiAuthCallbackGoogleRoute = ApiAuthCallbackGoogleRouteImport.update({
   id: '/api/auth/callback/google',
@@ -178,6 +184,7 @@ export interface FileRoutesByFullPath {
   '/api/auth/logout': typeof ApiAuthLogoutRoute
   '/api/auth/signup': typeof ApiAuthSignupRoute
   '/api/profile/password': typeof ApiProfilePasswordRoute
+  '/api/stories/$id': typeof ApiStoriesIdRouteWithChildren
   '/api/stories/user': typeof ApiStoriesUserRoute
   '/api/templates/$id': typeof ApiTemplatesIdRoute
   '/story/$id/read': typeof StoryIdReadRoute
@@ -205,6 +212,7 @@ export interface FileRoutesByTo {
   '/api/auth/logout': typeof ApiAuthLogoutRoute
   '/api/auth/signup': typeof ApiAuthSignupRoute
   '/api/profile/password': typeof ApiProfilePasswordRoute
+  '/api/stories/$id': typeof ApiStoriesIdRouteWithChildren
   '/api/stories/user': typeof ApiStoriesUserRoute
   '/api/templates/$id': typeof ApiTemplatesIdRoute
   '/story/$id/read': typeof StoryIdReadRoute
@@ -233,6 +241,7 @@ export interface FileRoutesById {
   '/api/auth/logout': typeof ApiAuthLogoutRoute
   '/api/auth/signup': typeof ApiAuthSignupRoute
   '/api/profile/password': typeof ApiProfilePasswordRoute
+  '/api/stories/$id': typeof ApiStoriesIdRouteWithChildren
   '/api/stories/user': typeof ApiStoriesUserRoute
   '/api/templates/$id': typeof ApiTemplatesIdRoute
   '/story/$id/read': typeof StoryIdReadRoute
@@ -262,6 +271,7 @@ export interface FileRouteTypes {
     | '/api/auth/logout'
     | '/api/auth/signup'
     | '/api/profile/password'
+    | '/api/stories/$id'
     | '/api/stories/user'
     | '/api/templates/$id'
     | '/story/$id/read'
@@ -289,6 +299,7 @@ export interface FileRouteTypes {
     | '/api/auth/logout'
     | '/api/auth/signup'
     | '/api/profile/password'
+    | '/api/stories/$id'
     | '/api/stories/user'
     | '/api/templates/$id'
     | '/story/$id/read'
@@ -316,6 +327,7 @@ export interface FileRouteTypes {
     | '/api/auth/logout'
     | '/api/auth/signup'
     | '/api/profile/password'
+    | '/api/stories/$id'
     | '/api/stories/user'
     | '/api/templates/$id'
     | '/story/$id/read'
@@ -344,6 +356,7 @@ export interface RootRouteChildren {
   ApiAuthLogoutRoute: typeof ApiAuthLogoutRoute
   ApiAuthSignupRoute: typeof ApiAuthSignupRoute
   ApiProfilePasswordRoute: typeof ApiProfilePasswordRoute
+  ApiStoriesIdRoute: typeof ApiStoriesIdRouteWithChildren
   ApiStoriesUserRoute: typeof ApiStoriesUserRoute
   ApiTemplatesIdRoute: typeof ApiTemplatesIdRoute
   StoryIdReadRoute: typeof StoryIdReadRoute
@@ -351,8 +364,6 @@ export interface RootRouteChildren {
   ApiStoriesIndexRoute: typeof ApiStoriesIndexRoute
   ApiTemplatesIndexRoute: typeof ApiTemplatesIndexRoute
   ApiAuthCallbackGoogleRoute: typeof ApiAuthCallbackGoogleRoute
-  ApiStoriesIdChooseRoute: typeof ApiStoriesIdChooseRoute
-  ApiStoriesIdSceneRoute: typeof ApiStoriesIdSceneRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -476,6 +487,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiStoriesUserRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/stories/$id': {
+      id: '/api/stories/$id'
+      path: '/api/stories/$id'
+      fullPath: '/api/stories/$id'
+      preLoaderRoute: typeof ApiStoriesIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/profile/password': {
       id: '/api/profile/password'
       path: '/api/profile/password'
@@ -513,17 +531,17 @@ declare module '@tanstack/react-router' {
     }
     '/api/stories/$id/scene': {
       id: '/api/stories/$id/scene'
-      path: '/api/stories/$id/scene'
+      path: '/scene'
       fullPath: '/api/stories/$id/scene'
       preLoaderRoute: typeof ApiStoriesIdSceneRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof ApiStoriesIdRoute
     }
     '/api/stories/$id/choose': {
       id: '/api/stories/$id/choose'
-      path: '/api/stories/$id/choose'
+      path: '/choose'
       fullPath: '/api/stories/$id/choose'
       preLoaderRoute: typeof ApiStoriesIdChooseRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof ApiStoriesIdRoute
     }
     '/api/auth/callback/google': {
       id: '/api/auth/callback/google'
@@ -534,6 +552,20 @@ declare module '@tanstack/react-router' {
     }
   }
 }
+
+interface ApiStoriesIdRouteChildren {
+  ApiStoriesIdChooseRoute: typeof ApiStoriesIdChooseRoute
+  ApiStoriesIdSceneRoute: typeof ApiStoriesIdSceneRoute
+}
+
+const ApiStoriesIdRouteChildren: ApiStoriesIdRouteChildren = {
+  ApiStoriesIdChooseRoute: ApiStoriesIdChooseRoute,
+  ApiStoriesIdSceneRoute: ApiStoriesIdSceneRoute,
+}
+
+const ApiStoriesIdRouteWithChildren = ApiStoriesIdRoute._addFileChildren(
+  ApiStoriesIdRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -552,6 +584,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiAuthLogoutRoute: ApiAuthLogoutRoute,
   ApiAuthSignupRoute: ApiAuthSignupRoute,
   ApiProfilePasswordRoute: ApiProfilePasswordRoute,
+  ApiStoriesIdRoute: ApiStoriesIdRouteWithChildren,
   ApiStoriesUserRoute: ApiStoriesUserRoute,
   ApiTemplatesIdRoute: ApiTemplatesIdRoute,
   StoryIdReadRoute: StoryIdReadRoute,
@@ -559,8 +592,6 @@ const rootRouteChildren: RootRouteChildren = {
   ApiStoriesIndexRoute: ApiStoriesIndexRoute,
   ApiTemplatesIndexRoute: ApiTemplatesIndexRoute,
   ApiAuthCallbackGoogleRoute: ApiAuthCallbackGoogleRoute,
-  ApiStoriesIdChooseRoute: ApiStoriesIdChooseRoute,
-  ApiStoriesIdSceneRoute: ApiStoriesIdSceneRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

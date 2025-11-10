@@ -229,3 +229,30 @@ export async function getStoryById(storyId: string) {
 		.where("us.id", "=", storyId)
 		.executeTakeFirst();
 }
+
+/**
+ * Delete a user story and all associated data
+ * This will cascade delete: scenes, choices, and any other related data
+ */
+export async function deleteUserStory(storyId: string, userId: string) {
+	// Verify ownership before deleting
+	const story = await db
+		.selectFrom("user_stories")
+		.select(["id", "user_id"])
+		.where("id", "=", storyId)
+		.where("user_id", "=", userId)
+		.executeTakeFirst();
+
+	if (!story) {
+		throw new Error("Story not found or access denied");
+	}
+
+	// Delete the story (cascading will handle related records)
+	const result = await db
+		.deleteFrom("user_stories")
+		.where("id", "=", storyId)
+		.where("user_id", "=", userId)
+		.executeTakeFirst();
+
+	return result.numDeletedRows > 0n;
+}

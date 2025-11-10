@@ -1,6 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { BookOpen, Clock, Sparkles } from "lucide-react";
+import { BookOpen, Clock, Sparkles, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { EmptyState } from "~/components/EmptyState";
 import { ErrorMessage } from "~/components/ErrorMessage";
@@ -37,6 +37,8 @@ function LibraryPage() {
 	const [activeTab, setActiveTab] = useState<"in-progress" | "completed">(
 		"in-progress",
 	);
+	const [deletingId, setDeletingId] = useState<string | null>(null);
+	const queryClient = useQueryClient();
 
 	const { data, isLoading, error } = useQuery({
 		queryKey: ["user-stories", activeTab],
@@ -48,6 +50,41 @@ function LibraryPage() {
 			return response.json() as Promise<{ stories: UserStory[] }>;
 		},
 	});
+
+	const deleteStory = useMutation({
+		mutationFn: async (storyId: string) => {
+			const response = await fetch(`/api/stories/${storyId}`, {
+				method: "DELETE",
+				credentials: "include",
+			});
+			if (!response.ok) {
+				const error = await response.json();
+				throw new Error(error.error || "Failed to delete story");
+			}
+			return response.json();
+		},
+		onSuccess: () => {
+			// Invalidate and refetch stories
+			queryClient.invalidateQueries({ queryKey: ["user-stories"] });
+			setDeletingId(null);
+		},
+		onError: (error) => {
+			console.error("Failed to delete story:", error);
+			setDeletingId(null);
+			alert("Failed to delete story. Please try again.");
+		},
+	});
+
+	const handleDeleteClick = (storyId: string, storyTitle: string) => {
+		if (
+			window.confirm(
+				`Are you sure you want to delete "${storyTitle}"? This action cannot be undone.`,
+			)
+		) {
+			setDeletingId(storyId);
+			deleteStory.mutate(storyId);
+		}
+	};
 
 	const stories = data?.stories || [];
 
@@ -184,6 +221,23 @@ function LibraryPage() {
 												? "Continue Reading"
 												: "Read Again"}
 										</Link>
+										<button
+											onClick={() =>
+												handleDeleteClick(
+													story.id,
+													story.story_title || story.template.title,
+												)
+											}
+											disabled={deletingId === story.id}
+											className="px-4 py-2 bg-red-50 text-red-600 rounded-lg font-medium hover:bg-red-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+											title="Delete story"
+										>
+											{deletingId === story.id ? (
+												<div className="w-5 h-5 border-2 border-red-600 border-t-transparent rounded-full animate-spin"></div>
+											) : (
+												<Trash2 className="w-5 h-5" />
+											)}
+										</button>
 									</div>
 								</div>
 							</div>

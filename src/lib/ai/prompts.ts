@@ -22,6 +22,7 @@ export function buildSystemPrompt(preferences: StoryPreferences): string {
 		pacing,
 		protagonistTraits,
 		settingPreferences,
+		sceneLength,
 	} = preferences;
 
 	const spiceDescription: Record<StoryPreferences["spiceLevel"], string> = {
@@ -56,7 +57,14 @@ export function buildSystemPrompt(preferences: StoryPreferences): string {
 		? `Setting flavor anchors: ${settingPreferences.join(", ")}. Surface via sensory/environmental texture (sound, light, seasonal or spatial details).`
 		: "(Use a grounded, sensorially rich setting appropriate to genre blend.)";
 
+	// Scene length guidance
+	const lengthGuidance = getSceneLengthGuidance(sceneLength);
+
 	return `You are a professional romance novelist writing high-quality interactive scenes blending: ${genres.join(", ")}.
+
+CRITICAL LENGTH REQUIREMENT:
+${lengthGuidance}
+This is a STRICT requirement. Do NOT exceed this range under any circumstances.
 
 STYLE & VOICE:
 - Third-person limited POV (single POV per scene)
@@ -85,6 +93,7 @@ PROSE GUARDRAILS:
 - No bracketed placeholders
 - Descriptive but not purple; metaphors precise & sparing
 - Hooks vary (question, sensory sting, unresolved gesture, emotional inversion)
+- ADHERE STRICTLY TO WORD COUNT REQUIREMENT (see top of prompt)
 
 CONTENT SAFETY (STRICTLY PROHIBITED):
 DO NOT include, depict, or imply ANY of the following:
@@ -102,8 +111,8 @@ ALL romantic and intimate characters MUST be clearly established as adults (mini
 Use contextual cues: career, education completion, independent living, mature decision-making.
 
 OUTPUT FORMAT:
-- 1 cohesive scene; 800–1200 words unless adjusted by scene phase
 - Pure narrative only (no outlines, bullet lists, analysis)
+- WORD COUNT: Strictly within the specified range at the top of this prompt
 - End with a clean hook—no artificial summary
 
 Remember: Advance emotional connection, escalate or deepen tension, reward reader investment with authentic interiority.`;
@@ -196,9 +205,18 @@ export function buildScenePrompt(params: {
 
 	// Calculate word target based on scene length preference
 	const lengthRange = getSceneLengthRange(sceneLength, phase, sceneNumber);
-	const targetWords = lengthRange.target;
 
-	return `STORY: "${templateTitle}"\nSCENE: ${sceneNumber} / ~${estimatedScenes}\nPHASE: ${phase}\nOBJECTIVES:\n${objectivesBlock}\n\n${contextSection}${choiceImpact}${choiceDirective}${targetWords}.\nWrite immersive narrative now (no meta, no lists).
+	return `STORY: "${templateTitle}"
+SCENE: ${sceneNumber} / ~${estimatedScenes}
+PHASE: ${phase}
+
+⚠️ CRITICAL WORD COUNT REQUIREMENT: ${lengthRange.min}-${lengthRange.max} words ⚠️
+You MUST write exactly within this range. Count words as you write and stop when you reach the upper limit.
+
+OBJECTIVES:
+${objectivesBlock}
+
+${contextSection}${choiceImpact}${choiceDirective}Write the scene narrative now (no meta, no lists, no outlines). Remember: ${lengthRange.min}-${lengthRange.max} words MAXIMUM.
 
 After the narrative, include a metadata section:
 <SCENE_META>
@@ -220,6 +238,28 @@ export interface SceneMetadata {
 }
 
 /**
+ * Get scene length guidance text for system prompt
+ */
+export function getSceneLengthGuidance(
+	sceneLength: "short" | "medium" | "long" | number | undefined,
+): string {
+	if (typeof sceneLength === "number") {
+		const min = Math.floor(sceneLength * 0.85);
+		const max = Math.floor(sceneLength * 1.15);
+		return `Each scene must be ${min}-${max} words. Count carefully and stop when you reach this limit.`;
+	}
+
+	const ranges = {
+		short: { min: 500, max: 700, description: "concise, punchy" },
+		medium: { min: 800, max: 1100, description: "balanced, immersive" },
+		long: { min: 1100, max: 1500, description: "detailed, expansive" },
+	};
+
+	const range = ranges[sceneLength || "medium"];
+	return `Each scene must be ${range.min}-${range.max} words (${range.description} pacing). Count carefully and stop when you reach this limit.`;
+}
+
+/**
  * Calculate word count range based on scene length preference and phase
  */
 export function getSceneLengthRange(
@@ -234,38 +274,21 @@ export function getSceneLengthRange(
 		return { min, max, target: `Aim ${min}–${max} words` };
 	}
 
-	// Base multipliers for presets
-	const lengthMultiplier = {
-		short: 0.65, // ~500-700 words
-		medium: 1.0, // ~800-1100 words
-		long: 1.4, // ~1100-1500 words
+	// Fixed ranges that match the guidance given to the AI
+	// These do not vary by phase to ensure consistency
+	const ranges = {
+		short: { min: 500, max: 700 },
+		medium: { min: 800, max: 1100 },
+		long: { min: 1100, max: 1500 },
 	};
 
-	const multiplier = lengthMultiplier[sceneLength || "medium"];
+	const range = ranges[sceneLength || "medium"];
 
-	// Phase-specific base ranges (for medium)
-	let baseMin: number;
-	let baseMax: number;
-
-	if (sceneNumber === 1) {
-		baseMin = 800;
-		baseMax = 900;
-	} else if (phase === "Resolution") {
-		baseMin = 700;
-		baseMax = 950;
-	} else if (phase === "Pre-Climax") {
-		baseMin = 900;
-		baseMax = 1100;
-	} else {
-		baseMin = 800;
-		baseMax = 1050;
-	}
-
-	// Apply multiplier
-	const min = Math.floor(baseMin * multiplier);
-	const max = Math.floor(baseMax * multiplier);
-
-	return { min, max, target: `Aim ${min}–${max} words` };
+	return {
+		min: range.min,
+		max: range.max,
+		target: `Aim ${range.min}–${range.max} words`,
+	};
 }
 
 /**

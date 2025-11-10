@@ -1,8 +1,8 @@
 # Project Progress & Implementation Plan
 
 **Project**: Spicy Tales - AI-Enhanced Romance Novel App
-**Last Updated**: 2025-11-10 (Completed Scene Length Control - Phase 13)
-**Current Phase**: Phase 13 Complete (Scene Length Control), MVP 100% Complete! 🎉
+**Last Updated**: 2025-11-11 (Scene Length Bug Fixes + Story Deletion)
+**Current Phase**: Phase 14 Complete (Bug Fixes & Enhancements), MVP 100% Complete! 🎉
 
 📄 **Quick Reference:** See [SESSION_SUMMARY.md](SESSION_SUMMARY.md) for comprehensive session recap
 
@@ -307,34 +307,6 @@ scenes (id, story_id, scene_number, content, word_count, created_at)
 - Feature showcase (3 cards)
 - Links to signup/login
 - Beautiful gradient background
-
-### Phase 11: Docker Setup (100% Complete)
-
-**Files Created:**
-
-- [Dockerfile](Dockerfile) - Multi-stage build for optimal image size
-- [docker-compose.yml](docker-compose.yml) - Orchestrates app, PostgreSQL, and Redis
-- [docker-entrypoint.sh](docker-entrypoint.sh) - Runs migrations on startup
-- [.dockerignore](.dockerignore) - Excludes unnecessary files from build
-- [DOCKER.md](DOCKER.md) - Complete Docker setup documentation
-- [.env.example](.env.example) - Unified environment template (works for both local & Docker)
-
-**Docker Features:**
-
-- ✅ Multi-stage Dockerfile (deps → builder → runner)
-- ✅ PostgreSQL 14 with persistent volume
-- ✅ Redis 7 with persistent volume
-- ✅ Health checks for all services
-- ✅ Automatic migrations on startup
-- ✅ Optional database seeding
-- ✅ Non-root user for security
-- ✅ Unified .env template (works for both local dev & Docker)
-
-**Services:**
-
-- **app**: Node.js application on port 3000
-- **postgres**: PostgreSQL database on port 5432
-- **redis**: Redis cache on port 6379
 
 ### Phase 11: Docker Setup (100% Complete)
 
@@ -835,12 +807,15 @@ pnpm start
 - ✅ Template details at `/template/:id`
 - ✅ Story creation at `/story/create`
 - ✅ Library at `/library`
+- ✅ Story deletion with confirmation
 - ✅ Reading interface at `/story/:id/read`
 - ✅ Scene generation with AI
+- ✅ Scene length control (short/medium/long)
 - ✅ Choice selection and progress tracking
 - ✅ User profile at `/profile`
 - ✅ AI metadata capture and summaries
 - ✅ Enhanced safety and quality prompts
+- ✅ Comprehensive generation logging
 
 **Next Steps**:
 

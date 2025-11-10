@@ -8,6 +8,7 @@ import { generateCompletion } from "./client";
 import {
 	buildScenePrompt,
 	buildSystemPrompt,
+	getSceneLengthRange,
 	parseSceneMeta,
 	type StoryPreferences,
 } from "./prompts";
@@ -45,10 +46,19 @@ export async function generateScene(
 		lastChoice,
 	} = context;
 
+	// Log scene length preference
+	console.log(
+		`[Scene Generation] Story: ${storyId}, Scene: ${sceneNumber}, Scene Length Preference: ${preferences.sceneLength || "not set (defaulting to medium)"}`,
+	);
+	console.log("[Scene Generation] Full preferences:", preferences);
+
 	// Check cache first
 	const cachedScene = await getCachedScene(storyId, sceneNumber);
 
 	if (cachedScene) {
+		console.log(
+			`[Scene Generation] Using cached scene ${sceneNumber} (${cachedScene.word_count} words)`,
+		);
 		return {
 			content: cachedScene.content,
 			cached: true,
@@ -79,6 +89,13 @@ export async function generateScene(
 		sceneLength: preferences.sceneLength,
 	});
 
+	// Log the prompts being sent
+	console.log("\n=== SYSTEM PROMPT ===");
+	console.log(systemPrompt.substring(0, 500) + "...");
+	console.log("\n=== USER PROMPT ===");
+	console.log(userPrompt);
+	console.log("=== END PROMPTS ===\n");
+
 	// Generate with OpenAI
 	const content = await generateCompletion(systemPrompt, userPrompt, {
 		temperature: 0.8, // Higher temperature for more creative writing
@@ -87,6 +104,55 @@ export async function generateScene(
 
 	// Parse content and extract metadata
 	const parsed = parseSceneMeta(content);
+
+	// Log generated content stats
+	const generatedWordCount = parsed.content.split(/\s+/).length;
+	console.log(
+		`[Scene Generation] Generated scene ${sceneNumber}: ${generatedWordCount} words`,
+	);
+
+	// Calculate phase for validation
+	const phaseRatio = sceneNumber / estimatedScenes;
+	let phase: string;
+	if (sceneNumber === 1) {
+		phase = "Opening";
+	} else if (phaseRatio <= 0.3) {
+		phase = "Early Development";
+	} else if (phaseRatio <= 0.7) {
+		phase = "Rising Tension";
+	} else if (sceneNumber < estimatedScenes) {
+		phase = "Pre-Climax";
+	} else {
+		phase = "Resolution";
+	}
+
+	// Validate scene length
+	const validation = validateScene(
+		parsed.content,
+		preferences,
+		phase,
+		sceneNumber,
+	);
+
+	const expectedRange = getSceneLengthRange(
+		preferences.sceneLength,
+		phase,
+		sceneNumber,
+	);
+	console.log(
+		`[Scene Generation] Expected range: ${expectedRange.min}-${expectedRange.max} words, Got: ${generatedWordCount} words`,
+	);
+
+	if (validation.warnings.length > 0) {
+		console.warn(
+			`Scene ${sceneNumber} validation warnings:`,
+			validation.warnings,
+		);
+	}
+
+	if (!validation.valid) {
+		console.error(`Scene ${sceneNumber} validation errors:`, validation.errors);
+	}
 
 	// Cache the generated scene with metadata and summary
 	await cacheScene(
@@ -106,20 +172,48 @@ export async function generateScene(
 /**
  * Validate that a scene meets quality standards
  */
-export function validateScene(content: string): {
+export function validateScene(
+	content: string,
+	preferences: StoryPreferences,
+	phase: string,
+	sceneNumber: number,
+): {
 	valid: boolean;
 	errors: string[];
+	warnings: string[];
 } {
 	const errors: string[] = [];
+	const warnings: string[] = [];
 
 	const wordCount = content.split(/\s+/).length;
 
-	if (wordCount < 500) {
-		errors.push("Scene is too short (minimum 500 words)");
+	// Get expected range based on preferences
+	const { min, max } = getSceneLengthRange(
+		preferences.sceneLength,
+		phase,
+		sceneNumber,
+	);
+
+	// Hard limits for any scene
+	if (wordCount < 400) {
+		errors.push("Scene is too short (minimum 400 words)");
 	}
 
 	if (wordCount > 2000) {
 		errors.push("Scene is too long (maximum 2000 words)");
+	}
+
+	// Warnings for preference violations
+	if (wordCount < min) {
+		warnings.push(
+			`Scene is shorter than requested (${wordCount} words, expected ${min}-${max})`,
+		);
+	}
+
+	if (wordCount > max) {
+		warnings.push(
+			`Scene is longer than requested (${wordCount} words, expected ${min}-${max})`,
+		);
 	}
 
 	if (content.includes("[") || content.includes("]")) {
@@ -129,5 +223,6 @@ export function validateScene(content: string): {
 	return {
 		valid: errors.length === 0,
 		errors,
+		warnings,
 	};
 }

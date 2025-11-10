@@ -1,8 +1,8 @@
 # Session Summary - Spicy Tales Project Setup
 
-**Date:** November 10, 2025
-**Status:** MVP Complete with AI Enhancement + Scene Length Control! 🎉🤖📏
-**Next Phase:** Polish & Testing (Phase 13)
+**Date:** November 11, 2025
+**Status:** MVP Complete with Bug Fixes & Story Deletion! 🎉🐛�️
+**Next Phase:** Polish & Testing (Phase 15)
 
 ---
 
@@ -292,44 +292,102 @@
   - Foundation for analytics and visualizations
   - Significant cost reduction per story generation
 
-### ✅ Phase 13: Scene Length Control Feature (100%) 📏
+### ✅ Phase 13: Scene Length Control (100%)
 
-- **User-Controlled Scene Length**
-  - Added 3 preset options: Short, Medium, Long
-  - Smart word count ranges that adapt to story phase
-  - Architecture supports custom word counts (future enhancement)
-
-- **Type System Updates**
-  - Added `SCENE_LENGTH_OPTIONS` constant
+- **Added scene length preference system**
+  - Created `SCENE_LENGTH_OPTIONS` constant
   - Created `SceneLengthOption` type
   - Updated `UserPreferences` interface with optional `sceneLength`
   - Added `SCENE_LENGTH_LABELS` with descriptions and word counts
-
-- **AI Prompt System Enhancement**
+- **Enhanced AI prompts with word count control**
   - Created `getSceneLengthRange()` function:
-    - Handles presets with multipliers (0.65x, 1.0x, 1.4x)
-    - Phase-aware adjustments (shorter for resolutions)
-    - Supports future custom word counts with ±15% flexibility
-  - Updated `buildScenePrompt()` to use dynamic word targets
+    - Short: 500-700 words (multiplier 0.65)
+    - Medium: 800-1100 words (multiplier 1.0, default)
+    - Long: 1100-1500 words (multiplier 1.4)
+  - Added word count guidance to system prompt
+  - Enhanced user prompt with specific word targets
+  - Phase-aware adjustments (opening, development, climax, resolution)
+- **Updated UI components**
+  - Added scene length selection to onboarding page
+  - Added scene length management to preferences page
+  - Added scene length override to story creation page
+  - Visual cards with descriptions and word count estimates
+- **Updated API endpoints**
+  - Enhanced preferences API to handle scene length
+  - Added scene length to story creation flow
 
-- **Word Count Ranges by Length**
-  - **Short**: ~500-700 words (quick, punchy scenes)
-  - **Medium**: ~800-1100 words (balanced pacing) - default
-  - **Long**: ~1100-1500 words (detailed, immersive)
-  - Automatically adjusts based on story phase
+### ✅ Phase 14: Bug Fixes & Enhancements (100%)
 
-- **UI Integration**
-  - Added scene length selector to onboarding (Step 3)
-  - Added scene length override in story creation form
-  - 3-column grid layout with descriptions and word counts
-  - Defaults to "medium" for optimal experience
+**Scene Length Bug Fixes:**
 
-- **Benefits**
-  - User control over reading experience length
-  - Faster reads for time-constrained users
-  - Deep immersion for dedicated readers
-  - Cost optimization (shorter scenes = fewer tokens)
-  - Future-ready for custom word count input
+- **Fixed critical scene length parameter bug**
+  - Root cause: `sceneLength` was being stripped by Zod validation in story API
+  - Added `sceneLength: z.enum(SCENE_LENGTH_OPTIONS).optional()` to schema
+  - Added proper imports for `SCENE_LENGTH_OPTIONS` and `SceneLengthOption`
+  - Now correctly passes from frontend → API → database → AI generation
+- **Strengthened AI word count compliance**
+  - Created `getSceneLengthGuidance()` function for system prompt
+  - Made word count requirement **CRITICAL** at top of system prompt
+  - Added warning symbols (⚠️) and multiple reminders throughout prompts
+  - Simplified `getSceneLengthRange()` to use fixed ranges (no phase variations)
+  - Ensures consistent expectations between system and user prompts
+  - Range definitions:
+    - Short: 500-700 words (concise, punchy)
+    - Medium: 800-1100 words (balanced, immersive)
+    - Long: 1100-1500 words (detailed, expansive)
+- **Added comprehensive logging for debugging**
+  - Logs scene length preference at generation start
+  - Displays full preferences object
+  - Shows system prompt (first 500 chars) and complete user prompt
+  - Reports generated word count vs expected range
+  - Validation warnings for out-of-range scenes
+- **Enhanced scene validation**
+  - Updated `validateScene()` to accept preferences and phase
+  - Checks against user's preferred scene length range
+  - Maintains hard limits (400 min, 2000 max)
+  - Returns both errors (critical) and warnings (preference violations)
+  - Imported `getSceneLengthRange()` for consistent validation
+
+**Story Management:**
+
+- **Implemented story deletion feature**
+  - Created `deleteUserStory()` database query
+    - Verifies ownership before deletion
+    - Returns boolean success/failure
+    - Handles cascade deletion of related data
+  - Created `/api/stories/$id` endpoint
+    - GET handler for fetching story details
+    - DELETE handler with ownership verification
+    - Proper error handling and responses
+  - Added delete UI to library page
+    - Delete button with trash icon (red theme)
+    - Confirmation dialog before deletion
+    - Loading spinner during deletion
+    - Automatic query invalidation and list refresh
+    - Error handling with user-friendly alerts
+    - Disabled state while deleting
+
+**Files Created:**
+
+- `src/routes/api/stories/$id.ts` - New API endpoint for story operations
+
+**Files Modified:**
+
+- `src/lib/db/queries/stories.ts` - Added `deleteUserStory()` function
+- `src/lib/ai/prompts.ts` - Added `getSceneLengthGuidance()`, simplified `getSceneLengthRange()`
+- `src/lib/ai/generate.ts` - Added logging, imported `getSceneLengthRange()`, enhanced validation
+- `src/routes/api/stories/index.ts` - Fixed Zod schema to include `sceneLength`
+- `src/routes/library.tsx` - Added delete mutation, button, and confirmation flow
+- `PROGRESS.md` - Updated with Phase 14 details
+- `SESSION_SUMMARY.md` - Updated with latest changes
+
+**Impact:**
+
+- Scene length now works correctly for new stories
+- AI generates scenes within specified word count ranges
+- Users can delete unwanted stories from their library
+- Better debugging capabilities with comprehensive logging
+- Improved validation and error reporting
 
 ### ✅ Documentation (100%)
 
@@ -751,18 +809,21 @@ When you return to this project:
 - [x] Users can view template details
 - [x] Users can start a story
 - [x] Users can see their story library
+- [x] Users can delete stories from library
 - [x] Stories have unique titles (with auto-generation)
 - [x] Users can read AI-generated scenes
+- [x] Users can control scene length (short/medium/long)
 - [x] Users can make choices that affect the story
 - [x] Users can progress through non-choice scenes
 - [x] Stories are cached (no duplicate AI calls)
+- [x] Comprehensive logging for debugging
 - [x] App works in Docker
 - [x] Basic error handling
 - [ ] Error boundaries for better recovery
 - [ ] Loading skeletons for perceived performance
 - [ ] Mobile optimization
 
-**Current Progress: 98% Complete**
+**Current Progress: 99% Complete**
 
 ---
 
@@ -791,9 +852,9 @@ When you return to this project:
 
 ---
 
-**Session End: November 10, 2025**
-**Status: Reading Interface Complete - MVP ~98% Feature-Complete! 🎉**
-**Next: Polish & Testing (Phase 12)**
+**Session End: November 11, 2025**
+**Status: Bug Fixes & Story Deletion Complete - MVP 99% Feature-Complete! 🎉**
+**Next: Final Polish & Testing (Phase 15)**
 
 Happy coding! 🚀✨
 

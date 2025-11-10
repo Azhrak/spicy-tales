@@ -8,6 +8,8 @@ import {
 	type Genre,
 	PACING_OPTIONS,
 	type PacingOption,
+	SCENE_LENGTH_OPTIONS,
+	type SceneLengthOption,
 	type SpiceLevel,
 	TROPES,
 	type Trope,
@@ -22,6 +24,7 @@ const createStorySchema = z.object({
 			tropes: z.array(z.enum(TROPES)),
 			spiceLevel: z.number().int().min(1).max(5) as z.ZodType<SpiceLevel>,
 			pacing: z.enum(PACING_OPTIONS),
+			sceneLength: z.enum(SCENE_LENGTH_OPTIONS).optional(),
 		})
 		.optional(),
 });
