@@ -48,6 +48,7 @@ export const Route = createFileRoute('/api/auth/login')({
                 id: user.id,
                 email: user.email,
                 name: user.name,
+                hasPreferences: !!user.default_preferences,
               },
             },
             {

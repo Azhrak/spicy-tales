@@ -33,8 +33,9 @@ function LoginPage() {
         return
       }
 
-      // Redirect to browse page
-      navigate({ to: '/browse' })
+      // Redirect based on whether user has completed onboarding
+      const redirectTo = data.user?.hasPreferences ? '/browse' : '/auth/onboarding'
+      navigate({ to: redirectTo })
     } catch (err) {
       setError('An unexpected error occurred')
     } finally {

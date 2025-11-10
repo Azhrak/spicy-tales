@@ -37,9 +37,19 @@ function SignupPage() {
       const data = await response.json()
 
       if (!response.ok) {
-        setError(data.error || 'Signup failed')
-        if (data.details) {
-          setError(data.details.join(', '))
+        // Handle different error formats from API
+        if (data.details && Array.isArray(data.details)) {
+          // If details is an array of Zod error objects
+          const errorMessages = data.details.map((detail: any) => {
+            if (typeof detail === 'string') {
+              return detail
+            }
+            // Zod error object format
+            return detail.message || String(detail)
+          })
+          setError(errorMessages.join('. '))
+        } else {
+          setError(data.error || 'Signup failed')
         }
         return
       }

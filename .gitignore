@@ -1,15 +1,21 @@
 # Dependencies
 node_modules
 .pnpm-debug.log
+.pnpm-store
+.npm
+.yarn
 
 # Build outputs
 dist
 .vinxi
 .output
+*.tsbuildinfo
 
 # Environment variables
 .env
 .env.local
+.env.*.local
+.secrets
 
 # IDE
 .vscode
@@ -21,11 +27,44 @@ dist
 # OS
 .DS_Store
 Thumbs.db
+desktop.ini
 
 # Test coverage
 coverage
+*.lcov
+
+# Database (local development)
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+
+# Cache directories
+.cache
+.turbo
+.vercel
+
+# Docker local volumes (if any are created in project dir)
+postgres_data/
+redis_data/
 
 # Misc
-*.log
-.cache
-.secrets
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+.claude/settings.local.json

@@ -7,7 +7,7 @@ export const Route = createFileRoute('/')({
 
 function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-romance-50 via-white to-romance-100">
+    <div className="min-h-screen bg-linear-to-br from-romance-50 via-white to-romance-100">
       <div className="container mx-auto px-4 py-16">
         {/* Hero Section */}
         <div className="text-center max-w-4xl mx-auto mb-16">

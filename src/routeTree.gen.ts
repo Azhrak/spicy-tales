@@ -9,15 +9,29 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as LibraryRouteImport } from './routes/library'
+import { Route as BrowseRouteImport } from './routes/browse'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthSignupRouteImport } from './routes/auth/signup'
+import { Route as AuthOnboardingRouteImport } from './routes/auth/onboarding'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
+import { Route as ApiPreferencesRouteImport } from './routes/api/preferences'
 import { Route as ApiAuthSignupRouteImport } from './routes/api/auth/signup'
 import { Route as ApiAuthLogoutRouteImport } from './routes/api/auth/logout'
 import { Route as ApiAuthLoginRouteImport } from './routes/api/auth/login'
 import { Route as ApiAuthGoogleRouteImport } from './routes/api/auth/google'
 import { Route as ApiAuthCallbackGoogleRouteImport } from './routes/api/auth/callback.google'
 
+const LibraryRoute = LibraryRouteImport.update({
+  id: '/library',
+  path: '/library',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BrowseRoute = BrowseRouteImport.update({
+  id: '/browse',
+  path: '/browse',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -28,9 +42,19 @@ const AuthSignupRoute = AuthSignupRouteImport.update({
   path: '/auth/signup',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthOnboardingRoute = AuthOnboardingRouteImport.update({
+  id: '/auth/onboarding',
+  path: '/auth/onboarding',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthLoginRoute = AuthLoginRouteImport.update({
   id: '/auth/login',
   path: '/auth/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPreferencesRoute = ApiPreferencesRouteImport.update({
+  id: '/api/preferences',
+  path: '/api/preferences',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiAuthSignupRoute = ApiAuthSignupRouteImport.update({
@@ -61,7 +85,11 @@ const ApiAuthCallbackGoogleRoute = ApiAuthCallbackGoogleRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/browse': typeof BrowseRoute
+  '/library': typeof LibraryRoute
+  '/api/preferences': typeof ApiPreferencesRoute
   '/auth/login': typeof AuthLoginRoute
+  '/auth/onboarding': typeof AuthOnboardingRoute
   '/auth/signup': typeof AuthSignupRoute
   '/api/auth/google': typeof ApiAuthGoogleRoute
   '/api/auth/login': typeof ApiAuthLoginRoute
@@ -71,7 +99,11 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/browse': typeof BrowseRoute
+  '/library': typeof LibraryRoute
+  '/api/preferences': typeof ApiPreferencesRoute
   '/auth/login': typeof AuthLoginRoute
+  '/auth/onboarding': typeof AuthOnboardingRoute
   '/auth/signup': typeof AuthSignupRoute
   '/api/auth/google': typeof ApiAuthGoogleRoute
   '/api/auth/login': typeof ApiAuthLoginRoute
@@ -82,7 +114,11 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/browse': typeof BrowseRoute
+  '/library': typeof LibraryRoute
+  '/api/preferences': typeof ApiPreferencesRoute
   '/auth/login': typeof AuthLoginRoute
+  '/auth/onboarding': typeof AuthOnboardingRoute
   '/auth/signup': typeof AuthSignupRoute
   '/api/auth/google': typeof ApiAuthGoogleRoute
   '/api/auth/login': typeof ApiAuthLoginRoute
@@ -94,7 +130,11 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/browse'
+    | '/library'
+    | '/api/preferences'
     | '/auth/login'
+    | '/auth/onboarding'
     | '/auth/signup'
     | '/api/auth/google'
     | '/api/auth/login'
@@ -104,7 +144,11 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/browse'
+    | '/library'
+    | '/api/preferences'
     | '/auth/login'
+    | '/auth/onboarding'
     | '/auth/signup'
     | '/api/auth/google'
     | '/api/auth/login'
@@ -114,7 +158,11 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/browse'
+    | '/library'
+    | '/api/preferences'
     | '/auth/login'
+    | '/auth/onboarding'
     | '/auth/signup'
     | '/api/auth/google'
     | '/api/auth/login'
@@ -125,7 +173,11 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BrowseRoute: typeof BrowseRoute
+  LibraryRoute: typeof LibraryRoute
+  ApiPreferencesRoute: typeof ApiPreferencesRoute
   AuthLoginRoute: typeof AuthLoginRoute
+  AuthOnboardingRoute: typeof AuthOnboardingRoute
   AuthSignupRoute: typeof AuthSignupRoute
   ApiAuthGoogleRoute: typeof ApiAuthGoogleRoute
   ApiAuthLoginRoute: typeof ApiAuthLoginRoute
@@ -136,6 +188,20 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/library': {
+      id: '/library'
+      path: '/library'
+      fullPath: '/library'
+      preLoaderRoute: typeof LibraryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/browse': {
+      id: '/browse'
+      path: '/browse'
+      fullPath: '/browse'
+      preLoaderRoute: typeof BrowseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -150,11 +216,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthSignupRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth/onboarding': {
+      id: '/auth/onboarding'
+      path: '/auth/onboarding'
+      fullPath: '/auth/onboarding'
+      preLoaderRoute: typeof AuthOnboardingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth/login': {
       id: '/auth/login'
       path: '/auth/login'
       fullPath: '/auth/login'
       preLoaderRoute: typeof AuthLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/preferences': {
+      id: '/api/preferences'
+      path: '/api/preferences'
+      fullPath: '/api/preferences'
+      preLoaderRoute: typeof ApiPreferencesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/auth/signup': {
@@ -197,7 +277,11 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BrowseRoute: BrowseRoute,
+  LibraryRoute: LibraryRoute,
+  ApiPreferencesRoute: ApiPreferencesRoute,
   AuthLoginRoute: AuthLoginRoute,
+  AuthOnboardingRoute: AuthOnboardingRoute,
   AuthSignupRoute: AuthSignupRoute,
   ApiAuthGoogleRoute: ApiAuthGoogleRoute,
   ApiAuthLoginRoute: ApiAuthLoginRoute,
