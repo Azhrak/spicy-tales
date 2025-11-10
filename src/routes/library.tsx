@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { Heart, BookOpen, LogOut } from 'lucide-react'
+import { Heart, BookOpen, User, LogOut } from 'lucide-react'
 
 export const Route = createFileRoute('/library')({
   component: LibraryPage,
@@ -39,6 +39,13 @@ function LibraryPage() {
               className="text-slate-700 hover:text-romance-600 font-medium"
             >
               My Library
+            </Link>
+            <Link
+              to="/profile"
+              className="flex items-center gap-2 text-slate-700 hover:text-romance-600 font-medium"
+            >
+              <User className="w-4 h-4" />
+              Profile
             </Link>
             <button
               onClick={handleLogout}

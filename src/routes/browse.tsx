@@ -40,6 +40,13 @@ function BrowsePage() {
             >
               My Library
             </Link>
+            <Link
+              to="/profile"
+              className="flex items-center gap-2 text-slate-700 hover:text-romance-600 font-medium"
+            >
+              <User className="w-4 h-4" />
+              Profile
+            </Link>
             <button
               onClick={handleLogout}
               className="flex items-center gap-2 px-4 py-2 text-slate-700 hover:text-romance-600 font-medium"
