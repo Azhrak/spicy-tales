@@ -1,112 +1,90 @@
 # Spicy Tales - AI-Enhanced Romance Novel App
 
-A full-stack TypeScript application that generates personalized, interactive romance novels using AI. Users make choices throughout the story that influence the narrative, with all preferences and progress saved to their profile.
+Full-stack TypeScript app for AI-generated interactive romance novels. Users make choices that influence the narrative, with all preferences and progress saved.
 
-**GitHub Repository**: [https://github.com/Azhrak/spicy-tales](https://github.com/Azhrak/spicy-tales)
+**Repo**: [github.com/Azhrak/spicy-tales](https://github.com/Azhrak/spicy-tales) | **Status**: MVP Complete! 🎉
 
 ## Features
 
-- 🔐 **Authentication**: Google OAuth + Email/Password with session management
-- 📚 **Interactive Stories**: AI-generated romance novels with choice-based branching
-- 🎨 **Personalization**: Custom preferences for genres, tropes, spice level, pacing, and scene length
-- ⚙️ **Preferences Management**: Dedicated settings page to update your story generation preferences anytime
-- 💾 **Progress Tracking**: Resume stories anytime, all choices cached
-- 👤 **User Profiles**: Manage account details, change password, view preferences
-- 🤖 **AI-Powered**: Each scene uniquely generated based on your decisions
-- 📊 **Smart Metadata**: Automatic emotional tracking, tension threads, and relationship progression
-- 📏 **Scene Length Control**: Choose short (230-585 words), medium (350-900 words), or long (490-1260 words) scenes
-- �️ **Safety First**: Enhanced content guardrails and age verification in prompts
+- 🔐 Authentication (Google OAuth + Email/Password)
+- 📚 AI-generated romance novels with choice-based branching
+- 🎨 Custom preferences (genres, tropes, spice level, pacing, scene length)
+- ⚙️ Preferences management page
+- 💾 Progress tracking with scene caching
+- 👤 User profiles & account management
+- 📊 Smart metadata (emotional tracking, tension threads)
+- 🛡️ Enhanced safety guardrails
 
-## Project Status
+## Documentation
 
-**Current Phase**: MVP Complete with Preferences Management! 🎉
-
-All core features implemented including dedicated preferences management page for updating story generation settings.
-
-### 📚 Documentation
-
-- **[PROGRESS.md](PROGRESS.md)** - Detailed implementation status and next steps
-- **[SESSION_SUMMARY.md](SESSION_SUMMARY.md)** - Complete session recap and quick reference
-- **[DOCKER.md](DOCKER.md)** - Docker setup and deployment guide
-- **[AI_PROVIDERS.md](AI_PROVIDERS.md)** - Multi-provider AI configuration guide
-- **[SCENE_METADATA.md](SCENE_METADATA.md)** - Metadata system documentation
+- [PROGRESS.md](PROGRESS.md) - Implementation status & roadmap
+- [SESSION_SUMMARY.md](SESSION_SUMMARY.md) - Session recap
+- [DOCKER.md](DOCKER.md) - Docker setup guide
+- [AI_PROVIDERS.md](AI_PROVIDERS.md) - AI configuration
+- [SCENE_METADATA.md](SCENE_METADATA.md) - Metadata system
 
 ## Tech Stack
 
-- **Frontend**: TanStack Start, React, Tailwind CSS
-- **Backend**: Node.js, Vite
-- **Database**: PostgreSQL with Kysely
-- **Auth**: Arctic (OAuth), Argon2 (passwords)
-- **AI**: Vercel AI SDK (OpenAI, Google Gemini, Anthropic Claude, Mistral)
-- **State**: TanStack Query
+**Frontend**: TanStack Start, React, Tailwind CSS  
+**Backend**: Node.js, Vite  
+**Database**: PostgreSQL + Kysely  
+**Auth**: Arctic (OAuth), Argon2 (passwords)  
+**AI**: Vercel AI SDK (OpenAI, Gemini, Claude, Mistral)  
+**State**: TanStack Query
 
 ## Prerequisites
 
 - Node.js 24+
 - PostgreSQL 14+
-- pnpm 9+ (recommended) or npm
-- **AI Provider API key** (choose one):
-  - OpenAI (GPT-4) - Best quality
-  - Google Gemini - Free tier available
-  - Anthropic Claude - Most creative
-  - Mistral AI - European option
-  - See [AI_PROVIDERS.md](AI_PROVIDERS.md) for details
+- pnpm 9+ (or npm)
+- AI Provider API key: OpenAI, Google Gemini, Anthropic Claude, or Mistral
 - Google OAuth credentials (optional)
 
-**OR** use Docker (recommended for quick setup):
+See [AI_PROVIDERS.md](AI_PROVIDERS.md) for detailed configuration.
 
-- Docker Desktop or Docker Engine
+**OR use Docker** (recommended - includes PostgreSQL & Redis):
+- Docker Desktop or Engine
 - Docker Compose
 
-## Getting Started
+## Quick Start
 
-### Option 1: Docker (Recommended) 🐳
-
-For the easiest setup with all services (app, PostgreSQL, Redis) in containers:
-
-See **[DOCKER.md](DOCKER.md)** for complete Docker setup instructions.
-
-**Quick start:**
+### Docker (Recommended)
 
 ```bash
-# Copy environment template
 cp .env.example .env
-
-# Edit .env with your API keys
-# Comment out DATABASE_URL and REDIS_URL for Docker
-# Then start everything:
+# Edit .env with your API keys (comment out DATABASE_URL/REDIS_URL)
 docker-compose up --build
+# Visit http://localhost:3000
 ```
 
-Visit http://localhost:3000 when ready!
+See [DOCKER.md](DOCKER.md) for full Docker setup.
 
-### Option 2: Local Development
-
-#### 1. Clone and Install
+### Local Development
 
 ```bash
+# 1. Install & setup
 git clone https://github.com/Azhrak/spicy-tales.git
 cd spicy-tales
 pnpm install
-```
 
-#### 2. Database Setup
-
-Create a PostgreSQL database:
-
-```bash
+# 2. Create database
 createdb romance_novels
-```
 
-#### 3. Environment Variables
-
-Copy the example env file and fill in your credentials:
-
-```bash
+# 3. Environment variables
 cp .env.example .env
+# Edit .env with your credentials
+
+# 4. Database setup
+pnpm db:migrate
+pnpm db:seed
+pnpm db:codegen
+
+# 5. Start
+pnpm dev
+# Visit http://localhost:3000
 ```
 
-Required environment variables:
+## Environment Variables
 
 ```bash
 # Database
@@ -119,133 +97,87 @@ APP_URL=http://localhost:3000
 GOOGLE_CLIENT_ID=your-client-id
 GOOGLE_CLIENT_SECRET=your-client-secret
 
-# OpenAI (get from https://platform.openai.com/)
+# AI Provider (choose one)
 OPENAI_API_KEY=sk-your-api-key
+# OR
+ANTHROPIC_API_KEY=your-key
+# OR
+GOOGLE_API_KEY=your-key
+# OR
+MISTRAL_API_KEY=your-key
 
-# Session (generate with: openssl rand -base64 32)
+# Session (generate: openssl rand -base64 32)
 SESSION_SECRET=your-random-secret
 ```
 
-#### 4. Run Migrations
+## Scripts
 
-```bash
-pnpm db:migrate
-```
-
-This creates all necessary database tables.
-
-#### 5. Seed Data
-
-```bash
-pnpm db:seed
-```
-
-This adds sample novel templates and choice points.
-
-#### 6. Generate Types
-
-```bash
-pnpm db:codegen
-```
-
-This generates TypeScript types from your database schema.
-
-#### 7. Start Development Server
-
-```bash
-pnpm dev
-```
-
-The app will be available at `http://localhost:3000`
-
-## Available Scripts
-
-- `pnpm dev` - Start development server
-- `pnpm build` - Build for production
-- `pnpm start` - Start production server
-- `pnpm db:migrate` - Run database migrations
-- `pnpm db:codegen` - Generate Kysely types
-- `pnpm db:seed` - Seed novel templates
+- `pnpm dev` - Development server
+- `pnpm build` - Production build
+- `pnpm start` - Production server
+- `pnpm db:migrate` - Run migrations
+- `pnpm db:codegen` - Generate types from schema
+- `pnpm db:seed` - Seed templates
 - `pnpm test` - Run tests
 
 ## Project Structure
 
 ```
 src/
-├── routes/                # Pages and API routes
-│   ├── __root.tsx        # Root layout
-│   ├── index.tsx         # Landing page
-│   ├── auth/             # Authentication pages
-│   └── api/              # API endpoints
-├── components/           # React components
+├── routes/           # Pages & API endpoints
+│   ├── __root.tsx    # Root layout
+│   ├── auth/         # Auth pages
+│   ├── story/        # Story pages
+│   └── api/          # API endpoints
+├── components/       # React components
 ├── lib/
-│   ├── db/              # Database (Kysely)
-│   ├── auth/            # Authentication logic
-│   ├── ai/              # AI integration
-│   └── utils.ts         # Utilities
-└── styles/              # Global styles
+│   ├── db/          # Database (Kysely)
+│   ├── auth/        # Auth logic
+│   ├── ai/          # AI integration
+│   └── utils.ts     # Utilities
+└── styles/          # Global styles
 ```
 
-## Authentication Flow
+## User Flow
 
-1. **Google OAuth**: One-click sign-in with Google
-2. **Email/Password**: Traditional authentication with Argon2 hashing
-3. **Sessions**: Secure httpOnly cookies, 30-day expiry
-4. **Onboarding**: First-time users set preferences
-
-## How It Works
-
-1. **Sign Up**: Create account via Google or email
-2. **Set Preferences**: Choose genres, tropes, spice level, pacing, and scene length during onboarding
-3. **Browse**: Select from curated novel templates
-4. **Read**: AI generates scenes based on your preferences
-5. **Choose**: Make decisions at key plot points
-6. **Continue**: Your choices shape the story uniquely
-7. **Manage**: Update preferences anytime from your profile page
-
-## Development Notes
-
-### Database Changes
-
-After modifying the schema:
-
-```bash
-# 1. Create migration file in src/lib/db/migrations/
-# 2. Run migration
-pnpm db:migrate
-# 3. Regenerate types
-pnpm db:codegen
-```
-
-### Adding Novel Templates
-
-Edit `src/lib/db/seed.ts` and re-run:
-
-```bash
-pnpm db:seed
-```
+1. Sign up (Google OAuth or email)
+2. Set preferences (genres, tropes, spice level, pacing, scene length)
+3. Browse novel templates
+4. Create a story from template
+5. AI generates scenes based on your choices
+6. Make decisions at plot points to influence story
+7. Resume anytime, update preferences from profile
 
 ## Deployment
 
-### Vercel (Recommended)
-
+### Vercel
 1. Push to GitHub
 2. Import to Vercel
 3. Add environment variables
 4. Deploy
 
 ### Docker
-
 ```bash
 docker build -t spicy-tales .
 docker run -p 3000:3000 --env-file .env spicy-tales
 ```
 
-## Cost Considerations
+## Development Notes
 
-- **AI Generation**: ~$0.01-0.05 per scene (GPT-4)
-- **Caching**: Scenes cached in DB to avoid regeneration
-- **Optimization**: Consider pre-generating next scenes in background
+### Database Changes
+```bash
+# 1. Create migration in src/lib/db/migrations/
+# 2. Run migration
+pnpm db:migrate
+# 3. Regenerate types
+pnpm db:codegen
+```
+
+### Add Novel Templates
+Edit `src/lib/db/seed.ts` then run:
+```bash
+pnpm db:seed
+```
 
 ## Security
 
@@ -256,10 +188,23 @@ docker run -p 3000:3000 --env-file .env spicy-tales
 - ⚠️ TODO: Rate limiting
 - ⚠️ TODO: Content moderation
 
+## Cost
+
+- ~$0.01-0.05 per scene (GPT-4)
+- Scenes cached in DB to avoid regeneration
+- Consider pre-generating next scenes in background
+
+## Next Steps
+
+See [PROGRESS.md](PROGRESS.md) for:
+- Phase 15: Polish & UX improvements
+- Phase 16: Advanced features (exports, dashboards, branching visualization)
+- Full technical debt & roadmap
+
 ## License
 
 MIT
 
 ## Support
 
-For issues and questions, please open a GitHub issue.
+Open a GitHub issue for questions or problems.

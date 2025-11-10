@@ -1,14 +1,12 @@
-# Project Progress & Implementation Plan
+# Spicy Tales - Project Progress
 
-**Project**: Spicy Tales - AI-Enhanced Romance Novel App
-**Last Updated**: 2025-11-11 (Scene Length Bug Fixes + Story Deletion)
-**Current Phase**: Phase 14 Complete (Bug Fixes & Enhancements), MVP 100% Complete! 🎉
-
-📄 **Quick Reference:** See [SESSION_SUMMARY.md](SESSION_SUMMARY.md) for comprehensive session recap
+**Project**: Spicy Tales - AI-Enhanced Romance Novel App  
+**Last Updated**: 2025-11-11 | **Status**: MVP 100% Complete! 🎉  
+📄 **Details**: See [SESSION_SUMMARY.md](SESSION_SUMMARY.md) for comprehensive recap
 
 ---
 
-## ✅ Completed Work
+## ✅ Completed Phases (1-14)
 
 ### Phase 1: Foundation & Setup (100% Complete)
 
@@ -281,32 +279,15 @@ scenes (id, story_id, scene_number, content, word_count, created_at)
 - ✅ Added continue button for scenes without choices
 - ✅ Fixed duplicate key constraint race condition in cacheScene()
 
-### Phase 10: Core Routes (100% Complete)
+### Phase 10: Core Routes & Landing Page (100% Complete)
 
 **Files Created:**
 
 - [src/router.tsx](src/router.tsx) - Router configuration
 - [src/routes/\_\_root.tsx](src/routes/__root.tsx) - Root layout with React Query
-- [src/routes/index.tsx](src/routes/index.tsx) - Landing page
+- [src/routes/index.tsx](src/routes/index.tsx) - Landing page (hero + features)
 
-**Note:** `client.tsx` and `ssr.tsx` were removed in the TanStack Start migration as they are no longer needed.
-
-### Phase 10: Core Routes (100% Complete)
-
-**Files Created:**
-
-- [src/router.tsx](src/router.tsx) - Router configuration
-- [src/routes/\_\_root.tsx](src/routes/__root.tsx) - Root layout with React Query
-- [src/routes/index.tsx](src/routes/index.tsx) - Landing page
-
-**Note:** `client.tsx` and `ssr.tsx` were removed in the TanStack Start migration as they are no longer needed.
-
-**Landing Page Features:**
-
-- Hero section with call-to-action
-- Feature showcase (3 cards)
-- Links to signup/login
-- Beautiful gradient background
+**Note:** `client.tsx` and `ssr.tsx` removed in TanStack Start migration
 
 ### Phase 11: Docker Setup (100% Complete)
 
@@ -445,315 +426,87 @@ docker-compose up --build
 
 ---
 
-## 🚧 In Progress / Next Steps
+## � Quick Start
 
-### Phase 15: Polish & UX (NEXT - Priority 1)
+```bash
+pnpm install              # Install dependencies
+pnpm db:migrate          # Setup database (requires PostgreSQL)
+pnpm db:codegen          # Generate TypeScript types
+pnpm db:seed             # Seed templates
+pnpm dev                 # Development
+pnpm build && pnpm start # Production
+```
 
-**To Create:**
+---
 
-1. Error boundaries for better error recovery
-2. Loading skeletons for perceived performance
-3. Responsive layout improvements
-4. Animations/transitions
-5. Toast notifications for user feedback
-6. Improved empty states
-7. 404 page
+## 🚧 Next Phases
 
-**Improvements Needed:**
+### Phase 15: Polish & UX (Priority 1)
 
-- Better error handling throughout app
-- User feedback (toast notifications)
-- Mobile optimization (test on various devices)
-- Accessibility improvements (ARIA labels, keyboard navigation)
-- SEO metadata for public pages
-- Performance optimization (code splitting, lazy loading)
+- Error boundaries for better error recovery
+- Loading skeletons for perceived performance
+- Toast notifications
+- Mobile optimization
+- 404 page
 
 ### Phase 16: Advanced Features (Priority 2)
 
-**To Create:**
-
 - Story export (PDF/EPUB)
-- Story sharing
-- Statistics dashboard with relationship progression visualization (using SCENE_META)
-- Emotional arc charts (leveraging metadata.emotional_beat tracking)
-- Custom template creation (advanced users)
+- Statistics dashboard with emotional arc charts
+- Custom template creation
 - Story branching visualization
-- Multiple save slots per template
 
 ---
 
-## 🔧 Technical Debt & TODOs
+## 🔧 Technical Debt
 
-### Security
+**Security**: Rate limiting, content moderation, email verification, password reset, input sanitization
 
-- [ ] Add rate limiting (on API routes)
-- [ ] Content moderation for AI-generated scenes
-- [ ] Email verification flow
-- [ ] Password reset flow
-- [ ] CSRF token validation for forms
-- [ ] Input sanitization for user content
+**Performance**: Scene pre-generation, Redis sessions, image optimization, code splitting
 
-### Performance
+**Testing**: Unit, integration, E2E tests, performance benchmarks
 
-- [ ] Scene pre-generation (background jobs)
-- [ ] Redis for session storage (instead of DB)
-- [ ] Image optimization (template covers)
-- [ ] Code splitting for routes
-- [ ] Database connection pooling optimization
-- [ ] Implement caching headers
-- [ ] Add service worker for offline support
-
-### Testing
-
-- [ ] Unit tests for authentication logic
-- [ ] Integration tests for API routes
-- [ ] E2E tests for user flows
-- [ ] AI generation testing with mock fixtures
-- [ ] Performance testing
-- [ ] Load testing
-
-### DevOps
-
-- [x] Docker setup (COMPLETE)
-- [ ] CI/CD pipeline
-- [ ] Database backup strategy
-- [ ] Monitoring and logging
-- [ ] Error tracking (Sentry)
-- [ ] Deployment documentation
+**DevOps**: CI/CD pipeline, database backups, monitoring, error tracking (Sentry)
 
 ---
 
-## 📝 Implementation Notes
+## � MVP Status: 100% Complete! ✅
 
-### Authentication Flow
+**What Works**:
 
-```
-1. User signs up → Create user record → Create session → Redirect to /auth/onboarding
-2. User completes onboarding → Save preferences → Redirect to /browse
-3. User logs in → Validate credentials → Create session → Check preferences
-   - Has preferences? → Redirect to /browse
-   - No preferences? → Redirect to /auth/onboarding
-```
+- ✅ Authentication (email + Google OAuth)
+- ✅ User onboarding & preferences
+- ✅ Browse templates with filtering
+- ✅ Story creation & library management
+- ✅ Reading interface with choices
+- ✅ AI scene generation with metadata
+- ✅ Scene length control
+- ✅ Story deletion
+- ✅ Profile management
 
-### Complete User Flow (MVP)
-
-```
-1. User signs up / logs in → Authentication
-2. User sets preferences → Onboarding (if first time)
-3. User browses templates → Browse page with filters
-4. User views template details → Template detail page
-5. User creates story → Story creation with customization
-6. User reads scenes → Reading interface
-   - Scene without choices → "Continue to Next Scene" button
-   - Scene with choices → Select from 3 options
-7. User progresses through story → Choices recorded, scenes generated
-8. User manages stories → Library with progress tracking
-```
-
-### Story Generation Flow
-
-```
-1. User selects template → Configure preferences → Create user_story
-2. Navigate to /story/:id/read → Fetch scene 1 → Check cache
-   - Cached? → Return from DB
-   - Not cached? → Generate with AI → Save to DB → Return
-3. User reads → Reaches choice point (or non-choice scene)
-   - Choice point? → Select option → Record choice
-   - No choice? → Click continue button
-4. Advance to next scene → Update story progress
-5. Repeat step 2 with choice context
-```
-
-### Scene Caching Strategy
-
-- Each scene cached in `scenes` table with unique (story_id, scene_number)
-- On generation, last 2 scenes used as context
-- Previous choice impacts next scene generation
-- Cache never invalidated (deterministic based on choices)
-- Duplicate key errors handled gracefully (race condition protection)
-
-### Preference Structure (JSONB)
-
-```json
-{
-  "genres": ["contemporary", "paranormal"],
-  "tropes": ["enemies-to-lovers", "forced-proximity"],
-  "spiceLevel": 4,
-  "pacing": "slow-burn"
-}
-```
+**Deployed At**: `/`
 
 ---
 
-## 🚀 Quick Start Commands
+## � Implementation Reference
 
-```bash
-# Install dependencies
-pnpm install
+**Authentication Flow**:
 
-# Setup database (after creating PostgreSQL database)
-pnpm db:migrate
-pnpm db:codegen
-pnpm db:seed
+1. User signs up → Create user → Create session → Redirect to `/auth/onboarding`
+2. Complete onboarding → Save preferences → Redirect to `/browse`
+3. User logs in → Validate → Check preferences → Redirect appropriately
 
-# Development
-pnpm dev
+**Story Generation Flow**:
 
-# Build for production
-pnpm build
-pnpm start
-```
+1. User selects template & configures preferences
+2. Navigate to story reading page
+3. Check if scene cached, if not generate with AI
+4. User reads & makes choices or continues
+5. Advance to next scene with choice context
 
----
+**Scene Caching**: Each scene cached with unique `(story_id, scene_number)`. Last 2 scenes used as context. Previous choice impacts generation. Cache never invalidated.
 
-## 📊 Current Status Summary
-
-**Overall Progress**: 100% (Phases 1-14 complete, MVP feature-complete with preferences management)
-
-**Can Currently Run**:
-
-- ✅ Landing page at `/`
-- ✅ Signup at `/auth/signup`
-- ✅ Login at `/auth/login`
-- ✅ Google OAuth flow
-- ✅ Onboarding flow at `/auth/onboarding` (with scene length selection)
-- ✅ Browse templates at `/browse`
-- ✅ Template details at `/template/$id`
-- ✅ Story creation at `/story/create` (with scene length override)
-- ✅ Reading interface at `/story/$id/read`
-- ✅ User library at `/library`
-- ✅ User profile at `/profile`
-- ✅ Preferences management at `/preferences`
-
-**Remaining Work**:
-
-- ⚠️ Polish and UX improvements
-- ⚠️ Error boundaries
-- ⚠️ Loading skeletons
-- ⚠️ Mobile optimization
-- ⚠️ Testing
-
-**Next Immediate Steps**:
-
-1. Test complete user flow end-to-end
-2. Add error boundaries for better error recovery
-3. Implement loading skeletons for perceived performance
-4. Mobile responsiveness testing and improvements
-5. Add unit and integration tests
-
----
-
-## 🎯 Critical Path to MVP
-
-**MVP Status: ~98% Complete** ✅
-
-1. ✅ **Onboarding** (allows users to set preferences) - **COMPLETE**
-2. ✅ **Browse** (allows users to see templates) - **COMPLETE**
-3. ✅ **Story Creation** (allows users to start stories) - **COMPLETE**
-4. ✅ **Reading Interface** (allows users to read & choose) - **COMPLETE**
-5. ✅ **Library** (allows users to manage stories) - **COMPLETE**
-
-**The core loop is complete and functional!**
-
-Remaining work is polish, testing, and optimization for production readiness.
-
----
-
-## 💡 Future Enhancements (Post-MVP)
-
-- Social features (share scenes, recommend stories)
-- Custom template creation (user-submitted prompts)
-- Multiple protagonist perspectives
-- Story branching visualization
-- Export as PDF/EPUB
-- Mobile app (React Native)
-- Subscription tiers (GPT-4 vs GPT-3.5)
-- Community voting on templates
-- AI narrator voices (text-to-speech)
-- Illustrations at key moments
-
----
-
-### Phase 12: AI Prompt Enhancement & Metadata System (100% Complete) ✅
-
-**Objective**: Enhance AI prompts for better quality, safety, and continuity. Implement structured metadata capture for scene tracking and analytics.
-
-**Files Modified:**
-
-- [src/lib/ai/prompts.ts](src/lib/ai/prompts.ts) - Enhanced system/scene prompts, metadata parsing
-- [src/lib/ai/generate.ts](src/lib/ai/generate.ts) - Integrated metadata parsing
-- [src/lib/db/queries/scenes.ts](src/lib/db/queries/scenes.ts) - Added metadata storage and retrieval
-- [src/lib/db/types.ts](src/lib/db/types.ts) - Added metadata and summary columns
-- [src/lib/db/migrations/003_add_scene_metadata.ts](src/lib/db/migrations/003_add_scene_metadata.ts) - New migration
-
-**Documentation Created:**
-
-- [SCENE_METADATA.md](SCENE_METADATA.md) - Complete metadata system documentation
-
-**What Was Implemented:**
-
-1. **Enhanced System Prompt (`buildSystemPrompt`)**
-   - Added protagonist traits integration (action, micro-thoughts, subtext)
-   - Added setting preferences with sensory texture
-   - Expanded spice level descriptions with consent rules
-   - Added comprehensive DO NOT section:
-     - All characters must be 18+ with contextual proof
-     - Prohibited content list (incest, non-consent, minors, etc.)
-     - Clear consent requirements
-   - Improved prose guardrails (no meta, varied hooks)
-   - Better pacing descriptions
-
-2. **Enhanced Scene Prompt (`buildScenePrompt`)**
-   - Phase-aware objectives (Opening, Early, Rising, Pre-Climax, Resolution)
-   - 3-6 specific objectives per story phase
-   - Variable word targets (700-1100 words by phase)
-   - Improved choice handling (implicit consequences, poised tension)
-   - Better context formatting (220 chars vs 300)
-   - **Added SCENE_META output request**
-
-3. **Metadata System**
-   - Created `SceneMetadata` interface:
-     - `emotional_beat` - Brief emotional state
-     - `tension_threads` - Unresolved tensions
-     - `relationship_progress` - Numeric -5 to +5
-     - `key_moment` - Defining moment in 5-8 words
-   - `parseSceneMeta()` - Extracts metadata from AI output
-   - `generateSummaryFromMeta()` - Smart summaries from metadata
-   - `extractSceneSummary()` - Now prefers metadata over heuristics
-
-4. **Database Changes**
-   - Migration 003: Added `metadata` (JSONB) and `summary` (TEXT) columns
-   - Updated `cacheScene()` to store metadata and summary
-   - Modified `getRecentScenes()` to return summaries
-   - Added `getSceneMetadata()` for single scene lookup
-   - Added `getStoryMetadataProgression()` for analytics
-
-5. **Token Efficiency**
-   - Previous: ~2000 tokens for 2 scenes context
-   - Now: ~60 tokens for 2 scene summaries
-   - **97% reduction in context token usage**
-
-**Testing:**
-
-- ✅ TypeScript compilation passes
-- ✅ Build succeeds
-- ✅ Migration applied to Docker PostgreSQL database
-- ✅ All 3 migrations tracked in kysely_migration table
-- ✅ Backward compatible with existing 19 scenes
-
-**Benefits:**
-
-- Better narrative continuity
-- Emotional progression tracking
-- Reduced AI costs (97% fewer tokens)
-- Foundation for analytics features
-- Enhanced safety guardrails
-
----
-
-**Last Session Context**: Completed Phase 14 (Preferences Management Page). Redesigned preferences page from multi-step wizard to single-page settings form with proper navigation integration with profile page. Scene length preference now displayed in profile. MVP is 100% feature-complete! Next priority: Phase 15 (Polish & UX).
-
-### Preference Structure (JSONB)
+**Preference Structure**:
 
 ```json
 {
@@ -761,100 +514,22 @@ Remaining work is polish, testing, and optimization for production readiness.
   "tropes": ["enemies-to-lovers", "forced-proximity"],
   "spiceLevel": 4,
   "pacing": "slow-burn",
-  "sceneLength": "medium",
-  "protagonistTraits": ["sarcastic", "independent"],
-  "settingPreferences": ["urban", "workplace"]
+  "sceneLength": "medium"
 }
 ```
 
----
+**Word Count Ranges** (by phase/length):
 
-## 🚀 Quick Start Commands
-
-```bash
-# Install dependencies
-pnpm install
-
-# Setup database (after creating PostgreSQL database)
-pnpm db:migrate
-pnpm db:codegen
-pnpm db:seed
-
-# Development
-pnpm dev
-
-# Build for production
-pnpm build
-pnpm start
-```
+| Phase         | Short   | Medium  | Long     |
+| ------------- | ------- | ------- | -------- |
+| Beginning     | 230-390 | 350-600 | 490-840  |
+| Development   | 295-455 | 450-700 | 630-980  |
+| Turning Point | 360-520 | 550-800 | 770-1120 |
+| Climax        | 425-585 | 650-900 | 910-1260 |
+| Resolution    | 260-420 | 400-650 | 560-910  |
 
 ---
 
-## 📊 Current Status Summary
+## 💡 Future Enhancements
 
-**Overall Progress**: MVP 100% Complete! 🎉
-
-**What Works**:
-
-- ✅ Landing page at `/`
-- ✅ Signup at `/auth/signup`
-- ✅ Login at `/auth/login`
-- ✅ Google OAuth flow
-- ✅ Session management
-- ✅ User onboarding at `/auth/onboarding`
-- ✅ Preference management
-- ✅ Browse templates at `/browse`
-- ✅ Template details at `/template/:id`
-- ✅ Story creation at `/story/create`
-- ✅ Library at `/library`
-- ✅ Story deletion with confirmation
-- ✅ Reading interface at `/story/:id/read`
-- ✅ Scene generation with AI
-- ✅ Scene length control (short/medium/long)
-- ✅ Choice selection and progress tracking
-- ✅ User profile at `/profile`
-- ✅ AI metadata capture and summaries
-- ✅ Enhanced safety and quality prompts
-- ✅ Comprehensive generation logging
-
-**Next Steps**:
-
-1. Polish UI/UX
-2. Add error boundaries
-3. Add loading states
-4. Write tests
-5. Deploy to production
-
----
-
-## 🎯 Critical Path to MVP
-
-**MVP Status: 100% Complete!** ✅✅✅
-
-1. ✅ **Onboarding** - Users can set preferences
-2. ✅ **Browse** - Users can see templates
-3. ✅ **Story Creation** - Users can start stories
-4. ✅ **Reading Interface** - Users can read & make choices
-5. ✅ **Library** - Users can manage stories
-6. ✅ **AI Enhancement** - Metadata, safety, continuity
-
-**The core loop is complete and functional!**
-
----
-
-## 💡 Future Enhancements (Post-MVP)
-
-- Social features (share scenes, recommend stories)
-- Custom template creation (user-submitted prompts)
-- Multiple protagonist perspectives
-- Story branching visualization
-- Export as PDF/EPUB
-- Mobile app (React Native)
-- Subscription tiers (GPT-4 vs GPT-3.5)
-- Community voting on templates
-- AI narrator voices (text-to-speech)
-- Illustrations at key moments
-
----
-
-**Last Session Context**: Set up project foundation, database schema, authentication system, and AI integration. Ready to build user-facing features starting with onboarding.
+Social features, custom templates, branching visualization, PDF export, mobile app, subscription tiers, community voting, text-to-speech narration, scene illustrations
