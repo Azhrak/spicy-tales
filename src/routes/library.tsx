@@ -3,13 +3,11 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import {
 	BookOpen,
 	Clock,
-	Heart,
 	Loader2,
-	LogOut,
 	Sparkles,
-	User,
 } from "lucide-react";
 import { useState } from "react";
+import { Header } from "~/components/Header";
 
 export const Route = createFileRoute("/library")({
 	component: LibraryPage,
@@ -54,59 +52,9 @@ function LibraryPage() {
 
 	const stories = data?.stories || [];
 
-	const handleLogout = async () => {
-		try {
-			await fetch("/api/auth/logout", {
-				method: "POST",
-				credentials: "include",
-			});
-			window.location.href = "/";
-		} catch (error) {
-			console.error("Logout error:", error);
-		}
-	};
-
 	return (
 		<div className="min-h-screen bg-linear-to-br from-romance-50 via-white to-romance-100">
-			{/* Header */}
-			<header className="bg-white shadow-sm">
-				<div className="container mx-auto px-4 py-4 flex items-center justify-between">
-					<div className="flex items-center gap-2">
-						<Heart className="w-8 h-8 text-romance-600" fill="currentColor" />
-						<span className="text-xl font-bold text-slate-900">
-							Spicy Tales
-						</span>
-					</div>
-					<nav className="flex items-center gap-4">
-						<Link
-							to="/browse"
-							className="text-slate-700 hover:text-romance-600 font-medium"
-						>
-							Browse
-						</Link>
-						<Link
-							to="/library"
-							className="text-slate-700 hover:text-romance-600 font-medium"
-						>
-							My Library
-						</Link>
-						<Link
-							to="/profile"
-							className="flex items-center gap-2 text-slate-700 hover:text-romance-600 font-medium"
-						>
-							<User className="w-4 h-4" />
-							Profile
-						</Link>
-						<button
-							onClick={handleLogout}
-							className="flex items-center gap-2 px-4 py-2 text-slate-700 hover:text-romance-600 font-medium"
-						>
-							<LogOut className="w-4 h-4" />
-							Logout
-						</button>
-					</nav>
-				</div>
-			</header>
+			<Header currentPath="/library" />
 
 			{/* Main Content */}
 			<div className="container mx-auto px-4 py-12">

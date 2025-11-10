@@ -5,10 +5,9 @@ import {
 	BookOpen,
 	Heart,
 	Loader2,
-	LogOut,
 	Sparkles,
-	User,
 } from "lucide-react";
+import { Header } from "~/components/Header";
 import { TROPE_LABELS } from "~/lib/types/preferences";
 
 export const Route = createFileRoute("/template/$id")({
@@ -42,18 +41,6 @@ interface Template {
 function TemplateDetailPage() {
 	const { id } = Route.useParams();
 	const navigate = useNavigate();
-
-	const handleLogout = async () => {
-		try {
-			await fetch("/api/auth/logout", {
-				method: "POST",
-				credentials: "include",
-			});
-			window.location.href = "/";
-		} catch (error) {
-			console.error("Logout error:", error);
-		}
-	};
 
 	// Fetch template details
 	const { data, isLoading, error } = useQuery({
@@ -89,46 +76,8 @@ function TemplateDetailPage() {
 	const template = data?.template;
 
 	return (
-		<div className="min-h-screen bg-gradient-to-br from-romance-50 via-white to-romance-100">
-			{/* Header */}
-			<header className="bg-white shadow-sm">
-				<div className="container mx-auto px-4 py-4 flex items-center justify-between">
-					<div className="flex items-center gap-2">
-						<Heart className="w-8 h-8 text-romance-600" fill="currentColor" />
-						<span className="text-xl font-bold text-slate-900">
-							Spicy Tales
-						</span>
-					</div>
-					<nav className="flex items-center gap-4">
-						<Link
-							to="/browse"
-							className="text-slate-700 hover:text-romance-600 font-medium"
-						>
-							Browse
-						</Link>
-						<Link
-							to="/library"
-							className="text-slate-700 hover:text-romance-600 font-medium"
-						>
-							My Library
-						</Link>
-						<Link
-							to="/profile"
-							className="flex items-center gap-2 text-slate-700 hover:text-romance-600 font-medium"
-						>
-							<User className="w-4 h-4" />
-							Profile
-						</Link>
-						<button
-							onClick={handleLogout}
-							className="flex items-center gap-2 px-4 py-2 text-slate-700 hover:text-romance-600 font-medium"
-						>
-							<LogOut className="w-4 h-4" />
-							Logout
-						</button>
-					</nav>
-				</div>
-			</header>
+		<div className="min-h-screen bg-linear-to-br from-romance-50 via-white to-romance-100">
+			<Header currentPath="" />
 
 			{/* Main Content */}
 			<div className="container mx-auto px-4 py-12">
@@ -170,7 +119,7 @@ function TemplateDetailPage() {
 							{/* Hero Section */}
 							<div className="bg-white rounded-2xl shadow-xl overflow-hidden mb-8">
 								<div
-									className={`h-64 bg-gradient-to-br ${template.cover_gradient} flex items-center justify-center`}
+									className={`h-64 bg-linear-to-br ${template.cover_gradient} flex items-center justify-center`}
 								>
 									<BookOpen
 										className="w-32 h-32 text-white opacity-80"
@@ -249,7 +198,7 @@ function TemplateDetailPage() {
 											className="border border-slate-200 rounded-lg p-6 hover:border-romance-300 transition-colors"
 										>
 											<div className="flex items-start gap-4">
-												<div className="flex-shrink-0 w-10 h-10 bg-romance-100 rounded-full flex items-center justify-center">
+												<div className="shrink-0 w-10 h-10 bg-romance-100 rounded-full flex items-center justify-center">
 													<span className="text-romance-700 font-bold">
 														{choice.scene_number}
 													</span>

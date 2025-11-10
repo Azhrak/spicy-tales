@@ -6,10 +6,9 @@ import {
 	Flame,
 	Heart,
 	Loader2,
-	LogOut,
-	User,
 } from "lucide-react";
 import { useState } from "react";
+import { Header } from "~/components/Header";
 import {
 	PACING_LABELS,
 	PACING_OPTIONS,
@@ -50,18 +49,6 @@ function StoryCreatePage() {
 	);
 	const [storyTitle, setStoryTitle] = useState("");
 	const [isCreating, setIsCreating] = useState(false);
-
-	const handleLogout = async () => {
-		try {
-			await fetch("/api/auth/logout", {
-				method: "POST",
-				credentials: "include",
-			});
-			window.location.href = "/";
-		} catch (error) {
-			console.error("Logout error:", error);
-		}
-	};
 
 	// Fetch template details
 	const { data: templateData, isLoading: isLoadingTemplate } = useQuery({
@@ -178,46 +165,8 @@ function StoryCreatePage() {
 	const isLoading = isLoadingTemplate || isLoadingPrefs;
 
 	return (
-		<div className="min-h-screen bg-gradient-to-br from-romance-50 via-white to-romance-100">
-			{/* Header */}
-			<header className="bg-white shadow-sm">
-				<div className="container mx-auto px-4 py-4 flex items-center justify-between">
-					<div className="flex items-center gap-2">
-						<Heart className="w-8 h-8 text-romance-600" fill="currentColor" />
-						<span className="text-xl font-bold text-slate-900">
-							Spicy Tales
-						</span>
-					</div>
-					<nav className="flex items-center gap-4">
-						<Link
-							to="/browse"
-							className="text-slate-700 hover:text-romance-600 font-medium"
-						>
-							Browse
-						</Link>
-						<Link
-							to="/library"
-							className="text-slate-700 hover:text-romance-600 font-medium"
-						>
-							My Library
-						</Link>
-						<Link
-							to="/profile"
-							className="flex items-center gap-2 text-slate-700 hover:text-romance-600 font-medium"
-						>
-							<User className="w-4 h-4" />
-							Profile
-						</Link>
-						<button
-							onClick={handleLogout}
-							className="flex items-center gap-2 px-4 py-2 text-slate-700 hover:text-romance-600 font-medium"
-						>
-							<LogOut className="w-4 h-4" />
-							Logout
-						</button>
-					</nav>
-				</div>
-			</header>
+		<div className="min-h-screen bg-linear-to-br from-romance-50 via-white to-romance-100">
+			<Header currentPath="" />
 
 			{/* Main Content */}
 			<div className="container mx-auto px-4 py-12">
@@ -268,9 +217,9 @@ function StoryCreatePage() {
 									{/* Duplicate Warning */}
 									{existingCount > 0 && (
 										<div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-lg">
-											<div className="flex items-start gap-3">
-												<BookOpen className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
-												<div>
+										<div className="flex items-start gap-3">
+											<BookOpen className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+											<div>
 													<p className="text-amber-900 font-medium mb-1">
 														You already have {existingCount} story
 														{existingCount > 1 ? "s" : ""} from this template
