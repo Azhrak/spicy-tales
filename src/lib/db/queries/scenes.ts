@@ -1,5 +1,5 @@
-import { db } from "~/lib/db";
 import type { SceneMetadata } from "~/lib/ai/prompts";
+import { db } from "~/lib/db";
 
 /**
  * Get a cached scene

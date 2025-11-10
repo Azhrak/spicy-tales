@@ -1,12 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { json } from "@tanstack/react-start";
 import { z } from "zod";
+import { getSessionFromRequest } from "~/lib/auth/session";
 import {
 	getStoryById,
 	recordChoice,
 	updateStoryProgress,
 } from "~/lib/db/queries/stories";
-import { getSessionFromRequest } from "~/lib/auth/session";
 
 const choiceSchema = z.object({
 	choicePointId: z.string().uuid(),
@@ -50,10 +50,7 @@ export const Route = createFileRoute("/api/stories/$id/choose")({
 					}
 
 					if (!story.template) {
-						return json(
-							{ error: "Story template not found" },
-							{ status: 500 },
-						);
+						return json({ error: "Story template not found" }, { status: 500 });
 					}
 
 					if (story.user_id !== session.userId) {

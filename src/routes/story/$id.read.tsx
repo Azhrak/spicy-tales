@@ -1,6 +1,5 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import {
 	BookOpen,
 	ChevronLeft,
@@ -10,6 +9,7 @@ import {
 	Loader2,
 	Sparkles,
 } from "lucide-react";
+import { useState } from "react";
 
 export const Route = createFileRoute("/story/$id/read")({
 	component: ReadingPage,
@@ -49,11 +49,7 @@ function ReadingPage() {
 	);
 
 	// Fetch scene data
-	const {
-		data,
-		isLoading,
-		error,
-	} = useQuery<SceneData>({
+	const { data, isLoading, error } = useQuery<SceneData>({
 		queryKey: ["story-scene", id, currentSceneNumber],
 		queryFn: async () => {
 			const url =
@@ -98,9 +94,9 @@ function ReadingPage() {
 				// Move to next scene and refetch
 				setCurrentSceneNumber(result.nextScene);
 				// Invalidate all queries for this story to get fresh data
-				await queryClient.invalidateQueries({ 
+				await queryClient.invalidateQueries({
 					queryKey: ["story-scene", id],
-					refetchType: "all" 
+					refetchType: "all",
 				});
 			}
 		},
@@ -297,7 +293,9 @@ function ReadingPage() {
 								});
 								// Navigate to next scene
 								setCurrentSceneNumber(nextScene);
-								queryClient.invalidateQueries({ queryKey: ["story-scene", id] });
+								queryClient.invalidateQueries({
+									queryKey: ["story-scene", id],
+								});
 							}}
 							className="px-8 py-3 bg-linear-to-r from-rose-600 to-purple-600 text-white font-semibold rounded-lg hover:from-rose-700 hover:to-purple-700 transition-all inline-flex items-center gap-2"
 						>
@@ -311,9 +309,7 @@ function ReadingPage() {
 				{isLastScene && (
 					<div className="bg-linear-to-br from-purple-100 to-rose-100 rounded-xl shadow-lg p-8 text-center">
 						<Sparkles className="w-16 h-16 text-rose-500 mx-auto mb-4" />
-						<h2 className="text-2xl font-bold text-gray-800 mb-2">
-							The End
-						</h2>
+						<h2 className="text-2xl font-bold text-gray-800 mb-2">The End</h2>
 						<p className="text-gray-600 mb-6">
 							You've completed this story! Thank you for reading.
 						</p>
@@ -342,9 +338,16 @@ function ReadingPage() {
 					<button
 						type="button"
 						onClick={() => handleNavigateScene(scene.number + 1)}
-						disabled={scene.number + 1 > story.currentScene || scene.number >= story.estimatedScenes}
+						disabled={
+							scene.number + 1 > story.currentScene ||
+							scene.number >= story.estimatedScenes
+						}
 						className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-rose-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-						title={scene.number + 1 > story.currentScene ? "Make a choice to unlock the next scene" : ""}
+						title={
+							scene.number + 1 > story.currentScene
+								? "Make a choice to unlock the next scene"
+								: ""
+						}
 					>
 						Next Scene
 						<ChevronRight className="w-5 h-5" />

@@ -248,7 +248,9 @@ function LibraryPage() {
 												params={{ id: story.id }}
 												className="flex-1 px-4 py-2 bg-romance-600 text-white rounded-lg font-medium hover:bg-romance-700 transition-colors text-center"
 											>
-												{activeTab === "in-progress" ? "Continue Reading" : "Read Again"}
+												{activeTab === "in-progress"
+													? "Continue Reading"
+													: "Read Again"}
 											</Link>
 										</div>
 									</div>

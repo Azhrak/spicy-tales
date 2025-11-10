@@ -2,10 +2,14 @@ import { createFileRoute } from "@tanstack/react-router";
 import { json } from "@tanstack/react-start";
 import { z } from "zod";
 import { generateScene } from "~/lib/ai/generate";
+import { getSessionFromRequest } from "~/lib/auth/session";
 import { db } from "~/lib/db";
 import { getCachedScene } from "~/lib/db/queries/scenes";
-import { getChoicePointForScene, getStoryById, updateStoryProgress } from "~/lib/db/queries/stories";
-import { getSessionFromRequest } from "~/lib/auth/session";
+import {
+	getChoicePointForScene,
+	getStoryById,
+	updateStoryProgress,
+} from "~/lib/db/queries/stories";
 
 // Query params schema
 const sceneQuerySchema = z.object({
@@ -53,10 +57,7 @@ export const Route = createFileRoute("/api/stories/$id/scene")({
 					}
 
 					if (!story.template) {
-						return json(
-							{ error: "Story template not found" },
-							{ status: 500 },
-						);
+						return json({ error: "Story template not found" }, { status: 500 });
 					}
 
 					if (story.user_id !== session.userId) {
@@ -214,10 +215,7 @@ export const Route = createFileRoute("/api/stories/$id/scene")({
 					}
 
 					if (!story.template) {
-						return json(
-							{ error: "Story template not found" },
-							{ status: 500 },
-						);
+						return json({ error: "Story template not found" }, { status: 500 });
 					}
 
 					if (story.user_id !== session.userId) {

@@ -1,11 +1,11 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import {
+	ArrowLeft,
 	BookOpen,
 	CheckCircle2,
 	Flame,
 	Heart,
 	Settings,
-	ArrowLeft,
 } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import {
@@ -460,4 +460,3 @@ function PreferencesPage() {
 		</div>
 	);
 }
-

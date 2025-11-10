@@ -15,7 +15,14 @@ export interface StoryPreferences {
  * Build system prompt for romance novelist AI
  */
 export function buildSystemPrompt(preferences: StoryPreferences): string {
-	const { genres, tropes, spiceLevel, pacing, protagonistTraits, settingPreferences } = preferences;
+	const {
+		genres,
+		tropes,
+		spiceLevel,
+		pacing,
+		protagonistTraits,
+		settingPreferences,
+	} = preferences;
 
 	const spiceDescription: Record<StoryPreferences["spiceLevel"], string> = {
 		1: "Sweet / clean: no explicit sensual detail.",
@@ -26,8 +33,10 @@ export function buildSystemPrompt(preferences: StoryPreferences): string {
 	};
 
 	const pacingDescription = {
-		"slow-burn": "Gradual escalation: sustained tension, delayed gratification, layered micro-shifts.",
-		"fast-paced": "Brisk escalation: rapid chemistry beats, early sparks, tight scene economy.",
+		"slow-burn":
+			"Gradual escalation: sustained tension, delayed gratification, layered micro-shifts.",
+		"fast-paced":
+			"Brisk escalation: rapid chemistry beats, early sparks, tight scene economy.",
 	};
 
 	const consentRules =
@@ -284,7 +293,7 @@ export function parseSceneMeta(rawContent: string): ParsedScene {
 
 		// Parse metadata fields
 		metadata = {};
-		
+
 		const emotionalBeatMatch = metaBlock.match(/emotional_beat:\s*(.+)/i);
 		if (emotionalBeatMatch) {
 			metadata.emotional_beat = emotionalBeatMatch[1].trim();
@@ -295,7 +304,9 @@ export function parseSceneMeta(rawContent: string): ParsedScene {
 			metadata.tension_threads = tensionMatch[1].trim();
 		}
 
-		const progressMatch = metaBlock.match(/relationship_progress:\s*([+-]?\d+)/i);
+		const progressMatch = metaBlock.match(
+			/relationship_progress:\s*([+-]?\d+)/i,
+		);
 		if (progressMatch) {
 			metadata.relationship_progress = parseInt(progressMatch[1], 10);
 		}
@@ -366,10 +377,18 @@ function extractSceneSummaryHeuristic(sceneContent: string): string {
 	const joined = sentences.join(" ").toLowerCase();
 	const bullets: string[] = [];
 
-	if (joined.includes("kiss") || joined.includes("touch")) bullets.push("physical spark grows");
-	if (joined.includes("argu") || joined.includes("tension")) bullets.push("conflict escalates");
-	if (joined.includes("secret") || joined.includes("reveal")) bullets.push("partial reveal");
-	if (joined.includes("fear") || joined.includes("anxious") || joined.includes("nervous")) bullets.push("emotional vulnerability");
+	if (joined.includes("kiss") || joined.includes("touch"))
+		bullets.push("physical spark grows");
+	if (joined.includes("argu") || joined.includes("tension"))
+		bullets.push("conflict escalates");
+	if (joined.includes("secret") || joined.includes("reveal"))
+		bullets.push("partial reveal");
+	if (
+		joined.includes("fear") ||
+		joined.includes("anxious") ||
+		joined.includes("nervous")
+	)
+		bullets.push("emotional vulnerability");
 	if (bullets.length === 0) bullets.push("relationship advances subtly");
 
 	return bullets.slice(0, 3).join(" | ");

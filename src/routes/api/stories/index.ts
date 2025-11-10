@@ -1,16 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { json } from "@tanstack/react-start";
 import { z } from "zod";
-import { createUserStory } from "~/lib/db/queries/stories";
 import { getSessionFromRequest } from "~/lib/auth/session";
+import { createUserStory } from "~/lib/db/queries/stories";
 import {
-	type Genre,
-	type Trope,
-	type SpiceLevel,
-	type PacingOption,
 	GENRES,
-	TROPES,
+	type Genre,
 	PACING_OPTIONS,
+	type PacingOption,
+	type SpiceLevel,
+	TROPES,
+	type Trope,
 } from "~/lib/types/preferences";
 
 const createStorySchema = z.object({
