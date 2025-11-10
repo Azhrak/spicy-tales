@@ -22,6 +22,7 @@ import { Route as ApiPreferencesRouteImport } from './routes/api/preferences'
 import { Route as ApiTemplatesIndexRouteImport } from './routes/api/templates/index'
 import { Route as ApiStoriesIndexRouteImport } from './routes/api/stories/index'
 import { Route as ApiProfileIndexRouteImport } from './routes/api/profile/index'
+import { Route as StoryIdReadRouteImport } from './routes/story/$id.read'
 import { Route as ApiTemplatesIdRouteImport } from './routes/api/templates/$id'
 import { Route as ApiStoriesUserRouteImport } from './routes/api/stories/user'
 import { Route as ApiProfilePasswordRouteImport } from './routes/api/profile/password'
@@ -29,6 +30,8 @@ import { Route as ApiAuthSignupRouteImport } from './routes/api/auth/signup'
 import { Route as ApiAuthLogoutRouteImport } from './routes/api/auth/logout'
 import { Route as ApiAuthLoginRouteImport } from './routes/api/auth/login'
 import { Route as ApiAuthGoogleRouteImport } from './routes/api/auth/google'
+import { Route as ApiStoriesIdSceneRouteImport } from './routes/api/stories/$id.scene'
+import { Route as ApiStoriesIdChooseRouteImport } from './routes/api/stories/$id.choose'
 import { Route as ApiAuthCallbackGoogleRouteImport } from './routes/api/auth/callback.google'
 
 const ProfileRoute = ProfileRouteImport.update({
@@ -96,6 +99,11 @@ const ApiProfileIndexRoute = ApiProfileIndexRouteImport.update({
   path: '/api/profile/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const StoryIdReadRoute = StoryIdReadRouteImport.update({
+  id: '/story/$id/read',
+  path: '/story/$id/read',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiTemplatesIdRoute = ApiTemplatesIdRouteImport.update({
   id: '/api/templates/$id',
   path: '/api/templates/$id',
@@ -131,6 +139,16 @@ const ApiAuthGoogleRoute = ApiAuthGoogleRouteImport.update({
   path: '/api/auth/google',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiStoriesIdSceneRoute = ApiStoriesIdSceneRouteImport.update({
+  id: '/api/stories/$id/scene',
+  path: '/api/stories/$id/scene',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiStoriesIdChooseRoute = ApiStoriesIdChooseRouteImport.update({
+  id: '/api/stories/$id/choose',
+  path: '/api/stories/$id/choose',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiAuthCallbackGoogleRoute = ApiAuthCallbackGoogleRouteImport.update({
   id: '/api/auth/callback/google',
   path: '/api/auth/callback/google',
@@ -155,10 +173,13 @@ export interface FileRoutesByFullPath {
   '/api/profile/password': typeof ApiProfilePasswordRoute
   '/api/stories/user': typeof ApiStoriesUserRoute
   '/api/templates/$id': typeof ApiTemplatesIdRoute
+  '/story/$id/read': typeof StoryIdReadRoute
   '/api/profile': typeof ApiProfileIndexRoute
   '/api/stories': typeof ApiStoriesIndexRoute
   '/api/templates': typeof ApiTemplatesIndexRoute
   '/api/auth/callback/google': typeof ApiAuthCallbackGoogleRoute
+  '/api/stories/$id/choose': typeof ApiStoriesIdChooseRoute
+  '/api/stories/$id/scene': typeof ApiStoriesIdSceneRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -178,10 +199,13 @@ export interface FileRoutesByTo {
   '/api/profile/password': typeof ApiProfilePasswordRoute
   '/api/stories/user': typeof ApiStoriesUserRoute
   '/api/templates/$id': typeof ApiTemplatesIdRoute
+  '/story/$id/read': typeof StoryIdReadRoute
   '/api/profile': typeof ApiProfileIndexRoute
   '/api/stories': typeof ApiStoriesIndexRoute
   '/api/templates': typeof ApiTemplatesIndexRoute
   '/api/auth/callback/google': typeof ApiAuthCallbackGoogleRoute
+  '/api/stories/$id/choose': typeof ApiStoriesIdChooseRoute
+  '/api/stories/$id/scene': typeof ApiStoriesIdSceneRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -202,10 +226,13 @@ export interface FileRoutesById {
   '/api/profile/password': typeof ApiProfilePasswordRoute
   '/api/stories/user': typeof ApiStoriesUserRoute
   '/api/templates/$id': typeof ApiTemplatesIdRoute
+  '/story/$id/read': typeof StoryIdReadRoute
   '/api/profile/': typeof ApiProfileIndexRoute
   '/api/stories/': typeof ApiStoriesIndexRoute
   '/api/templates/': typeof ApiTemplatesIndexRoute
   '/api/auth/callback/google': typeof ApiAuthCallbackGoogleRoute
+  '/api/stories/$id/choose': typeof ApiStoriesIdChooseRoute
+  '/api/stories/$id/scene': typeof ApiStoriesIdSceneRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -227,10 +254,13 @@ export interface FileRouteTypes {
     | '/api/profile/password'
     | '/api/stories/user'
     | '/api/templates/$id'
+    | '/story/$id/read'
     | '/api/profile'
     | '/api/stories'
     | '/api/templates'
     | '/api/auth/callback/google'
+    | '/api/stories/$id/choose'
+    | '/api/stories/$id/scene'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -250,10 +280,13 @@ export interface FileRouteTypes {
     | '/api/profile/password'
     | '/api/stories/user'
     | '/api/templates/$id'
+    | '/story/$id/read'
     | '/api/profile'
     | '/api/stories'
     | '/api/templates'
     | '/api/auth/callback/google'
+    | '/api/stories/$id/choose'
+    | '/api/stories/$id/scene'
   id:
     | '__root__'
     | '/'
@@ -273,10 +306,13 @@ export interface FileRouteTypes {
     | '/api/profile/password'
     | '/api/stories/user'
     | '/api/templates/$id'
+    | '/story/$id/read'
     | '/api/profile/'
     | '/api/stories/'
     | '/api/templates/'
     | '/api/auth/callback/google'
+    | '/api/stories/$id/choose'
+    | '/api/stories/$id/scene'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -297,10 +333,13 @@ export interface RootRouteChildren {
   ApiProfilePasswordRoute: typeof ApiProfilePasswordRoute
   ApiStoriesUserRoute: typeof ApiStoriesUserRoute
   ApiTemplatesIdRoute: typeof ApiTemplatesIdRoute
+  StoryIdReadRoute: typeof StoryIdReadRoute
   ApiProfileIndexRoute: typeof ApiProfileIndexRoute
   ApiStoriesIndexRoute: typeof ApiStoriesIndexRoute
   ApiTemplatesIndexRoute: typeof ApiTemplatesIndexRoute
   ApiAuthCallbackGoogleRoute: typeof ApiAuthCallbackGoogleRoute
+  ApiStoriesIdChooseRoute: typeof ApiStoriesIdChooseRoute
+  ApiStoriesIdSceneRoute: typeof ApiStoriesIdSceneRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -396,6 +435,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiProfileIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/story/$id/read': {
+      id: '/story/$id/read'
+      path: '/story/$id/read'
+      fullPath: '/story/$id/read'
+      preLoaderRoute: typeof StoryIdReadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/templates/$id': {
       id: '/api/templates/$id'
       path: '/api/templates/$id'
@@ -445,6 +491,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAuthGoogleRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/stories/$id/scene': {
+      id: '/api/stories/$id/scene'
+      path: '/api/stories/$id/scene'
+      fullPath: '/api/stories/$id/scene'
+      preLoaderRoute: typeof ApiStoriesIdSceneRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/stories/$id/choose': {
+      id: '/api/stories/$id/choose'
+      path: '/api/stories/$id/choose'
+      fullPath: '/api/stories/$id/choose'
+      preLoaderRoute: typeof ApiStoriesIdChooseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/auth/callback/google': {
       id: '/api/auth/callback/google'
       path: '/api/auth/callback/google'
@@ -473,10 +533,13 @@ const rootRouteChildren: RootRouteChildren = {
   ApiProfilePasswordRoute: ApiProfilePasswordRoute,
   ApiStoriesUserRoute: ApiStoriesUserRoute,
   ApiTemplatesIdRoute: ApiTemplatesIdRoute,
+  StoryIdReadRoute: StoryIdReadRoute,
   ApiProfileIndexRoute: ApiProfileIndexRoute,
   ApiStoriesIndexRoute: ApiStoriesIndexRoute,
   ApiTemplatesIndexRoute: ApiTemplatesIndexRoute,
   ApiAuthCallbackGoogleRoute: ApiAuthCallbackGoogleRoute,
+  ApiStoriesIdChooseRoute: ApiStoriesIdChooseRoute,
+  ApiStoriesIdSceneRoute: ApiStoriesIdSceneRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

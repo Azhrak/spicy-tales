@@ -13,7 +13,7 @@ export async function getCachedScene(storyId: string, sceneNumber: number) {
 }
 
 /**
- * Cache a generated scene
+ * Cache a generated scene (with duplicate handling)
  */
 export async function cacheScene(
 	storyId: string,
@@ -22,16 +22,25 @@ export async function cacheScene(
 ) {
 	const wordCount = content.split(/\s+/).length;
 
-	return db
-		.insertInto("scenes")
-		.values({
-			story_id: storyId,
-			scene_number: sceneNumber,
-			content,
-			word_count: wordCount,
-		})
-		.returning("id")
-		.executeTakeFirstOrThrow();
+	try {
+		return await db
+			.insertInto("scenes")
+			.values({
+				story_id: storyId,
+				scene_number: sceneNumber,
+				content,
+				word_count: wordCount,
+			})
+			.returning("id")
+			.executeTakeFirstOrThrow();
+	} catch (error: any) {
+		// If duplicate, just return - the scene is already cached
+		if (error?.code === "23505") {
+			// Duplicate key error code
+			return null;
+		}
+		throw error;
+	}
 }
 
 /**

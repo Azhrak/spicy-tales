@@ -210,3 +210,22 @@ export async function getChoicePointForScene(
 		.where("scene_number", "=", sceneNumber)
 		.executeTakeFirst();
 }
+
+/**
+ * Get a story by ID with template info
+ */
+export async function getStoryById(storyId: string) {
+	return db
+		.selectFrom("user_stories as us")
+		.selectAll("us")
+		.select((eb) => [
+			jsonObjectFrom(
+				eb
+					.selectFrom("novel_templates")
+					.selectAll()
+					.whereRef("id", "=", "us.template_id"),
+			).as("template"),
+		])
+		.where("us.id", "=", storyId)
+		.executeTakeFirst();
+}

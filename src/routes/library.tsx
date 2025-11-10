@@ -67,7 +67,7 @@ function LibraryPage() {
 	};
 
 	return (
-		<div className="min-h-screen bg-gradient-to-br from-romance-50 via-white to-romance-100">
+		<div className="min-h-screen bg-linear-to-br from-romance-50 via-white to-romance-100">
 			{/* Header */}
 			<header className="bg-white shadow-sm">
 				<div className="container mx-auto px-4 py-4 flex items-center justify-between">
@@ -188,7 +188,7 @@ function LibraryPage() {
 								>
 									{/* Cover */}
 									<div
-										className={`h-40 bg-gradient-to-br ${story.template.cover_gradient} flex items-center justify-center`}
+										className={`h-40 bg-linear-to-br ${story.template.cover_gradient} flex items-center justify-center`}
 									>
 										<BookOpen className="w-16 h-16 text-white opacity-50" />
 									</div>
@@ -243,13 +243,13 @@ function LibraryPage() {
 
 										{/* Actions */}
 										<div className="flex gap-2">
-											<button
-												disabled
-												className="flex-1 px-4 py-2 bg-slate-300 text-slate-600 rounded-lg font-medium cursor-not-allowed"
-												title="Reading interface coming soon"
+											<Link
+												to="/story/$id/read"
+												params={{ id: story.id }}
+												className="flex-1 px-4 py-2 bg-romance-600 text-white rounded-lg font-medium hover:bg-romance-700 transition-colors text-center"
 											>
-												{activeTab === "in-progress" ? "Continue" : "Read Again"}
-											</button>
+												{activeTab === "in-progress" ? "Continue Reading" : "Read Again"}
+											</Link>
 										</div>
 									</div>
 								</div>

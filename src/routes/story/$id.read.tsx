@@ -1,0 +1,356 @@
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
+import {
+	BookOpen,
+	ChevronLeft,
+	ChevronRight,
+	Flame,
+	Home,
+	Loader2,
+	Sparkles,
+} from "lucide-react";
+
+export const Route = createFileRoute("/story/$id/read")({
+	component: ReadingPage,
+});
+
+type SceneData = {
+	scene: {
+		number: number;
+		content: string;
+		wordCount: number;
+		cached: boolean;
+	};
+	story: {
+		id: string;
+		title: string;
+		currentScene: number;
+		estimatedScenes: number;
+		status: string;
+	};
+	choicePoint: {
+		id: string;
+		promptText: string;
+		options: Array<{
+			text: string;
+			tone: string;
+		}>;
+	} | null;
+};
+
+function ReadingPage() {
+	const { id } = Route.useParams();
+	const navigate = useNavigate();
+	const queryClient = useQueryClient();
+	const [selectedOption, setSelectedOption] = useState<number | null>(null);
+	const [currentSceneNumber, setCurrentSceneNumber] = useState<number | null>(
+		null,
+	);
+
+	// Fetch scene data
+	const {
+		data,
+		isLoading,
+		error,
+	} = useQuery<SceneData>({
+		queryKey: ["story-scene", id, currentSceneNumber],
+		queryFn: async () => {
+			const url =
+				currentSceneNumber !== null
+					? `/api/stories/${id}/scene?number=${currentSceneNumber}`
+					: `/api/stories/${id}/scene`;
+			const response = await fetch(url);
+			if (!response.ok) {
+				const error = await response.json();
+				throw new Error(error.error || "Failed to fetch scene");
+			}
+			return response.json();
+		},
+	});
+
+	// Record choice mutation
+	const choiceMutation = useMutation({
+		mutationFn: async (choiceData: {
+			choicePointId: string;
+			selectedOption: number;
+		}) => {
+			const response = await fetch(`/api/stories/${id}/choose`, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(choiceData),
+			});
+
+			if (!response.ok) {
+				const error = await response.json();
+				throw new Error(error.error || "Failed to record choice");
+			}
+
+			return response.json();
+		},
+		onSuccess: async (result) => {
+			setSelectedOption(null);
+
+			if (result.completed) {
+				// Story complete - redirect to library
+				navigate({ to: "/library" });
+			} else {
+				// Move to next scene and refetch
+				setCurrentSceneNumber(result.nextScene);
+				// Invalidate all queries for this story to get fresh data
+				await queryClient.invalidateQueries({ 
+					queryKey: ["story-scene", id],
+					refetchType: "all" 
+				});
+			}
+		},
+	});
+
+	const handleMakeChoice = () => {
+		if (selectedOption === null || !data?.choicePoint) return;
+
+		choiceMutation.mutate({
+			choicePointId: data.choicePoint.id,
+			selectedOption,
+		});
+	};
+
+	const handleNavigateScene = (sceneNum: number) => {
+		setCurrentSceneNumber(sceneNum);
+		setSelectedOption(null);
+	};
+
+	if (isLoading) {
+		return (
+			<div className="min-h-screen bg-linear-to-br from-rose-50 via-purple-50 to-pink-50 flex items-center justify-center">
+				<div className="text-center">
+					<Loader2 className="w-12 h-12 text-rose-500 animate-spin mx-auto mb-4" />
+					<p className="text-gray-600 text-lg">Loading your story...</p>
+				</div>
+			</div>
+		);
+	}
+
+	if (error) {
+		return (
+			<div className="min-h-screen bg-linear-to-br from-rose-50 via-purple-50 to-pink-50 flex items-center justify-center">
+				<div className="max-w-md mx-auto text-center p-8">
+					<div className="text-red-500 text-6xl mb-4">⚠️</div>
+					<h1 className="text-2xl font-bold text-gray-800 mb-2">
+						Oops! Something went wrong
+					</h1>
+					<p className="text-gray-600 mb-6">
+						{error instanceof Error ? error.message : "Failed to load scene"}
+					</p>
+					<Link
+						to="/library"
+						className="inline-flex items-center gap-2 px-6 py-3 bg-rose-600 text-white rounded-lg hover:bg-rose-700 transition-colors"
+					>
+						<Home className="w-5 h-5" />
+						Back to Library
+					</Link>
+				</div>
+			</div>
+		);
+	}
+
+	if (!data) return null;
+
+	const { scene, story, choicePoint } = data;
+	const progress = (scene.number / story.estimatedScenes) * 100;
+	const isLastScene = scene.number >= story.estimatedScenes;
+
+	return (
+		<div className="min-h-screen bg-linear-to-br from-rose-50 via-purple-50 to-pink-50">
+			{/* Header */}
+			<header className="bg-white/80 backdrop-blur-sm border-b border-rose-200 sticky top-0 z-10">
+				<div className="max-w-4xl mx-auto px-4 py-4">
+					<div className="flex items-center justify-between mb-3">
+						<Link
+							to="/library"
+							className="flex items-center gap-2 text-gray-600 hover:text-rose-600 transition-colors"
+						>
+							<ChevronLeft className="w-5 h-5" />
+							Back to Library
+						</Link>
+						<div className="flex items-center gap-2 text-sm text-gray-600">
+							<BookOpen className="w-4 h-4" />
+							Scene {scene.number} of {story.estimatedScenes}
+						</div>
+					</div>
+
+					{/* Title */}
+					<h1 className="text-2xl font-bold text-gray-800 mb-3">
+						{story.title}
+					</h1>
+
+					{/* Progress Bar */}
+					<div className="relative h-2 bg-gray-200 rounded-full overflow-hidden">
+						<div
+							className="absolute inset-y-0 left-0 bg-linear-to-r from-rose-500 to-purple-600 transition-all duration-500"
+							style={{ width: `${progress}%` }}
+						/>
+					</div>
+					<p className="text-xs text-gray-500 mt-1 text-right">
+						{Math.round(progress)}% complete
+					</p>
+				</div>
+			</header>
+
+			{/* Main Content */}
+			<main className="max-w-2xl mx-auto px-4 py-8">
+				{/* Scene Content */}
+				<div className="bg-white rounded-xl shadow-lg p-8 mb-6">
+					<div className="prose prose-lg max-w-none">
+						{scene.content.split("\n\n").map((paragraph, index) => (
+							<p key={index} className="mb-4 text-gray-800 leading-relaxed">
+								{paragraph}
+							</p>
+						))}
+					</div>
+
+					{/* Reading stats */}
+					<div className="mt-8 pt-6 border-t border-gray-200 flex items-center justify-between text-sm text-gray-500">
+						<div className="flex items-center gap-4">
+							<span>{scene.wordCount} words</span>
+							<span>~{Math.ceil(scene.wordCount / 200)} min read</span>
+						</div>
+						{!scene.cached && (
+							<div className="flex items-center gap-2 text-purple-600">
+								<Sparkles className="w-4 h-4" />
+								<span>Freshly generated</span>
+							</div>
+						)}
+					</div>
+				</div>
+
+				{/* Choice Point */}
+				{choicePoint && !isLastScene && (
+					<div className="bg-white rounded-xl shadow-lg p-8 mb-6">
+						<div className="flex items-center gap-2 mb-4">
+							<Flame className="w-5 h-5 text-rose-500" />
+							<h2 className="text-xl font-bold text-gray-800">
+								What happens next?
+							</h2>
+						</div>
+						<p className="text-gray-600 mb-6">{choicePoint.promptText}</p>
+
+						<div className="space-y-3">
+							{choicePoint.options.map((option, index) => (
+								<button
+									key={index}
+									type="button"
+									onClick={() => setSelectedOption(index)}
+									disabled={choiceMutation.isPending}
+									className={`w-full text-left p-4 rounded-lg border-2 transition-all ${
+										selectedOption === index
+											? "border-rose-500 bg-rose-50"
+											: "border-gray-200 hover:border-rose-300 bg-white"
+									} ${choiceMutation.isPending ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
+								>
+									<div className="flex items-start justify-between">
+										<span className="font-medium text-gray-800">
+											{option.text}
+										</span>
+										<span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded ml-3">
+											{option.tone}
+										</span>
+									</div>
+								</button>
+							))}
+						</div>
+
+						<button
+							type="button"
+							onClick={handleMakeChoice}
+							disabled={selectedOption === null || choiceMutation.isPending}
+							className="w-full mt-6 py-3 px-6 bg-linear-to-r from-rose-600 to-purple-600 text-white font-semibold rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:from-rose-700 hover:to-purple-700 transition-all flex items-center justify-center gap-2"
+						>
+							{choiceMutation.isPending ? (
+								<>
+									<Loader2 className="w-5 h-5 animate-spin" />
+									<span>Making your choice...</span>
+								</>
+							) : (
+								<>
+									<span>Continue Story</span>
+									<ChevronRight className="w-5 h-5" />
+								</>
+							)}
+						</button>
+					</div>
+				)}
+
+				{/* No Choice Point - Continue to Next Scene */}
+				{!choicePoint && !isLastScene && (
+					<div className="bg-white rounded-xl shadow-lg p-8 mb-6 text-center">
+						<p className="text-gray-600 mb-6">Ready to continue?</p>
+						<button
+							type="button"
+							onClick={async () => {
+								const nextScene = scene.number + 1;
+								// Update story progress in database
+								await fetch(`/api/stories/${id}/scene`, {
+									method: "PATCH",
+									headers: { "Content-Type": "application/json" },
+									body: JSON.stringify({ currentScene: nextScene }),
+								});
+								// Navigate to next scene
+								setCurrentSceneNumber(nextScene);
+								queryClient.invalidateQueries({ queryKey: ["story-scene", id] });
+							}}
+							className="px-8 py-3 bg-linear-to-r from-rose-600 to-purple-600 text-white font-semibold rounded-lg hover:from-rose-700 hover:to-purple-700 transition-all inline-flex items-center gap-2"
+						>
+							<span>Continue to Next Scene</span>
+							<ChevronRight className="w-5 h-5" />
+						</button>
+					</div>
+				)}
+
+				{/* Story Complete */}
+				{isLastScene && (
+					<div className="bg-linear-to-br from-purple-100 to-rose-100 rounded-xl shadow-lg p-8 text-center">
+						<Sparkles className="w-16 h-16 text-rose-500 mx-auto mb-4" />
+						<h2 className="text-2xl font-bold text-gray-800 mb-2">
+							The End
+						</h2>
+						<p className="text-gray-600 mb-6">
+							You've completed this story! Thank you for reading.
+						</p>
+						<Link
+							to="/library"
+							className="inline-flex items-center gap-2 px-6 py-3 bg-rose-600 text-white rounded-lg hover:bg-rose-700 transition-colors"
+						>
+							<Home className="w-5 h-5" />
+							Back to Library
+						</Link>
+					</div>
+				)}
+
+				{/* Navigation */}
+				<div className="flex items-center justify-between mt-6">
+					<button
+						type="button"
+						onClick={() => handleNavigateScene(scene.number - 1)}
+						disabled={scene.number === 1}
+						className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-rose-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+					>
+						<ChevronLeft className="w-5 h-5" />
+						Previous Scene
+					</button>
+
+					<button
+						type="button"
+						onClick={() => handleNavigateScene(scene.number + 1)}
+						disabled={scene.number + 1 > story.currentScene || scene.number >= story.estimatedScenes}
+						className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-rose-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+						title={scene.number + 1 > story.currentScene ? "Make a choice to unlock the next scene" : ""}
+					>
+						Next Scene
+						<ChevronRight className="w-5 h-5" />
+					</button>
+				</div>
+			</main>
+		</div>
+	);
+}
