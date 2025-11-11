@@ -100,6 +100,14 @@ Click **Environment Variables** and add all of the following:
 | `NODE_ENV` | `production` | Tells app to run in production mode |
 | `AI_PROVIDER` | `openai` | Or `anthropic`, `google`, `mistral` |
 
+##### Recommended for Testing/Staging
+
+| Variable | Value | Notes |
+|----------|-------|-------|
+| `SITE_PASSWORD` | `your-test-password` | **Protects site with password** - Testers will see browser login popup |
+
+> **Password Protection**: When `SITE_PASSWORD` is set, the entire site requires authentication via HTTP Basic Auth. Users will see a browser popup asking for credentials (username can be anything, only password matters). This is recommended for staging deployments to prevent public access. Password protection is automatically disabled in development mode.
+
 ##### AI Provider (Choose ONE)
 
 **For OpenAI:**
@@ -442,6 +450,46 @@ If this works but Vercel deployment doesn't, issue is with Vercel environment va
 
 ---
 
+## Password Protection for Testers
+
+To protect your staging deployment from public access, you can enable HTTP Basic Authentication:
+
+### How to Enable
+
+1. Go to Vercel dashboard → Your project → **Settings** → **Environment Variables**
+2. Add a new variable:
+   - **Name**: `SITE_PASSWORD`
+   - **Value**: Your chosen password (e.g., `TestingAccess2025`)
+   - **Environment**: Production (or all environments)
+3. Click **Save**
+4. Redeploy your app (or wait for next auto-deployment)
+
+### How It Works
+
+- **Browser Popup**: When someone visits your site, they'll see a browser login dialog
+- **Username**: Can be anything (not checked)
+- **Password**: Must match the `SITE_PASSWORD` you set
+- **Auto-Disabled in Dev**: Password protection is automatically disabled for local development
+- **All Routes Protected**: Every page of your site requires authentication
+
+### Sharing Access with Testers
+
+Send testers:
+1. **URL**: `https://spicy-tales.vercel.app`
+2. **Username**: `tester` (or any username)
+3. **Password**: The value you set for `SITE_PASSWORD`
+
+### Disabling Password Protection
+
+To remove password protection:
+1. Go to Vercel → Settings → Environment Variables
+2. Delete the `SITE_PASSWORD` variable
+3. Redeploy
+
+> **Note**: This uses HTTP Basic Auth, which is sufficient for staging/testing but not recommended for production apps with real users. For production, implement proper user authentication.
+
+---
+
 ## Getting Help
 
 - **Vercel Issues**: [vercel.com/docs](https://vercel.com/docs)
@@ -457,5 +505,7 @@ If this works but Vercel deployment doesn't, issue is with Vercel environment va
 - ✅ DATABASE_URL never exposed to client (server-side only)
 - ✅ Neon enforces SSL connections
 - ✅ Vercel provides automatic HTTPS
+- ✅ HTTP Basic Auth available for staging (via SITE_PASSWORD)
 - ⚠️ Rotate `SESSION_SECRET` if ever compromised
 - ⚠️ Rotate AI API keys periodically
+- ⚠️ Change `SITE_PASSWORD` if leaked to unauthorized users

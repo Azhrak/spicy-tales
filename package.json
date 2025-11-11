@@ -61,6 +61,7 @@
     "@types/react-dom": "^19.2.0",
     "@vitejs/plugin-react": "^5.0.4",
     "autoprefixer": "^10.4.20",
+    "h3": "2.0.1-rc.5",
     "jsdom": "^27.0.0",
     "kysely-codegen": "^0.18.1",
     "nitro": "3.0.1-alpha.1",
