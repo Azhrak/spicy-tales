@@ -11,12 +11,7 @@ const config = defineConfig({
       projects: ['./tsconfig.json'],
     }),
     tailwindcss(),
-    tanstackStart({
-      // Configure Nitro for Vercel deployment
-      nitro: {
-        preset: process.env.VERCEL ? 'vercel' : undefined,
-      },
-    }),
+    tanstackStart(),
     viteReact(),
   ],
   optimizeDeps: {

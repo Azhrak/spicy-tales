@@ -9,6 +9,19 @@ This guide walks you through deploying Spicy Tales to Vercel with Neon PostgreSQ
 - **Cache**: Not needed initially (app uses PostgreSQL for caching)
 - **Total Cost**: $0/month (free tiers)
 
+## How It Works
+
+TanStack Start uses **Nitro** under the hood, which automatically detects deployment platforms:
+
+- ✅ **Auto-Detection**: Vercel sets `VERCEL=1` during builds, Nitro detects this automatically
+- ✅ **No Manual Config**: The `vercel` preset is applied automatically
+- ✅ **Optimized Builds**: Serverless functions are optimized for Vercel's infrastructure
+- ✅ **Zero Config**: Just push to GitHub and deploy!
+
+Configuration files are already set up in your project:
+- [vercel.json](vercel.json) - Specifies build commands
+- [vite.config.ts](vite.config.ts) - TanStack Start configuration
+
 ## Prerequisites
 
 - [Vercel account](https://vercel.com/signup) (free)
