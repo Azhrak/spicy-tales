@@ -7,7 +7,7 @@ import { hashPassword } from "../auth/password";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Load environment variables
+// Load environment variables as fallback (tsx --env-file should handle this)
 config({ path: path.resolve(__dirname, "../../../.env") });
 
 async function seed() {

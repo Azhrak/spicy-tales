@@ -1,6 +1,6 @@
 import { Kysely, PostgresDialect } from "kysely";
 import { Pool } from "pg";
-import type { Database } from "./types";
+import type { DB } from "./types";
 
 /**
  * Get database connection pool configuration
@@ -28,7 +28,7 @@ function createDatabase() {
 		pool: new Pool(getPoolConfig()),
 	});
 
-	return new Kysely<Database>({
+	return new Kysely<DB>({
 		dialect,
 		log(event) {
 			if (event.level === "query") {
