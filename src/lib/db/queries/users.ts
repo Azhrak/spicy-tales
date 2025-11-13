@@ -1,5 +1,7 @@
 import type { GoogleUser } from "~/lib/auth/oauth";
 import { db } from "~/lib/db";
+import type { UserRole } from "~/lib/db/types";
+import { createAuditLog, extractChanges } from "./audit";
 
 /**
  * Get user by email
@@ -182,4 +184,228 @@ export async function updateUserProfile(
 		})
 		.where("id", "=", userId)
 		.execute();
+}
+
+/**
+ * Get all users with pagination (admin only)
+ */
+export interface GetUsersFilters {
+	role?: UserRole;
+	search?: string;
+	limit?: number;
+	offset?: number;
+}
+
+export async function getAllUsers(filters: GetUsersFilters = {}) {
+	let query = db
+		.selectFrom("users")
+		.select([
+			"id",
+			"email",
+			"name",
+			"avatar_url",
+			"role",
+			"email_verified",
+			"created_at",
+			"updated_at",
+		])
+		.orderBy("created_at", "desc");
+
+	// Filter by role
+	if (filters.role) {
+		query = query.where("role", "=", filters.role);
+	}
+
+	// Search by email or name
+	if (filters.search) {
+		const searchTerm = `%${filters.search.toLowerCase()}%`;
+		query = query.where((eb) =>
+			eb.or([
+				eb("email", "ilike", searchTerm),
+				eb("name", "ilike", searchTerm),
+			]),
+		);
+	}
+
+	// Pagination
+	if (filters.limit) {
+		query = query.limit(filters.limit);
+	}
+
+	if (filters.offset) {
+		query = query.offset(filters.offset);
+	}
+
+	return query.execute();
+}
+
+/**
+ * Get user count with filters
+ */
+export async function getUserCount(
+	filters: Omit<GetUsersFilters, "limit" | "offset"> = {},
+) {
+	let query = db
+		.selectFrom("users")
+		.select(({ fn }) => [fn.count<number>("id").as("count")]);
+
+	if (filters.role) {
+		query = query.where("role", "=", filters.role);
+	}
+
+	if (filters.search) {
+		const searchTerm = `%${filters.search.toLowerCase()}%`;
+		query = query.where((eb) =>
+			eb.or([
+				eb("email", "ilike", searchTerm),
+				eb("name", "ilike", searchTerm),
+			]),
+		);
+	}
+
+	const result = await query.executeTakeFirst();
+	return Number(result?.count || 0);
+}
+
+/**
+ * Update user role (admin only)
+ */
+export async function updateUserRole(
+	userId: string,
+	newRole: UserRole,
+	adminUserId: string,
+) {
+	// Get old user data for audit log
+	const oldUser = await getUserById(userId);
+
+	if (!oldUser) {
+		throw new Error("User not found");
+	}
+
+	// Update role
+	await db
+		.updateTable("users")
+		.set({
+			role: newRole,
+			updated_at: new Date(),
+		})
+		.where("id", "=", userId)
+		.execute();
+
+	// Log the change
+	await createAuditLog({
+		userId: adminUserId,
+		action: "update_user_role",
+		entityType: "user",
+		entityId: userId,
+		changes: {
+			role: { old: oldUser.role, new: newRole },
+			email: oldUser.email,
+		},
+	});
+
+	return getUserById(userId);
+}
+
+/**
+ * Update user details (admin only)
+ */
+export async function updateUser(
+	userId: string,
+	updates: {
+		email?: string;
+		name?: string;
+		role?: UserRole;
+	},
+	adminUserId: string,
+) {
+	// Get old user data for audit log
+	const oldUser = await getUserById(userId);
+
+	if (!oldUser) {
+		throw new Error("User not found");
+	}
+
+	// Check if email is being changed and if it's already taken
+	if (updates.email && updates.email !== oldUser.email) {
+		const existingUser = await getUserByEmail(updates.email);
+		if (existingUser) {
+			throw new Error("Email already in use");
+		}
+	}
+
+	// Update user
+	await db
+		.updateTable("users")
+		.set({
+			...updates,
+			updated_at: new Date(),
+		})
+		.where("id", "=", userId)
+		.execute();
+
+	// Log the changes
+	const changes = extractChanges(oldUser, { ...oldUser, ...updates });
+
+	await createAuditLog({
+		userId: adminUserId,
+		action: "update_user",
+		entityType: "user",
+		entityId: userId,
+		changes,
+	});
+
+	return getUserById(userId);
+}
+
+/**
+ * Delete user (admin only)
+ */
+export async function deleteUser(userId: string, adminUserId: string) {
+	// Get user info for audit log
+	const user = await getUserById(userId);
+
+	if (!user) {
+		throw new Error("User not found");
+	}
+
+	// Delete user (cascade will handle related records)
+	await db.deleteFrom("users").where("id", "=", userId).execute();
+
+	// Log the deletion
+	await createAuditLog({
+		userId: adminUserId,
+		action: "delete_user",
+		entityType: "user",
+		entityId: userId,
+		changes: {
+			deleted: {
+				email: user.email,
+				name: user.name,
+				role: user.role,
+			},
+		},
+	});
+}
+
+/**
+ * Get user count by role
+ */
+export async function getUserCountByRole() {
+	const result = await db
+		.selectFrom("users")
+		.select(({ fn }) => [
+			"role",
+			fn.count<number>("id").as("count"),
+		])
+		.groupBy("role")
+		.execute();
+
+	return result.reduce(
+		(acc, row) => {
+			acc[row.role as UserRole] = Number(row.count);
+			return acc;
+		},
+		{} as Record<UserRole, number>,
+	);
 }

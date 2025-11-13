@@ -154,6 +154,7 @@ export interface SessionUser {
 	name: string | null;
 	avatarUrl: string | null;
 	defaultPreferences: any | null;
+	role: "user" | "editor" | "admin";
 }
 
 /**
@@ -170,6 +171,7 @@ export async function getUserFromSession(
 			"name",
 			"avatar_url as avatarUrl",
 			"default_preferences as defaultPreferences",
+			"role",
 		])
 		.where("id", "=", session.userId)
 		.executeTakeFirst();

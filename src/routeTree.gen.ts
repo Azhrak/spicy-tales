@@ -32,9 +32,16 @@ import { Route as ApiAuthSignupRouteImport } from './routes/api/auth/signup'
 import { Route as ApiAuthLogoutRouteImport } from './routes/api/auth/logout'
 import { Route as ApiAuthLoginRouteImport } from './routes/api/auth/login'
 import { Route as ApiAuthGoogleRouteImport } from './routes/api/auth/google'
+import { Route as ApiAdminDashboardRouteImport } from './routes/api/admin/dashboard'
+import { Route as ApiAdminAuditLogsRouteImport } from './routes/api/admin/audit-logs'
+import { Route as ApiAdminUsersIndexRouteImport } from './routes/api/admin/users/index'
+import { Route as ApiAdminTemplatesIndexRouteImport } from './routes/api/admin/templates/index'
 import { Route as ApiStoriesIdSceneRouteImport } from './routes/api/stories/$id.scene'
 import { Route as ApiStoriesIdChooseRouteImport } from './routes/api/stories/$id.choose'
 import { Route as ApiAuthCallbackGoogleRouteImport } from './routes/api/auth/callback.google'
+import { Route as ApiAdminUsersIdRouteImport } from './routes/api/admin/users/$id'
+import { Route as ApiAdminTemplatesIdRouteImport } from './routes/api/admin/templates/$id'
+import { Route as ApiAdminTemplatesIdStatusRouteImport } from './routes/api/admin/templates/$id.status'
 
 const ProfileRoute = ProfileRouteImport.update({
   id: '/profile',
@@ -151,6 +158,26 @@ const ApiAuthGoogleRoute = ApiAuthGoogleRouteImport.update({
   path: '/api/auth/google',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiAdminDashboardRoute = ApiAdminDashboardRouteImport.update({
+  id: '/api/admin/dashboard',
+  path: '/api/admin/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAdminAuditLogsRoute = ApiAdminAuditLogsRouteImport.update({
+  id: '/api/admin/audit-logs',
+  path: '/api/admin/audit-logs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAdminUsersIndexRoute = ApiAdminUsersIndexRouteImport.update({
+  id: '/api/admin/users/',
+  path: '/api/admin/users/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAdminTemplatesIndexRoute = ApiAdminTemplatesIndexRouteImport.update({
+  id: '/api/admin/templates/',
+  path: '/api/admin/templates/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiStoriesIdSceneRoute = ApiStoriesIdSceneRouteImport.update({
   id: '/scene',
   path: '/scene',
@@ -166,6 +193,22 @@ const ApiAuthCallbackGoogleRoute = ApiAuthCallbackGoogleRouteImport.update({
   path: '/api/auth/callback/google',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiAdminUsersIdRoute = ApiAdminUsersIdRouteImport.update({
+  id: '/api/admin/users/$id',
+  path: '/api/admin/users/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAdminTemplatesIdRoute = ApiAdminTemplatesIdRouteImport.update({
+  id: '/api/admin/templates/$id',
+  path: '/api/admin/templates/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAdminTemplatesIdStatusRoute =
+  ApiAdminTemplatesIdStatusRouteImport.update({
+    id: '/status',
+    path: '/status',
+    getParentRoute: () => ApiAdminTemplatesIdRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -179,6 +222,8 @@ export interface FileRoutesByFullPath {
   '/auth/signup': typeof AuthSignupRoute
   '/story/create': typeof StoryCreateRoute
   '/template/$id': typeof TemplateIdRoute
+  '/api/admin/audit-logs': typeof ApiAdminAuditLogsRoute
+  '/api/admin/dashboard': typeof ApiAdminDashboardRoute
   '/api/auth/google': typeof ApiAuthGoogleRoute
   '/api/auth/login': typeof ApiAuthLoginRoute
   '/api/auth/logout': typeof ApiAuthLogoutRoute
@@ -191,9 +236,14 @@ export interface FileRoutesByFullPath {
   '/api/profile': typeof ApiProfileIndexRoute
   '/api/stories': typeof ApiStoriesIndexRoute
   '/api/templates': typeof ApiTemplatesIndexRoute
+  '/api/admin/templates/$id': typeof ApiAdminTemplatesIdRouteWithChildren
+  '/api/admin/users/$id': typeof ApiAdminUsersIdRoute
   '/api/auth/callback/google': typeof ApiAuthCallbackGoogleRoute
   '/api/stories/$id/choose': typeof ApiStoriesIdChooseRoute
   '/api/stories/$id/scene': typeof ApiStoriesIdSceneRoute
+  '/api/admin/templates': typeof ApiAdminTemplatesIndexRoute
+  '/api/admin/users': typeof ApiAdminUsersIndexRoute
+  '/api/admin/templates/$id/status': typeof ApiAdminTemplatesIdStatusRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -207,6 +257,8 @@ export interface FileRoutesByTo {
   '/auth/signup': typeof AuthSignupRoute
   '/story/create': typeof StoryCreateRoute
   '/template/$id': typeof TemplateIdRoute
+  '/api/admin/audit-logs': typeof ApiAdminAuditLogsRoute
+  '/api/admin/dashboard': typeof ApiAdminDashboardRoute
   '/api/auth/google': typeof ApiAuthGoogleRoute
   '/api/auth/login': typeof ApiAuthLoginRoute
   '/api/auth/logout': typeof ApiAuthLogoutRoute
@@ -219,9 +271,14 @@ export interface FileRoutesByTo {
   '/api/profile': typeof ApiProfileIndexRoute
   '/api/stories': typeof ApiStoriesIndexRoute
   '/api/templates': typeof ApiTemplatesIndexRoute
+  '/api/admin/templates/$id': typeof ApiAdminTemplatesIdRouteWithChildren
+  '/api/admin/users/$id': typeof ApiAdminUsersIdRoute
   '/api/auth/callback/google': typeof ApiAuthCallbackGoogleRoute
   '/api/stories/$id/choose': typeof ApiStoriesIdChooseRoute
   '/api/stories/$id/scene': typeof ApiStoriesIdSceneRoute
+  '/api/admin/templates': typeof ApiAdminTemplatesIndexRoute
+  '/api/admin/users': typeof ApiAdminUsersIndexRoute
+  '/api/admin/templates/$id/status': typeof ApiAdminTemplatesIdStatusRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -236,6 +293,8 @@ export interface FileRoutesById {
   '/auth/signup': typeof AuthSignupRoute
   '/story/create': typeof StoryCreateRoute
   '/template/$id': typeof TemplateIdRoute
+  '/api/admin/audit-logs': typeof ApiAdminAuditLogsRoute
+  '/api/admin/dashboard': typeof ApiAdminDashboardRoute
   '/api/auth/google': typeof ApiAuthGoogleRoute
   '/api/auth/login': typeof ApiAuthLoginRoute
   '/api/auth/logout': typeof ApiAuthLogoutRoute
@@ -248,9 +307,14 @@ export interface FileRoutesById {
   '/api/profile/': typeof ApiProfileIndexRoute
   '/api/stories/': typeof ApiStoriesIndexRoute
   '/api/templates/': typeof ApiTemplatesIndexRoute
+  '/api/admin/templates/$id': typeof ApiAdminTemplatesIdRouteWithChildren
+  '/api/admin/users/$id': typeof ApiAdminUsersIdRoute
   '/api/auth/callback/google': typeof ApiAuthCallbackGoogleRoute
   '/api/stories/$id/choose': typeof ApiStoriesIdChooseRoute
   '/api/stories/$id/scene': typeof ApiStoriesIdSceneRoute
+  '/api/admin/templates/': typeof ApiAdminTemplatesIndexRoute
+  '/api/admin/users/': typeof ApiAdminUsersIndexRoute
+  '/api/admin/templates/$id/status': typeof ApiAdminTemplatesIdStatusRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -266,6 +330,8 @@ export interface FileRouteTypes {
     | '/auth/signup'
     | '/story/create'
     | '/template/$id'
+    | '/api/admin/audit-logs'
+    | '/api/admin/dashboard'
     | '/api/auth/google'
     | '/api/auth/login'
     | '/api/auth/logout'
@@ -278,9 +344,14 @@ export interface FileRouteTypes {
     | '/api/profile'
     | '/api/stories'
     | '/api/templates'
+    | '/api/admin/templates/$id'
+    | '/api/admin/users/$id'
     | '/api/auth/callback/google'
     | '/api/stories/$id/choose'
     | '/api/stories/$id/scene'
+    | '/api/admin/templates'
+    | '/api/admin/users'
+    | '/api/admin/templates/$id/status'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -294,6 +365,8 @@ export interface FileRouteTypes {
     | '/auth/signup'
     | '/story/create'
     | '/template/$id'
+    | '/api/admin/audit-logs'
+    | '/api/admin/dashboard'
     | '/api/auth/google'
     | '/api/auth/login'
     | '/api/auth/logout'
@@ -306,9 +379,14 @@ export interface FileRouteTypes {
     | '/api/profile'
     | '/api/stories'
     | '/api/templates'
+    | '/api/admin/templates/$id'
+    | '/api/admin/users/$id'
     | '/api/auth/callback/google'
     | '/api/stories/$id/choose'
     | '/api/stories/$id/scene'
+    | '/api/admin/templates'
+    | '/api/admin/users'
+    | '/api/admin/templates/$id/status'
   id:
     | '__root__'
     | '/'
@@ -322,6 +400,8 @@ export interface FileRouteTypes {
     | '/auth/signup'
     | '/story/create'
     | '/template/$id'
+    | '/api/admin/audit-logs'
+    | '/api/admin/dashboard'
     | '/api/auth/google'
     | '/api/auth/login'
     | '/api/auth/logout'
@@ -334,9 +414,14 @@ export interface FileRouteTypes {
     | '/api/profile/'
     | '/api/stories/'
     | '/api/templates/'
+    | '/api/admin/templates/$id'
+    | '/api/admin/users/$id'
     | '/api/auth/callback/google'
     | '/api/stories/$id/choose'
     | '/api/stories/$id/scene'
+    | '/api/admin/templates/'
+    | '/api/admin/users/'
+    | '/api/admin/templates/$id/status'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -351,6 +436,8 @@ export interface RootRouteChildren {
   AuthSignupRoute: typeof AuthSignupRoute
   StoryCreateRoute: typeof StoryCreateRoute
   TemplateIdRoute: typeof TemplateIdRoute
+  ApiAdminAuditLogsRoute: typeof ApiAdminAuditLogsRoute
+  ApiAdminDashboardRoute: typeof ApiAdminDashboardRoute
   ApiAuthGoogleRoute: typeof ApiAuthGoogleRoute
   ApiAuthLoginRoute: typeof ApiAuthLoginRoute
   ApiAuthLogoutRoute: typeof ApiAuthLogoutRoute
@@ -363,7 +450,11 @@ export interface RootRouteChildren {
   ApiProfileIndexRoute: typeof ApiProfileIndexRoute
   ApiStoriesIndexRoute: typeof ApiStoriesIndexRoute
   ApiTemplatesIndexRoute: typeof ApiTemplatesIndexRoute
+  ApiAdminTemplatesIdRoute: typeof ApiAdminTemplatesIdRouteWithChildren
+  ApiAdminUsersIdRoute: typeof ApiAdminUsersIdRoute
   ApiAuthCallbackGoogleRoute: typeof ApiAuthCallbackGoogleRoute
+  ApiAdminTemplatesIndexRoute: typeof ApiAdminTemplatesIndexRoute
+  ApiAdminUsersIndexRoute: typeof ApiAdminUsersIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -529,6 +620,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAuthGoogleRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/admin/dashboard': {
+      id: '/api/admin/dashboard'
+      path: '/api/admin/dashboard'
+      fullPath: '/api/admin/dashboard'
+      preLoaderRoute: typeof ApiAdminDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/admin/audit-logs': {
+      id: '/api/admin/audit-logs'
+      path: '/api/admin/audit-logs'
+      fullPath: '/api/admin/audit-logs'
+      preLoaderRoute: typeof ApiAdminAuditLogsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/admin/users/': {
+      id: '/api/admin/users/'
+      path: '/api/admin/users'
+      fullPath: '/api/admin/users'
+      preLoaderRoute: typeof ApiAdminUsersIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/admin/templates/': {
+      id: '/api/admin/templates/'
+      path: '/api/admin/templates'
+      fullPath: '/api/admin/templates'
+      preLoaderRoute: typeof ApiAdminTemplatesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/stories/$id/scene': {
       id: '/api/stories/$id/scene'
       path: '/scene'
@@ -550,6 +669,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAuthCallbackGoogleRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/admin/users/$id': {
+      id: '/api/admin/users/$id'
+      path: '/api/admin/users/$id'
+      fullPath: '/api/admin/users/$id'
+      preLoaderRoute: typeof ApiAdminUsersIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/admin/templates/$id': {
+      id: '/api/admin/templates/$id'
+      path: '/api/admin/templates/$id'
+      fullPath: '/api/admin/templates/$id'
+      preLoaderRoute: typeof ApiAdminTemplatesIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/admin/templates/$id/status': {
+      id: '/api/admin/templates/$id/status'
+      path: '/status'
+      fullPath: '/api/admin/templates/$id/status'
+      preLoaderRoute: typeof ApiAdminTemplatesIdStatusRouteImport
+      parentRoute: typeof ApiAdminTemplatesIdRoute
+    }
   }
 }
 
@@ -567,6 +707,17 @@ const ApiStoriesIdRouteWithChildren = ApiStoriesIdRoute._addFileChildren(
   ApiStoriesIdRouteChildren,
 )
 
+interface ApiAdminTemplatesIdRouteChildren {
+  ApiAdminTemplatesIdStatusRoute: typeof ApiAdminTemplatesIdStatusRoute
+}
+
+const ApiAdminTemplatesIdRouteChildren: ApiAdminTemplatesIdRouteChildren = {
+  ApiAdminTemplatesIdStatusRoute: ApiAdminTemplatesIdStatusRoute,
+}
+
+const ApiAdminTemplatesIdRouteWithChildren =
+  ApiAdminTemplatesIdRoute._addFileChildren(ApiAdminTemplatesIdRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BrowseRoute: BrowseRoute,
@@ -579,6 +730,8 @@ const rootRouteChildren: RootRouteChildren = {
   AuthSignupRoute: AuthSignupRoute,
   StoryCreateRoute: StoryCreateRoute,
   TemplateIdRoute: TemplateIdRoute,
+  ApiAdminAuditLogsRoute: ApiAdminAuditLogsRoute,
+  ApiAdminDashboardRoute: ApiAdminDashboardRoute,
   ApiAuthGoogleRoute: ApiAuthGoogleRoute,
   ApiAuthLoginRoute: ApiAuthLoginRoute,
   ApiAuthLogoutRoute: ApiAuthLogoutRoute,
@@ -591,7 +744,11 @@ const rootRouteChildren: RootRouteChildren = {
   ApiProfileIndexRoute: ApiProfileIndexRoute,
   ApiStoriesIndexRoute: ApiStoriesIndexRoute,
   ApiTemplatesIndexRoute: ApiTemplatesIndexRoute,
+  ApiAdminTemplatesIdRoute: ApiAdminTemplatesIdRouteWithChildren,
+  ApiAdminUsersIdRoute: ApiAdminUsersIdRoute,
   ApiAuthCallbackGoogleRoute: ApiAuthCallbackGoogleRoute,
+  ApiAdminTemplatesIndexRoute: ApiAdminTemplatesIndexRoute,
+  ApiAdminUsersIndexRoute: ApiAdminUsersIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

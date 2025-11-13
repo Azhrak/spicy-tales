@@ -1,5 +1,7 @@
 import { db } from "~/lib/db";
 import type { Trope } from "~/lib/types/preferences";
+import type { TemplateStatus } from "~/lib/db/types";
+import { createAuditLog, extractChanges } from "./audit";
 
 /**
  * Get all novel templates
@@ -86,4 +88,194 @@ export async function searchTemplates(query: string) {
 			template.description.toLowerCase().includes(searchTerm)
 		);
 	});
+}
+
+/**
+ * Get templates by status
+ */
+export async function getTemplatesByStatus(status: TemplateStatus) {
+	return db
+		.selectFrom("novel_templates")
+		.selectAll()
+		.where("status", "=", status)
+		.orderBy("created_at", "desc")
+		.execute();
+}
+
+/**
+ * Get all published templates (for public browsing)
+ */
+export async function getPublishedTemplates() {
+	return getTemplatesByStatus("published");
+}
+
+/**
+ * Create a new template (admin/editor only)
+ */
+export async function createTemplate(
+	template: {
+		title: string;
+		description: string;
+		base_tropes: string[];
+		estimated_scenes: number;
+		cover_gradient: string;
+		status?: TemplateStatus;
+	},
+	userId: string,
+) {
+	const [newTemplate] = await db
+		.insertInto("novel_templates")
+		.values({
+			...template,
+			status: template.status || "draft",
+		})
+		.returning(["id", "title", "status"])
+		.execute();
+
+	// Log the creation
+	await createAuditLog({
+		userId,
+		action: "create_template",
+		entityType: "template",
+		entityId: newTemplate.id,
+		changes: { created: template },
+	});
+
+	return newTemplate;
+}
+
+/**
+ * Update template
+ */
+export async function updateTemplate(
+	templateId: string,
+	updates: {
+		title?: string;
+		description?: string;
+		base_tropes?: string[];
+		estimated_scenes?: number;
+		cover_gradient?: string;
+		status?: TemplateStatus;
+	},
+	userId: string,
+) {
+	// Get old template for audit log
+	const oldTemplate = await getTemplateById(templateId);
+
+	if (!oldTemplate) {
+		throw new Error("Template not found");
+	}
+
+	// Update template
+	const [updatedTemplate] = await db
+		.updateTable("novel_templates")
+		.set({
+			...updates,
+			updated_at: new Date(),
+		})
+		.where("id", "=", templateId)
+		.returning(["id", "title", "status"])
+		.execute();
+
+	// Log the update with changes
+	const changes = extractChanges(oldTemplate, { ...oldTemplate, ...updates });
+
+	await createAuditLog({
+		userId,
+		action: "update_template",
+		entityType: "template",
+		entityId: templateId,
+		changes,
+	});
+
+	return updatedTemplate;
+}
+
+/**
+ * Update template status (publish, archive, draft)
+ */
+export async function updateTemplateStatus(
+	templateId: string,
+	status: TemplateStatus,
+	userId: string,
+) {
+	const updates: any = {
+		status,
+		updated_at: new Date(),
+	};
+
+	// If archiving, set archived_at and archived_by
+	if (status === "archived") {
+		updates.archived_at = new Date();
+		updates.archived_by = userId;
+	}
+
+	const [updatedTemplate] = await db
+		.updateTable("novel_templates")
+		.set(updates)
+		.where("id", "=", templateId)
+		.returning(["id", "title", "status"])
+		.execute();
+
+	// Log the status change
+	await createAuditLog({
+		userId,
+		action: `${status}_template`,
+		entityType: "template",
+		entityId: templateId,
+		changes: { status: { old: null, new: status } },
+	});
+
+	return updatedTemplate;
+}
+
+/**
+ * Delete template (admin only)
+ */
+export async function deleteTemplate(templateId: string, userId: string) {
+	// Get template info for audit log
+	const template = await getTemplateById(templateId);
+
+	if (!template) {
+		throw new Error("Template not found");
+	}
+
+	// Delete the template (cascade will handle choice_points)
+	await db.deleteFrom("novel_templates").where("id", "=", templateId).execute();
+
+	// Log the deletion
+	await createAuditLog({
+		userId,
+		action: "delete_template",
+		entityType: "template",
+		entityId: templateId,
+		changes: {
+			deleted: {
+				title: template.title,
+				status: template.status,
+			},
+		},
+	});
+}
+
+/**
+ * Get template count by status
+ */
+export async function getTemplateCountByStatus() {
+	const result = await db
+		.selectFrom("novel_templates")
+		.select(({ fn }) => [
+			"status",
+			fn.count<number>("id").as("count"),
+		])
+		.groupBy("status")
+		.execute();
+
+	return result.reduce(
+		(acc, row) => {
+			acc[row.status as TemplateStatus] = Number(row.count);
+			return acc;
+		},
+		{} as Record<TemplateStatus, number>,
+	);
 }

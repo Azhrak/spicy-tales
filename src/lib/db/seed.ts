@@ -2,6 +2,7 @@ import { config } from "dotenv";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { db } from "./index";
+import { hashPassword } from "../auth/password";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -13,6 +14,53 @@ async function seed() {
 	console.log("🌱 Seeding database...");
 
 	try {
+		// Create admin user if environment variables are set
+		const adminEmail = process.env.ADMIN_EMAIL;
+		const adminPassword = process.env.ADMIN_PASSWORD;
+		const adminName = process.env.ADMIN_NAME || "Admin User";
+
+		if (adminEmail && adminPassword) {
+			// Check if admin user already exists
+			const existingAdmin = await db
+				.selectFrom("users")
+				.select("id")
+				.where("email", "=", adminEmail)
+				.executeTakeFirst();
+
+			if (!existingAdmin) {
+				const hashedPassword = await hashPassword(adminPassword);
+
+				// Create admin user
+				const [adminUser] = await db
+					.insertInto("users")
+					.values({
+						email: adminEmail,
+						name: adminName,
+						role: "admin",
+						email_verified: true,
+					})
+					.returning("id")
+					.execute();
+
+				// Create password account for admin
+				await db
+					.insertInto("password_accounts")
+					.values({
+						user_id: adminUser.id,
+						hashed_password: hashedPassword,
+					})
+					.execute();
+
+				console.log(`✅ Created admin user: ${adminEmail}`);
+			} else {
+				console.log(`ℹ️  Admin user already exists: ${adminEmail}`);
+			}
+		} else {
+			console.log(
+				"ℹ️  Skipping admin user creation (ADMIN_EMAIL or ADMIN_PASSWORD not set)",
+			);
+		}
+
 		// Seed novel templates
 		const templates = [
 			{
@@ -22,6 +70,7 @@ async function seed() {
 				base_tropes: ["fake-dating", "ceo-romance", "enemies-to-lovers"],
 				estimated_scenes: 12,
 				cover_gradient: "from-rose-500 to-pink-600",
+				status: "published" as const,
 			},
 			{
 				title: "Moonlit Destiny",
@@ -30,6 +79,7 @@ async function seed() {
 				base_tropes: ["paranormal", "fated-mates", "forbidden-love"],
 				estimated_scenes: 14,
 				cover_gradient: "from-purple-600 to-indigo-700",
+				status: "published" as const,
 			},
 			{
 				title: "Second Chance Summer",
@@ -38,6 +88,7 @@ async function seed() {
 				base_tropes: ["second-chance", "small-town", "childhood-friends"],
 				estimated_scenes: 10,
 				cover_gradient: "from-amber-400 to-orange-500",
+				status: "published" as const,
 			},
 			{
 				title: "The Highlander's Vow",
@@ -46,6 +97,7 @@ async function seed() {
 				base_tropes: ["time-travel", "historical", "forced-proximity"],
 				estimated_scenes: 15,
 				cover_gradient: "from-emerald-600 to-teal-700",
+				status: "published" as const,
 			},
 		];
 

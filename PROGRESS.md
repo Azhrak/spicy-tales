@@ -426,6 +426,136 @@ docker-compose up --build
 
 ---
 
+### Phase 15: Admin Dashboard System (100% Backend Complete)
+
+**Files Created:**
+
+- [src/lib/db/migrations/004_add_roles_and_template_status.ts](src/lib/db/migrations/004_add_roles_and_template_status.ts) - Role system and template status
+- [src/lib/db/migrations/005_add_audit_logs.ts](src/lib/db/migrations/005_add_audit_logs.ts) - Audit logging infrastructure
+- [src/lib/auth/authorization.ts](src/lib/auth/authorization.ts) - Role-based access control
+- [src/lib/db/queries/audit.ts](src/lib/db/queries/audit.ts) - Audit log management
+- [src/lib/jobs/cleanup-audit-logs.ts](src/lib/jobs/cleanup-audit-logs.ts) - Automated log cleanup
+- [src/routes/api/admin/templates/index.ts](src/routes/api/admin/templates/index.ts) - Template list/create
+- [src/routes/api/admin/templates/$id.ts](src/routes/api/admin/templates/$id.ts) - Template update/delete
+- [src/routes/api/admin/templates/$id.status.ts](src/routes/api/admin/templates/$id.status.ts) - Template status management
+- [src/routes/api/admin/users/index.ts](src/routes/api/admin/users/index.ts) - User list
+- [src/routes/api/admin/users/$id.ts](src/routes/api/admin/users/$id.ts) - User management
+- [src/routes/api/admin/dashboard.ts](src/routes/api/admin/dashboard.ts) - Dashboard statistics
+- [src/routes/api/admin/audit-logs.ts](src/routes/api/admin/audit-logs.ts) - Audit log viewer
+
+**Files Enhanced:**
+
+- [src/lib/auth/session.ts](src/lib/auth/session.ts) - Added role to SessionUser
+- [src/lib/db/queries/templates.ts](src/lib/db/queries/templates.ts) - Template CRUD with audit logging
+- [src/lib/db/queries/users.ts](src/lib/db/queries/users.ts) - User management with audit logging
+- [src/lib/db/seed.ts](src/lib/db/seed.ts) - Admin user creation from env variables
+- [src/routes/api/templates/index.ts](src/routes/api/templates/index.ts) - Filter by published status only
+- [.env.example](.env.example) - Added admin configuration
+- [package.json](package.json) - Added cleanup:audit-logs script
+
+**Database Changes:**
+
+- ✅ Migration 004: Added `role` column to users (user, editor, admin)
+- ✅ Migration 004: Added `status` column to novel_templates (draft, published, archived)
+- ✅ Migration 004: Added `archived_at` and `archived_by` tracking columns
+- ✅ Migration 005: Created `admin_audit_logs` table for change tracking
+- ✅ Indexes added for efficient role and status queries
+
+**Backend Features:**
+
+**Authorization System:**
+- ✅ Role-based middleware (`requireAdmin`, `requireEditorOrAdmin`, `requireAuth`)
+- ✅ User role management (user → editor → admin)
+- ✅ Proper 401/403 error responses
+
+**Audit Logging:**
+- ✅ Automatic logging of all admin/editor actions
+- ✅ Change tracking for templates and users
+- ✅ 3-month retention policy with cleanup job
+- ✅ Filterable audit log retrieval
+
+**Template Management (Editor/Admin):**
+- ✅ Create templates with draft/published/archived status
+- ✅ Update all template fields
+- ✅ Archive templates (keeps existing stories intact)
+- ✅ Delete templates (admin only)
+- ✅ View all templates including drafts/archived
+
+**User Management (Admin Only):**
+- ✅ List all users with pagination and search
+- ✅ Update user email, name, and role
+- ✅ Delete users (with cascade)
+- ✅ Self-deletion protection
+- ✅ User count by role statistics
+
+**Dashboard:**
+- ✅ Role-specific statistics
+- ✅ Template counts by status (editors + admins)
+- ✅ User counts by role (admins only)
+
+**Admin Seed:**
+- ✅ First admin user created from environment variables
+- ✅ Credentials: ADMIN_EMAIL, ADMIN_PASSWORD, ADMIN_NAME
+
+**Public API Protection:**
+- ✅ Browse page only shows published templates
+- ✅ Archived templates hidden but user stories preserved
+- ✅ Draft templates only visible to editors/admins
+
+**Scripts:**
+- ✅ `pnpm cleanup:audit-logs [days]` - Delete old audit logs (default 90 days)
+
+**Role Permissions:**
+
+| Feature | User | Editor | Admin |
+|---------|------|--------|-------|
+| Browse published templates | ✅ | ✅ | ✅ |
+| Create stories | ✅ | ✅ | ✅ |
+| View draft/archived templates | ❌ | ✅ | ✅ |
+| Create templates | ❌ | ✅ | ✅ |
+| Edit templates | ❌ | ✅ | ✅ |
+| Archive templates | ❌ | ✅ | ✅ |
+| Delete templates | ❌ | ❌ | ✅ |
+| View users | ❌ | ❌ | ✅ |
+| Edit user details | ❌ | ❌ | ✅ |
+| Change user roles | ❌ | ❌ | ✅ |
+| Delete users | ❌ | ❌ | ✅ |
+| View audit logs | ❌ | ❌ | ✅ |
+
+**API Endpoints:**
+
+**Templates:**
+- `GET /api/admin/templates` - List all templates (with status filter)
+- `POST /api/admin/templates` - Create new template
+- `GET /api/admin/templates/:id` - Get single template
+- `PATCH /api/admin/templates/:id` - Update template
+- `PATCH /api/admin/templates/:id/status` - Change template status
+- `DELETE /api/admin/templates/:id` - Delete template (admin only)
+
+**Users:**
+- `GET /api/admin/users` - List users (pagination + filters)
+- `GET /api/admin/users/:id` - Get user details
+- `PATCH /api/admin/users/:id` - Update user (email, name, role)
+- `DELETE /api/admin/users/:id` - Delete user
+
+**Dashboard:**
+- `GET /api/admin/dashboard` - Get role-based statistics
+
+**Audit Logs:**
+- `GET /api/admin/audit-logs` - Get audit logs (filters + pagination)
+
+**Status:** Backend 100% complete. Frontend UI pending.
+
+**Next Steps:**
+- Admin UI components (Layout, Navigation, Tables, Forms)
+- Admin dashboard page
+- Template management pages
+- User management pages
+- Audit log viewer
+- Header navigation update
+
+---
+
 ## � Quick Start
 
 ```bash
@@ -441,7 +571,16 @@ pnpm build && pnpm start # Production
 
 ## 🚧 Next Phases
 
-### Phase 15: Polish & UX (Priority 1)
+### Phase 16: Admin Dashboard Frontend (In Progress)
+
+- Admin UI components (Layout, Navigation, Tables, Forms)
+- Admin dashboard page with statistics
+- Template management pages (list, create, edit)
+- User management pages (list, edit)
+- Audit log viewer page
+- Header navigation update for admin/editor access
+
+### Phase 17: Polish & UX (Priority 1)
 
 - Error boundaries for better error recovery
 - Loading skeletons for perceived performance
@@ -449,11 +588,10 @@ pnpm build && pnpm start # Production
 - Mobile optimization
 - 404 page
 
-### Phase 16: Advanced Features (Priority 2)
+### Phase 18: Advanced Features (Priority 2)
 
 - Story export (PDF/EPUB)
 - Statistics dashboard with emotional arc charts
-- Custom template creation
 - Story branching visualization
 
 ---

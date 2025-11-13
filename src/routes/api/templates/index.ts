@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { json } from "@tanstack/react-start";
 import {
-	getAllTemplates,
+	getPublishedTemplates,
 	getTemplatesByTropes,
 	searchTemplates,
 } from "~/lib/db/queries/templates";
@@ -24,25 +24,35 @@ export const Route = createFileRoute("/api/templates/")({
 						const tropeFiltered = await getTemplatesByTropes(tropes);
 						const searchTerm = searchParam.toLowerCase();
 
+						// Filter for published templates only
 						templates = tropeFiltered.filter((template) => {
-							return (
+							const isPublished = template.status === "published";
+							const matchesSearch =
 								template.title.toLowerCase().includes(searchTerm) ||
-								template.description.toLowerCase().includes(searchTerm)
-							);
+								template.description.toLowerCase().includes(searchTerm);
+							return isPublished && matchesSearch;
 						});
 					}
 					// If only tropes filter provided
 					else if (tropesParam) {
 						const tropes = tropesParam.split(",") as Trope[];
-						templates = await getTemplatesByTropes(tropes);
+						const allTropeFiltered = await getTemplatesByTropes(tropes);
+						// Filter for published templates only
+						templates = allTropeFiltered.filter(
+							(template) => template.status === "published",
+						);
 					}
 					// If only search query provided
 					else if (searchParam) {
-						templates = await searchTemplates(searchParam);
+						const allSearchResults = await searchTemplates(searchParam);
+						// Filter for published templates only
+						templates = allSearchResults.filter(
+							(template) => template.status === "published",
+						);
 					}
-					// Otherwise, return all templates
+					// Otherwise, return all published templates
 					else {
-						templates = await getAllTemplates();
+						templates = await getPublishedTemplates();
 					}
 
 					return json({ templates });

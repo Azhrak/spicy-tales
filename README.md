@@ -14,11 +14,13 @@ Full-stack TypeScript app for AI-generated interactive romance novels. Users mak
 - 👤 User profiles & account management
 - 📊 Smart metadata (emotional tracking, tension threads)
 - 🛡️ Enhanced safety guardrails
+- 👑 Admin dashboard with role-based access control (Backend complete)
 
 ## Documentation
 
 - [PROGRESS.md](PROGRESS.md) - Implementation status & roadmap
 - [SESSION_SUMMARY.md](SESSION_SUMMARY.md) - Session recap
+- [ADMIN.md](ADMIN.md) - Admin dashboard guide
 - [DOCKER.md](DOCKER.md) - Docker setup guide
 - [AI_PROVIDERS.md](AI_PROVIDERS.md) - AI configuration
 - [SCENE_METADATA.md](SCENE_METADATA.md) - Metadata system
