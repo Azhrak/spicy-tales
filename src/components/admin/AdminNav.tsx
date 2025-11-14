@@ -15,7 +15,12 @@ interface AdminNavProps {
 }
 
 export function AdminNav({ currentPath, userRole }: AdminNavProps) {
-	const isActive = (path: string) => currentPath.startsWith(path);
+	const isActive = (path: string) => {
+		if (path === "/admin") {
+			return currentPath === "/admin";
+		}
+		return currentPath.startsWith(path);
+	};
 
 	const navItems = [
 		{

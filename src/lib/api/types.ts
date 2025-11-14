@@ -1,0 +1,92 @@
+import type { UserRole, TemplateStatus } from "~/lib/db/types";
+
+// Template types are re-exported from db/types for consistency
+export type { TemplateStatus };
+
+export interface Template {
+	id: string;
+	title: string;
+	description: string;
+	base_tropes: string[];
+	estimated_scenes: number;
+	cover_gradient: string;
+	status: TemplateStatus;
+	created_at: string;
+	updated_at: string;
+	archived_at: string | null;
+}
+
+// User types
+export interface User {
+	id: string;
+	email: string;
+	name: string;
+	role: UserRole;
+	email_verified: boolean;
+	created_at: string;
+	updated_at: string;
+}
+
+// Story types
+export type StoryStatus = "in-progress" | "completed";
+
+export interface UserStory {
+	id: string;
+	user_id: string;
+	template_id: string;
+	story_title: string | null;
+	current_scene: number;
+	status: StoryStatus;
+	created_at: string;
+	updated_at: string;
+	template: Template;
+}
+
+// Scene types
+export interface Scene {
+	id: string;
+	story_id: string;
+	scene_number: number;
+	content: string;
+	created_at: string;
+	updated_at: string;
+}
+
+// Audit Log types
+export interface AuditLog {
+	id: string;
+	user_id: string;
+	action: string;
+	entity_type: string;
+	entity_id: string | null;
+	metadata: Record<string, unknown> | null;
+	created_at: string;
+	user?: {
+		name: string;
+		email: string;
+	};
+}
+
+// Dashboard Stats types
+export interface DashboardStats {
+	totalUsers: number;
+	totalStories: number;
+	totalTemplates: number;
+	activeTemplates: number;
+	storiesInProgress: number;
+	completedStories: number;
+	recentActivity: AuditLog[];
+}
+
+// API response wrappers
+export interface ApiResponse<T> {
+	data?: T;
+	error?: string;
+}
+
+export interface PaginatedResponse<T> {
+	items: T[];
+	total: number;
+	page: number;
+	pageSize: number;
+}

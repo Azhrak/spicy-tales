@@ -1,4 +1,3 @@
-import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { Search } from "lucide-react";
 import { useState } from "react";
@@ -8,58 +7,25 @@ import { Header } from "~/components/Header";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
 import { NovelCard } from "~/components/NovelCard";
 import { PageContainer } from "~/components/PageContainer";
-import type { UserRole } from "~/lib/db/types";
 import { TROPE_LABELS, TROPES, type Trope } from "~/lib/types/preferences";
+import { useCurrentUserQuery } from "~/hooks/useCurrentUserQuery";
+import { useTemplatesQuery } from "~/hooks/useTemplatesQuery";
 
 export const Route = createFileRoute("/browse")({
 	component: BrowsePage,
 });
 
-interface NovelTemplate {
-	id: string;
-	title: string;
-	description: string;
-	base_tropes: string[];
-	estimated_scenes: number;
-	cover_gradient: string;
-}
-
 function BrowsePage() {
 	const [selectedTropes, setSelectedTropes] = useState<Trope[]>([]);
 	const [searchQuery, setSearchQuery] = useState("");
 
-	// Build query params
-	const queryParams = new URLSearchParams();
-	if (selectedTropes.length > 0) {
-		queryParams.set("tropes", selectedTropes.join(","));
-	}
-	if (searchQuery) {
-		queryParams.set("search", searchQuery);
-	}
-
 	// Fetch current user profile
-	const { data: profileData } = useQuery({
-		queryKey: ["currentUser"],
-		queryFn: async () => {
-			const response = await fetch("/api/profile", {
-				credentials: "include",
-			});
-			if (!response.ok) return null;
-			return response.json() as Promise<{ role: UserRole }>;
-		},
-	});
+	const { data: profileData } = useCurrentUserQuery();
 
 	// Fetch templates
-	const { data, isLoading, error } = useQuery({
-		queryKey: ["templates", selectedTropes, searchQuery],
-		queryFn: async () => {
-			const url = `/api/templates${queryParams.toString() ? `?${queryParams.toString()}` : ""}`;
-			const response = await fetch(url, {
-				credentials: "include",
-			});
-			if (!response.ok) throw new Error("Failed to fetch templates");
-			return response.json() as Promise<{ templates: NovelTemplate[] }>;
-		},
+	const { data, isLoading, error } = useTemplatesQuery({
+		tropes: selectedTropes,
+		search: searchQuery,
 	});
 
 	const toggleTrope = (trope: Trope) => {

@@ -4,47 +4,18 @@ import { FileText, Plus, Eye, EyeOff, Archive } from "lucide-react";
 import { AdminLayout, DataTable, StatusBadge } from "~/components/admin";
 import { ErrorMessage } from "~/components/ErrorMessage";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
-import type { TemplateStatus, UserRole } from "~/lib/db/types";
+import { useCurrentUserQuery } from "~/hooks/useCurrentUserQuery";
+import type { Template } from "~/lib/api/types";
 
 export const Route = createFileRoute("/admin/templates/")({
 	component: TemplatesListPage,
 });
 
-interface Template {
-	id: string;
-	title: string;
-	description: string;
-	status: TemplateStatus;
-	base_tropes: string[];
-	estimated_scenes: number;
-	created_at: string;
-	updated_at: string;
-	archived_at: string | null;
-}
-
 function TemplatesListPage() {
 	const navigate = useNavigate();
 
 	// Fetch current user to get role
-	const { data: userData, isLoading: userLoading } = useQuery({
-		queryKey: ["currentUser"],
-		queryFn: async () => {
-			const response = await fetch("/api/profile", {
-				credentials: "include",
-			});
-			if (!response.ok) {
-				if (response.status === 401) {
-					navigate({ to: "/auth/login" });
-					return null;
-				}
-				throw new Error("Failed to fetch user");
-			}
-			return response.json() as Promise<{
-				id: string;
-				role: UserRole;
-			}>;
-		},
-	});
+	const { data: userData, isLoading: userLoading } = useCurrentUserQuery();
 
 	// Fetch all templates
 	const {

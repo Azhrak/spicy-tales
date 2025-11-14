@@ -5,21 +5,13 @@ import { ArrowLeft, Save, Trash2, Shield } from "lucide-react";
 import { AdminLayout, RoleBadge, ConfirmDialog, NoPermissions } from "~/components/admin";
 import { ErrorMessage } from "~/components/ErrorMessage";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
+import { useCurrentUserQuery } from "~/hooks/useCurrentUserQuery";
+import type { User } from "~/lib/api/types";
 import type { UserRole } from "~/lib/db/types";
 
 export const Route = createFileRoute("/admin/users/$id/edit")({
 	component: EditUserPage,
 });
-
-interface User {
-	id: string;
-	email: string;
-	name: string;
-	role: UserRole;
-	email_verified: boolean;
-	created_at: string;
-	updated_at: string;
-}
 
 interface UserFormData {
 	email: string;
@@ -37,25 +29,7 @@ function EditUserPage() {
 	const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
 	// Fetch current user to get role
-	const { data: currentUserData, isLoading: currentUserLoading } = useQuery({
-		queryKey: ["currentUser"],
-		queryFn: async () => {
-			const response = await fetch("/api/profile", {
-				credentials: "include",
-			});
-			if (!response.ok) {
-				if (response.status === 401) {
-					navigate({ to: "/auth/login" });
-					return null;
-				}
-				throw new Error("Failed to fetch user");
-			}
-			return response.json() as Promise<{
-				id: string;
-				role: UserRole;
-			}>;
-		},
-	});
+	const { data: currentUserData, isLoading: currentUserLoading } = useCurrentUserQuery();
 
 	// Fetch user to edit
 	const {

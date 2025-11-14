@@ -1,4 +1,3 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { BookOpen, Clock, Sparkles, Trash2 } from "lucide-react";
 import { useState } from "react";
@@ -7,86 +6,27 @@ import { ErrorMessage } from "~/components/ErrorMessage";
 import { Header } from "~/components/Header";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
 import { PageContainer } from "~/components/PageContainer";
-import type { UserRole } from "~/lib/db/types";
+import { StoryProgressBar } from "~/components/StoryProgressBar";
+import { useCurrentUserQuery } from "~/hooks/useCurrentUserQuery";
+import { useUserStoriesQuery } from "~/hooks/useUserStoriesQuery";
+import { useDeleteStoryMutation } from "~/hooks/useDeleteStoryMutation";
 
 export const Route = createFileRoute("/library")({
 	component: LibraryPage,
 });
-
-interface Template {
-	id: string;
-	title: string;
-	description: string;
-	base_tropes: string[];
-	estimated_scenes: number;
-	cover_gradient: string;
-}
-
-interface UserStory {
-	id: string;
-	user_id: string;
-	template_id: string;
-	story_title: string | null;
-	current_scene: number;
-	status: "in-progress" | "completed";
-	created_at: string;
-	updated_at: string;
-	template: Template;
-}
 
 function LibraryPage() {
 	const [activeTab, setActiveTab] = useState<"in-progress" | "completed">(
 		"in-progress",
 	);
 	const [deletingId, setDeletingId] = useState<string | null>(null);
-	const queryClient = useQueryClient();
 
 	// Fetch current user profile
-	const { data: profileData } = useQuery({
-		queryKey: ["currentUser"],
-		queryFn: async () => {
-			const response = await fetch("/api/profile", {
-				credentials: "include",
-			});
-			if (!response.ok) return null;
-			return response.json() as Promise<{ role: UserRole }>;
-		},
-	});
+	const { data: profileData } = useCurrentUserQuery();
 
-	const { data, isLoading, error } = useQuery({
-		queryKey: ["user-stories", activeTab],
-		queryFn: async () => {
-			const response = await fetch(`/api/stories/user?status=${activeTab}`, {
-				credentials: "include",
-			});
-			if (!response.ok) throw new Error("Failed to fetch stories");
-			return response.json() as Promise<{ stories: UserStory[] }>;
-		},
-	});
+	const { data, isLoading, error } = useUserStoriesQuery(activeTab);
 
-	const deleteStory = useMutation({
-		mutationFn: async (storyId: string) => {
-			const response = await fetch(`/api/stories/${storyId}`, {
-				method: "DELETE",
-				credentials: "include",
-			});
-			if (!response.ok) {
-				const error = await response.json();
-				throw new Error(error.error || "Failed to delete story");
-			}
-			return response.json();
-		},
-		onSuccess: () => {
-			// Invalidate and refetch stories
-			queryClient.invalidateQueries({ queryKey: ["user-stories"] });
-			setDeletingId(null);
-		},
-		onError: (error) => {
-			console.error("Failed to delete story:", error);
-			setDeletingId(null);
-			alert("Failed to delete story. Please try again.");
-		},
-	});
+	const deleteStory = useDeleteStoryMutation();
 
 	const handleDeleteClick = (storyId: string, storyTitle: string) => {
 		if (
@@ -95,7 +35,16 @@ function LibraryPage() {
 			)
 		) {
 			setDeletingId(storyId);
-			deleteStory.mutate(storyId);
+			deleteStory.mutate(storyId, {
+				onSuccess: () => {
+					setDeletingId(null);
+				},
+				onError: (error) => {
+					console.error("Failed to delete story:", error);
+					setDeletingId(null);
+					alert("Failed to delete story. Please try again.");
+				},
+			});
 		}
 	};
 
@@ -194,33 +143,10 @@ function LibraryPage() {
 
 									{/* Progress */}
 									<div className="mb-4">
-										<div className="flex justify-between text-sm text-slate-600 mb-2">
-											<span>
-												Scene {story.current_scene} of{" "}
-												{story.template.estimated_scenes}
-											</span>
-											<span>
-												{Math.round(
-													(story.current_scene /
-														story.template.estimated_scenes) *
-														100,
-												)}
-												%
-											</span>
-										</div>
-										<div className="w-full bg-slate-200 rounded-full h-2">
-											<div
-												className="bg-romance-600 h-2 rounded-full transition-all"
-												style={{
-													width: `${Math.min(
-														(story.current_scene /
-															story.template.estimated_scenes) *
-															100,
-														100,
-													)}%`,
-												}}
-											></div>
-										</div>
+										<StoryProgressBar
+											currentScene={story.current_scene}
+											totalScenes={story.template.estimated_scenes}
+										/>
 									</div>
 
 									{/* Actions */}

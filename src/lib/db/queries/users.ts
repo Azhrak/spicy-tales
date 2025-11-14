@@ -147,6 +147,7 @@ export async function getUserWithPassword(email: string) {
 			"u.name",
 			"u.avatar_url",
 			"u.email_verified",
+			"u.default_preferences",
 			"pa.hashed_password",
 		])
 		.where("u.email", "=", email)

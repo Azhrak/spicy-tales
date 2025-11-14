@@ -1,11 +1,11 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { ArrowLeft, Save } from "lucide-react";
 import { AdminLayout } from "~/components/admin";
 import { ErrorMessage } from "~/components/ErrorMessage";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
-import type { UserRole } from "~/lib/db/types";
+import { useCurrentUserQuery } from "~/hooks/useCurrentUserQuery";
 
 export const Route = createFileRoute("/admin/templates/new")({
 	component: NewTemplatePage,
@@ -31,25 +31,7 @@ function NewTemplatePage() {
 	const [formError, setFormError] = useState<string | null>(null);
 
 	// Fetch current user to get role
-	const { data: userData, isLoading: userLoading } = useQuery({
-		queryKey: ["currentUser"],
-		queryFn: async () => {
-			const response = await fetch("/api/profile", {
-				credentials: "include",
-			});
-			if (!response.ok) {
-				if (response.status === 401) {
-					navigate({ to: "/auth/login" });
-					return null;
-				}
-				throw new Error("Failed to fetch user");
-			}
-			return response.json() as Promise<{
-				id: string;
-				role: UserRole;
-			}>;
-		},
-	});
+	const { data: userData, isLoading: userLoading } = useCurrentUserQuery();
 
 	// Create template mutation
 	const createMutation = useMutation({

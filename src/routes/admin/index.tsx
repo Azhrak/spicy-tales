@@ -4,7 +4,7 @@ import { FileText, Users, Archive, Eye, EyeOff, FilePlus } from "lucide-react";
 import { AdminLayout, NoPermissions } from "~/components/admin";
 import { ErrorMessage } from "~/components/ErrorMessage";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
-import type { UserRole } from "~/lib/db/types";
+import { useCurrentUserQuery } from "~/hooks/useCurrentUserQuery";
 
 export const Route = createFileRoute("/admin/")({
 	component: AdminDashboard,
@@ -29,25 +29,7 @@ function AdminDashboard() {
 	const navigate = useNavigate();
 
 	// Fetch current user to get role
-	const { data: userData, isLoading: userLoading } = useQuery({
-		queryKey: ["currentUser"],
-		queryFn: async () => {
-			const response = await fetch("/api/profile", {
-				credentials: "include",
-			});
-			if (!response.ok) {
-				if (response.status === 401) {
-					navigate({ to: "/auth/login" });
-					return null;
-				}
-				throw new Error("Failed to fetch user");
-			}
-			return response.json() as Promise<{
-				id: string;
-				role: UserRole;
-			}>;
-		},
-	});
+	const { data: userData, isLoading: userLoading } = useCurrentUserQuery();
 
 	// Fetch dashboard stats
 	const { data: stats, isLoading: statsLoading, error } = useQuery({

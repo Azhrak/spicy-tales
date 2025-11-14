@@ -5,7 +5,7 @@ import { ErrorMessage } from "~/components/ErrorMessage";
 import { Header } from "~/components/Header";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
 import { PageContainer } from "~/components/PageContainer";
-import type { UserRole } from "~/lib/db/types";
+import { useCurrentUserQuery } from "~/hooks/useCurrentUserQuery";
 import { TROPE_LABELS } from "~/lib/types/preferences";
 
 export const Route = createFileRoute("/template/$id")({
@@ -41,16 +41,7 @@ function TemplateDetailPage() {
 	const navigate = useNavigate();
 
 	// Fetch current user profile
-	const { data: profileData } = useQuery({
-		queryKey: ["currentUser"],
-		queryFn: async () => {
-			const response = await fetch("/api/profile", {
-				credentials: "include",
-			});
-			if (!response.ok) return null;
-			return response.json() as Promise<{ role: UserRole }>;
-		},
-	});
+	const { data: profileData } = useCurrentUserQuery();
 
 	// Fetch template details
 	const { data, isLoading, error } = useQuery({

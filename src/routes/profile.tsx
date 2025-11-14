@@ -1,6 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { AlertTriangle, Lock, Settings, User } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
+import { FullPageLoader } from "~/components/FullPageLoader";
 import { Header } from "~/components/Header";
 import { PageContainer } from "~/components/PageContainer";
 import type { UserRole } from "~/lib/db/types";
@@ -179,11 +180,7 @@ function ProfilePage() {
 	};
 
 	if (loading) {
-		return (
-			<div className="min-h-screen bg-linear-to-br from-romance-50 via-white to-romance-100 flex items-center justify-center">
-				<div className="text-lg text-slate-600">Loading...</div>
-			</div>
-		);
+		return <FullPageLoader />;
 	}
 
 	return (

@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { ArrowLeft, BookOpen, Flame, Heart } from "lucide-react";
+import { ArrowLeft, BookOpen, Heart } from "lucide-react";
 import { useState } from "react";
 import { Button } from "~/components/Button";
 import { EmptyState } from "~/components/EmptyState";
@@ -8,7 +8,10 @@ import { ErrorMessage } from "~/components/ErrorMessage";
 import { Header } from "~/components/Header";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
 import { PageContainer } from "~/components/PageContainer";
-import type { UserRole } from "~/lib/db/types";
+import { RadioButtonGroup } from "~/components/RadioButtonGroup";
+import { SpiceLevelSelector } from "~/components/SpiceLevelSelector";
+import { useCurrentUserQuery } from "~/hooks/useCurrentUserQuery";
+import { useUserPreferencesQuery } from "~/hooks/useUserPreferencesQuery";
 import {
 	PACING_LABELS,
 	PACING_OPTIONS,
@@ -16,10 +19,9 @@ import {
 	SCENE_LENGTH_LABELS,
 	SCENE_LENGTH_OPTIONS,
 	type SceneLengthOption,
-	SPICE_LABELS,
 	type SpiceLevel,
-	type UserPreferences,
 } from "~/lib/types/preferences";
+import type { Template } from "~/lib/api/types";
 
 export const Route = createFileRoute("/story/create")({
 	component: StoryCreatePage,
@@ -29,15 +31,6 @@ export const Route = createFileRoute("/story/create")({
 		};
 	},
 });
-
-interface Template {
-	id: string;
-	title: string;
-	description: string;
-	base_tropes: string[];
-	estimated_scenes: number;
-	cover_gradient: string;
-}
 
 function StoryCreatePage() {
 	const { templateId } = Route.useSearch();
@@ -51,16 +44,7 @@ function StoryCreatePage() {
 	const [isCreating, setIsCreating] = useState(false);
 
 	// Fetch current user profile
-	const { data: profileData } = useQuery({
-		queryKey: ["currentUser"],
-		queryFn: async () => {
-			const response = await fetch("/api/profile", {
-				credentials: "include",
-			});
-			if (!response.ok) return null;
-			return response.json() as Promise<{ role: UserRole }>;
-		},
-	});
+	const { data: profileData } = useCurrentUserQuery();
 
 	// Fetch template details
 	const { data: templateData, isLoading: isLoadingTemplate } = useQuery({
@@ -76,16 +60,7 @@ function StoryCreatePage() {
 	});
 
 	// Fetch user preferences
-	const { data: prefsData, isLoading: isLoadingPrefs } = useQuery({
-		queryKey: ["preferences"],
-		queryFn: async () => {
-			const response = await fetch("/api/preferences", {
-				credentials: "include",
-			});
-			if (!response.ok) throw new Error("Failed to fetch preferences");
-			return response.json() as Promise<{ preferences: UserPreferences }>;
-		},
-	});
+	const { data: prefsData, isLoading: isLoadingPrefs } = useUserPreferencesQuery();
 
 	// Fetch existing stories for this template
 	const { data: existingStoriesData } = useQuery({
@@ -261,100 +236,39 @@ function StoryCreatePage() {
 								</div>
 
 								{/* Spice Level */}
-								<div className="mb-6">
-									<label className="block text-sm font-semibold text-slate-700 mb-3">
-										Spice Level
-									</label>
-									<div className="grid grid-cols-5 gap-2">
-										{([1, 2, 3, 4, 5] as SpiceLevel[]).map((level) => (
-											<button
-												key={level}
-												type="button"
-												onClick={() => setSpiceLevel(level)}
-												className={`p-3 rounded-lg border-2 transition-all ${
-													spiceLevel === level
-														? "border-romance-600 bg-romance-50"
-														: "border-slate-200 bg-white hover:border-slate-300"
-												}`}
-											>
-												<div className="flex flex-col items-center gap-1">
-													<div className="flex gap-0.5">
-														{Array.from({ length: level }).map((_, i) => (
-															<Flame
-																key={i}
-																className="w-4 h-4 text-romance-500 fill-romance-500"
-															/>
-														))}
-													</div>
-													<span className="text-xs font-medium text-slate-700">
-														{SPICE_LABELS[level].label}
-													</span>
-												</div>
-											</button>
-										))}
-									</div>
-									<p className="text-xs text-slate-500 mt-2">
-										{spiceLevel && SPICE_LABELS[spiceLevel].description}
-									</p>
-								</div>
+								<SpiceLevelSelector
+									value={spiceLevel}
+									onChange={setSpiceLevel}
+								/>
 
 								{/* Pacing */}
 								<div className="mb-6">
-									<label className="block text-sm font-semibold text-slate-700 mb-3">
-										Pacing
-									</label>
-									<div className="grid grid-cols-2 gap-3">
-										{PACING_OPTIONS.map((option) => (
-											<button
-												key={option}
-												type="button"
-												onClick={() => setPacing(option)}
-												className={`p-4 rounded-lg border-2 transition-all text-left ${
-													pacing === option
-														? "border-romance-600 bg-romance-50"
-														: "border-slate-200 bg-white hover:border-slate-300"
-												}`}
-											>
-												<div className="font-semibold text-slate-900 mb-1">
-													{PACING_LABELS[option].label}
-												</div>
-												<div className="text-sm text-slate-600">
-													{PACING_LABELS[option].description}
-												</div>
-											</button>
-										))}
-									</div>
+									<RadioButtonGroup
+										label="Pacing"
+										value={pacing}
+										options={PACING_OPTIONS.map((option) => ({
+											value: option,
+											label: PACING_LABELS[option].label,
+											description: PACING_LABELS[option].description,
+										}))}
+										onChange={setPacing}
+										columns={2}
+									/>
 								</div>
 
 								{/* Scene Length */}
 								<div className="mb-6">
-									<label className="block text-sm font-semibold text-slate-700 mb-3">
-										Scene Length
-									</label>
-									<div className="grid grid-cols-3 gap-3">
-										{SCENE_LENGTH_OPTIONS.map((option) => (
-											<button
-												key={option}
-												type="button"
-												onClick={() => setSceneLength(option)}
-												className={`p-4 rounded-lg border-2 transition-all text-center ${
-													sceneLength === option
-														? "border-romance-600 bg-romance-50"
-														: "border-slate-200 bg-white hover:border-slate-300"
-												}`}
-											>
-												<div className="font-semibold text-slate-900 mb-1">
-													{SCENE_LENGTH_LABELS[option].label}
-												</div>
-												<div className="text-xs text-slate-600 mb-1">
-													{SCENE_LENGTH_LABELS[option].description}
-												</div>
-												<div className="text-xs text-slate-500">
-													{SCENE_LENGTH_LABELS[option].wordCount}
-												</div>
-											</button>
-										))}
-									</div>
+									<RadioButtonGroup
+										label="Scene Length"
+										value={sceneLength}
+										options={SCENE_LENGTH_OPTIONS.map((option) => ({
+											value: option,
+											label: SCENE_LENGTH_LABELS[option].label,
+											description: `${SCENE_LENGTH_LABELS[option].description} (${SCENE_LENGTH_LABELS[option].wordCount})`,
+										}))}
+										onChange={setSceneLength}
+										columns={3}
+									/>
 								</div>
 							</div>
 						</div>

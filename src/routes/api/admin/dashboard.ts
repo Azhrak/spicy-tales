@@ -4,6 +4,21 @@ import { requireEditorOrAdmin } from "~/lib/auth/authorization";
 import { getUserCountByRole } from "~/lib/db/queries/users";
 import { getTemplateCountByStatus } from "~/lib/db/queries/templates";
 
+interface DashboardStats {
+	templates?: {
+		total: number;
+		draft: number;
+		published: number;
+		archived: number;
+	};
+	users?: {
+		total: number;
+		user: number;
+		editor: number;
+		admin: number;
+	};
+}
+
 export const Route = createFileRoute("/api/admin/dashboard")({
 	server: {
 		handlers: {
@@ -12,7 +27,7 @@ export const Route = createFileRoute("/api/admin/dashboard")({
 				try {
 					const user = await requireEditorOrAdmin(request);
 
-					const stats: any = {};
+					const stats: DashboardStats = {};
 
 					// Editors see template statistics
 					if (user.role === "editor" || user.role === "admin") {

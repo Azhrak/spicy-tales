@@ -10,6 +10,7 @@ import {
 	Sparkles,
 } from "lucide-react";
 import { useState } from "react";
+import { FullPageLoader } from "~/components/FullPageLoader";
 
 export const Route = createFileRoute("/story/$id/read")({
 	component: ReadingPage,
@@ -117,14 +118,7 @@ function ReadingPage() {
 	};
 
 	if (isLoading) {
-		return (
-			<div className="min-h-screen bg-linear-to-br from-rose-50 via-purple-50 to-pink-50 flex items-center justify-center">
-				<div className="text-center">
-					<Loader2 className="w-12 h-12 text-rose-500 animate-spin mx-auto mb-4" />
-					<p className="text-gray-600 text-lg">Loading your story...</p>
-				</div>
-			</div>
-		);
+		return <FullPageLoader message="Loading your story..." />;
 	}
 
 	if (error) {

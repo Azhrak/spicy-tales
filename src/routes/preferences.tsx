@@ -8,6 +8,7 @@ import {
 	Settings,
 } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
+import { FullPageLoader } from "~/components/FullPageLoader";
 import {
 	GENRE_LABELS,
 	GENRES,
@@ -166,14 +167,7 @@ function PreferencesPage() {
 	};
 
 	if (loading) {
-		return (
-			<div className="min-h-screen bg-linear-to-br from-romance-50 via-white to-romance-100 flex items-center justify-center">
-				<div className="text-center">
-					<Settings className="w-12 h-12 text-romance-500 mx-auto mb-4 animate-spin" />
-					<p className="text-slate-600">Loading your preferences...</p>
-				</div>
-			</div>
-		);
+		return <FullPageLoader message="Loading your preferences..." />;
 	}
 
 	return (

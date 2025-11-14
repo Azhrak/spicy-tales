@@ -5,7 +5,8 @@ import { FileText, Users, Search, Calendar } from "lucide-react";
 import { AdminLayout, NoPermissions } from "~/components/admin";
 import { ErrorMessage } from "~/components/ErrorMessage";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
-import type { AuditEntityType, UserRole } from "~/lib/db/types";
+import { useCurrentUserQuery } from "~/hooks/useCurrentUserQuery";
+import type { AuditEntityType } from "~/lib/db/types";
 
 export const Route = createFileRoute("/admin/audit-logs/")({
 	component: AuditLogsPage,
@@ -13,14 +14,14 @@ export const Route = createFileRoute("/admin/audit-logs/")({
 
 interface AuditLog {
 	id: string;
-	user_id: string;
+	userId: string;
 	action: string;
-	entity_type: AuditEntityType;
-	entity_id: string;
+	entityType: AuditEntityType;
+	entityId: string | null;
 	changes: Record<string, any> | null;
-	created_at: string;
-	user_email?: string;
-	user_name?: string;
+	createdAt: string;
+	userEmail?: string;
+	userName?: string;
 }
 
 function AuditLogsPage() {
@@ -32,25 +33,7 @@ function AuditLogsPage() {
 	});
 
 	// Fetch current user to get role
-	const { data: userData, isLoading: userLoading } = useQuery({
-		queryKey: ["currentUser"],
-		queryFn: async () => {
-			const response = await fetch("/api/profile", {
-				credentials: "include",
-			});
-			if (!response.ok) {
-				if (response.status === 401) {
-					navigate({ to: "/auth/login" });
-					return null;
-				}
-				throw new Error("Failed to fetch user");
-			}
-			return response.json() as Promise<{
-				id: string;
-				role: UserRole;
-			}>;
-		},
-	});
+	const { data: userData, isLoading: userLoading } = useCurrentUserQuery();
 
 	// Fetch audit logs with filters
 	const {
@@ -129,20 +112,20 @@ function AuditLogsPage() {
 		logs = logs.filter(
 			(log) =>
 				log.action.toLowerCase().includes(searchLower) ||
-				log.user_email?.toLowerCase().includes(searchLower) ||
-				log.user_name?.toLowerCase().includes(searchLower) ||
-				log.entity_id.toLowerCase().includes(searchLower),
+				log.userEmail?.toLowerCase().includes(searchLower) ||
+				log.userName?.toLowerCase().includes(searchLower) ||
+				log.entityId?.toLowerCase().includes(searchLower),
 		);
 	}
 
 	// Calculate statistics
 	const stats = {
 		total: logs.length,
-		template: logs.filter((l) => l.entity_type === "template").length,
-		user: logs.filter((l) => l.entity_type === "user").length,
+		template: logs.filter((l) => l.entityType === "template").length,
+		user: logs.filter((l) => l.entityType === "user").length,
 		today: logs.filter(
 			(l) =>
-				new Date(l.created_at).toDateString() === new Date().toDateString(),
+				new Date(l.createdAt).toDateString() === new Date().toDateString(),
 		).length,
 	};
 
@@ -284,14 +267,14 @@ function AuditLogsPage() {
 											className="hover:bg-slate-50 transition-colors"
 										>
 											<td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">
-												{new Date(log.created_at).toLocaleString()}
+												{new Date(log.createdAt).toLocaleString()}
 											</td>
 											<td className="px-6 py-4 whitespace-nowrap text-sm">
 												<div className="text-slate-900 font-medium">
-													{log.user_name || "Unknown"}
+													{log.userName || "Unknown"}
 												</div>
 												<div className="text-slate-500 text-xs">
-													{log.user_email || log.user_id}
+													{log.userEmail || log.userId}
 												</div>
 											</td>
 											<td className="px-6 py-4 whitespace-nowrap">
@@ -302,16 +285,16 @@ function AuditLogsPage() {
 											<td className="px-6 py-4 whitespace-nowrap">
 												<span
 													className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-														log.entity_type === "template"
+														log.entityType === "template"
 															? "bg-purple-100 text-purple-800"
 															: "bg-green-100 text-green-800"
 													}`}
 												>
-													{log.entity_type}
+													{log.entityType}
 												</span>
 											</td>
 											<td className="px-6 py-4 whitespace-nowrap text-sm font-mono text-slate-600">
-												{log.entity_id.substring(0, 8)}...
+												{log.entityId ? `${log.entityId.substring(0, 8)}...` : "N/A"}
 											</td>
 											<td className="px-6 py-4 text-sm text-slate-600">
 												{log.changes ? (

@@ -1,0 +1,55 @@
+# Claude AI Agent Configuration
+
+## Required Reading
+
+All AI agents MUST read and follow the coding practices defined in:
+- [CODING_PRACTICES.md](./CODING_PRACTICES.md)
+
+## Key Principles
+
+1. **Before creating new code:**
+   - Check for existing hooks in `src/hooks/`
+   - Check for existing components in `src/components/`
+   - Check for existing types in `src/lib/api/types.ts`
+   - Check for existing constants in `src/lib/constants/`
+
+2. **Code Quality Rules:**
+   - ❌ NO `any` types - always use proper TypeScript types
+   - ❌ NO duplicate interface definitions - use shared types
+   - ❌ NO inline form inputs - use `FormInput` component
+   - ❌ NO repeated query patterns - create custom hooks (3+ uses)
+   - ✅ YES to proper error handling on all API calls
+   - ✅ YES to JSDoc documentation on hooks and complex functions
+   - ✅ YES to extracting reusable code
+
+3. **Pattern Enforcement:**
+   - Query/mutation used 3+ times → Extract to custom hook in `src/hooks/`
+   - UI pattern used 2+ times → Extract to component in `src/components/`
+   - Type used in 2+ files → Add to `src/lib/api/types.ts`
+   - Hardcoded values used 2+ times → Extract to `src/lib/constants/`
+
+4. **Import Shared Resources:**
+   ```typescript
+   // Always prefer shared types
+   import type { User, Template, UserStory } from "~/lib/api/types";
+
+   // Always use existing hooks
+   import { useCurrentUserQuery } from "~/hooks/useCurrentUserQuery";
+
+   // Always use existing components
+   import { FormInput } from "~/components/FormInput";
+   import { FullPageLoader } from "~/components/FullPageLoader";
+   ```
+
+## Checklist for Every Change
+
+- [ ] Read CODING_PRACTICES.md before making changes
+- [ ] Check for existing implementations before creating new ones
+- [ ] Use shared types from `src/lib/api/types.ts`
+- [ ] Use existing custom hooks where applicable
+- [ ] Use existing reusable components (especially FormInput)
+- [ ] Add JSDoc comments to new hooks and complex functions
+- [ ] Ensure all types are properly defined (no `any`)
+- [ ] Follow the established file and naming conventions
+- [ ] Add proper error handling to API calls
+- [ ] Test that TypeScript compilation passes

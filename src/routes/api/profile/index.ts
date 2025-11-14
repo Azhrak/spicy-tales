@@ -72,7 +72,12 @@ export const Route = createFileRoute("/api/profile/")({
 						return json({ error: "Invalid input" }, { status: 400 });
 					}
 
-					const updates: any = {
+					const updates: {
+						updated_at: Date;
+						name?: string;
+						email?: string;
+						email_verified?: boolean;
+					} = {
 						updated_at: new Date(),
 					};
 
