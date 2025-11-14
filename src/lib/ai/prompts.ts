@@ -264,8 +264,8 @@ export function getSceneLengthGuidance(
  */
 export function getSceneLengthRange(
 	sceneLength: "short" | "medium" | "long" | number | undefined,
-	phase: string,
-	sceneNumber: number,
+	_phase: string,
+	_sceneNumber: number,
 ): { min: number; max: number; target: string } {
 	// If custom word count provided, use it with ±15% flexibility
 	if (typeof sceneLength === "number") {

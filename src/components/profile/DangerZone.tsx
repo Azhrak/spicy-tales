@@ -1,4 +1,5 @@
 import { AlertTriangle } from "lucide-react";
+import { Button } from "~/components/Button";
 
 interface DangerZoneProps {
 	onDeleteClick: () => void;
@@ -17,12 +18,14 @@ export function DangerZone({ onDeleteClick }: DangerZoneProps) {
 				and preferences will be permanently deleted.
 			</p>
 
-			<button
+			<Button
+				type="button"
 				onClick={onDeleteClick}
-				className="px-6 py-3 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors"
+				variant="danger"
+				className="px-6 py-3"
 			>
 				Delete Account
-			</button>
+			</Button>
 		</div>
 	);
 }

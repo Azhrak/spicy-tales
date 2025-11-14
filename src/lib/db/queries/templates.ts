@@ -199,7 +199,12 @@ export async function updateTemplateStatus(
 	status: TemplateStatus,
 	userId: string,
 ) {
-	const updates: any = {
+	const updates: {
+		status: TemplateStatus;
+		updated_at: Date;
+		archived_at?: Date;
+		archived_by?: string;
+	} = {
 		status,
 		updated_at: new Date(),
 	};

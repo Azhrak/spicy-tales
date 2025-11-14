@@ -51,6 +51,7 @@ export function DeleteAccountModal({
 
 				<div className="flex gap-3">
 					<button
+						type="button"
 						onClick={onCancel}
 						disabled={isDeleting}
 						className="flex-1 px-6 py-3 border-2 border-slate-300 text-slate-700 rounded-lg font-semibold hover:bg-slate-50 transition-colors disabled:opacity-50"
@@ -58,6 +59,7 @@ export function DeleteAccountModal({
 						Cancel
 					</button>
 					<button
+						type="button"
 						onClick={onConfirm}
 						disabled={isDeleting || !password}
 						className="flex-1 px-6 py-3 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"

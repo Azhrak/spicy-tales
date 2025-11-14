@@ -48,7 +48,7 @@ class CustomFileMigrationProvider implements MigrationProvider {
 
 async function migrateToLatest() {
 	// Create database connection
-	const db = new Kysely<any>({
+	const db = new Kysely<unknown>({
 		dialect: new PostgresDialect({
 			pool: new Pool({
 				connectionString: process.env.DATABASE_URL,

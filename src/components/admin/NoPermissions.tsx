@@ -29,6 +29,7 @@ export function NoPermissions({
 						stroke="currentColor"
 						viewBox="0 0 24 24"
 					>
+						<title>Warning icon</title>
 						<path
 							strokeLinecap="round"
 							strokeLinejoin="round"

@@ -1,5 +1,6 @@
 import { randomBytes } from "node:crypto";
 import { db } from "~/lib/db";
+import type { UserPreferences } from "../types/preferences";
 
 const SESSION_COOKIE_NAME = "session_id";
 const SESSION_EXPIRY_DAYS = 30;
@@ -153,7 +154,7 @@ export interface SessionUser {
 	email: string;
 	name: string | null;
 	avatarUrl: string | null;
-	defaultPreferences: any | null;
+	defaultPreferences: UserPreferences | null;
 	role: "user" | "editor" | "admin";
 }
 
@@ -180,5 +181,8 @@ export async function getUserFromSession(
 		return null;
 	}
 
-	return user;
+	return {
+		...user,
+		defaultPreferences: user.defaultPreferences as UserPreferences | null,
+	};
 }

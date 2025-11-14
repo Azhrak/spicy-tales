@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { Archive, Eye, EyeOff, FilePlus, FileText, Users } from "lucide-react";
+import { Archive, Eye, FilePlus, FileText, Users } from "lucide-react";
 import { AdminLayout, NoPermissions } from "~/components/admin";
 import { ErrorMessage } from "~/components/ErrorMessage";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
@@ -11,7 +11,7 @@ export const Route = createFileRoute("/admin/")({
 });
 
 function AdminDashboard() {
-	const navigate = useNavigate();
+	const _navigate = useNavigate();
 
 	// Fetch current user to get role
 	const { data: userData, isLoading: userLoading } = useCurrentUserQuery();

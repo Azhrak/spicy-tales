@@ -1,5 +1,5 @@
+import { randomBytes } from "node:crypto";
 import { Google } from "arctic";
-import { randomBytes } from "crypto";
 
 if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
 	throw new Error("Missing Google OAuth credentials in environment variables");

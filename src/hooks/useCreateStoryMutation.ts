@@ -27,7 +27,7 @@ export function useCreateStoryMutation() {
 				preferences: data.preferences,
 			});
 		},
-		onSuccess: (_data, variables) => {
+		onSuccess: (_data, _variables) => {
 			// Invalidate user stories cache to refresh library
 			queryClient.invalidateQueries({ queryKey: ["user-stories"] });
 			// Invalidate existing stories cache

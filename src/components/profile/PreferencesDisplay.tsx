@@ -1,8 +1,9 @@
 import { Link } from "@tanstack/react-router";
 import { Settings } from "lucide-react";
+import type { UserPreferences } from "~/lib/types/preferences";
 
 interface PreferencesDisplayProps {
-	preferences: any;
+	preferences: UserPreferences | string | null;
 }
 
 export function PreferencesDisplay({ preferences }: PreferencesDisplayProps) {
@@ -31,7 +32,7 @@ export function PreferencesDisplay({ preferences }: PreferencesDisplayProps) {
 		);
 	}
 
-	let prefs: any;
+	let prefs: UserPreferences;
 	try {
 		prefs =
 			typeof preferences === "string" ? JSON.parse(preferences) : preferences;

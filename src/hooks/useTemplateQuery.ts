@@ -31,7 +31,7 @@ export function useTemplateQuery(templateId: string, enabled = true) {
 	return useQuery({
 		queryKey: templateQueryKey(templateId),
 		queryFn: async () => {
-			const result = await api.get<{ template: any }>(
+			const result = await api.get<{ template: TemplateWithChoices }>(
 				`/api/templates/${templateId}`,
 			);
 			// Parse options JSON string if needed
@@ -40,7 +40,7 @@ export function useTemplateQuery(templateId: string, enabled = true) {
 				template: {
 					...result.template,
 					choicePoints:
-						result.template.choicePoints?.map((cp: any) => ({
+						result.template.choicePoints?.map((cp) => ({
 							...cp,
 							options:
 								typeof cp.options === "string"

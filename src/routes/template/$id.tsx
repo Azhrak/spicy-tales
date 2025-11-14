@@ -13,30 +13,6 @@ export const Route = createFileRoute("/template/$id")({
 	component: TemplateDetailPage,
 });
 
-interface ChoiceOption {
-	id: string;
-	text: string;
-	tone: string;
-	impact: string;
-}
-
-interface ChoicePoint {
-	id: string;
-	scene_number: number;
-	prompt_text: string;
-	options: ChoiceOption[];
-}
-
-interface Template {
-	id: string;
-	title: string;
-	description: string;
-	base_tropes: string[];
-	estimated_scenes: number;
-	cover_gradient: string;
-	choicePoints: ChoicePoint[];
-}
-
 function TemplateDetailPage() {
 	const { id } = Route.useParams();
 	const navigate = useNavigate();

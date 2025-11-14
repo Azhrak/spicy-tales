@@ -38,9 +38,9 @@ export function SpiceLevelSection({
 										{SPICE_LABELS[level].label}
 									</span>
 									<div className="flex gap-1">
-										{Array.from({ length: level }).map((_, i) => (
+										{Array.from({ length: level }).map(() => (
 											<Flame
-												key={i}
+												key={level}
 												className="w-4 h-4 text-romance-500"
 												fill="currentColor"
 											/>

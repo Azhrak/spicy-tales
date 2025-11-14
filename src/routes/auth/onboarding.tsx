@@ -116,7 +116,7 @@ function OnboardingPage() {
 	};
 
 	return (
-		<div className="min-h-screen bg-gradient-to-br from-romance-50 via-white to-romance-100">
+		<div className="min-h-screen bg-linear-to-br from-romance-50 via-white to-romance-100">
 			<div className="container mx-auto px-4 py-12">
 				<div className="max-w-3xl mx-auto">
 					{/* Header */}
@@ -183,6 +183,7 @@ function OnboardingPage() {
 									{GENRES.map((genre) => (
 										<button
 											key={genre}
+											type="button"
 											onClick={() => handleGenreToggle(genre)}
 											className={`p-4 rounded-lg border-2 transition-all ${
 												preferences.genres.includes(genre)
@@ -211,6 +212,7 @@ function OnboardingPage() {
 								<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 									{TROPES.map((trope) => (
 										<button
+											type="button"
 											key={trope}
 											onClick={() => handleTropeToggle(trope)}
 											className={`p-4 rounded-lg border-2 transition-all text-left ${
@@ -243,6 +245,7 @@ function OnboardingPage() {
 									<div className="space-y-3">
 										{([1, 2, 3, 4, 5] as SpiceLevel[]).map((level) => (
 											<button
+												type="button"
 												key={level}
 												onClick={() => handleSpiceLevelChange(level)}
 												className={`w-full p-4 rounded-lg border-2 transition-all text-left ${
@@ -258,9 +261,9 @@ function OnboardingPage() {
 																{SPICE_LABELS[level].label}
 															</span>
 															<div className="flex gap-1">
-																{Array.from({ length: level }).map((_, i) => (
+																{Array.from({ length: level }).map(() => (
 																	<Flame
-																		key={i}
+																		key={level}
 																		className="w-4 h-4 text-romance-500"
 																		fill="currentColor"
 																	/>

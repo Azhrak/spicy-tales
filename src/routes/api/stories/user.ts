@@ -16,7 +16,7 @@ export const Route = createFileRoute("/api/stories/user")({
 					const url = new URL(request.url);
 					const status = url.searchParams.get("status");
 
-					let stories;
+					let stories: Awaited<ReturnType<typeof getUserStories>>;
 					if (status === "in-progress" || status === "completed") {
 						stories = await getUserStories(session.userId, status);
 					} else {

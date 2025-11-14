@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { api } from "~/lib/api/client";
 import type { UserRole } from "~/lib/db/types";
+import type { UserPreferences } from "~/lib/types/preferences";
 
 export const profileQueryKey = ["profile"] as const;
 
@@ -9,7 +10,7 @@ export interface UserProfile {
 	email: string;
 	role: UserRole;
 	createdAt: string;
-	preferences: any;
+	preferences: UserPreferences;
 }
 
 /**
@@ -22,7 +23,7 @@ export function useProfileQuery() {
 		queryFn: async () => {
 			try {
 				return await api.get<UserProfile>("/api/profile");
-			} catch (error) {
+			} catch (_error) {
 				// Return null for unauthenticated users
 				return null;
 			}

@@ -1,5 +1,7 @@
 import { jsonArrayFrom, jsonObjectFrom } from "kysely/helpers/postgres";
+import type { StoryStatus } from "~/lib/api/types";
 import { db } from "~/lib/db";
+import type { UserPreferences } from "~/lib/types/preferences";
 
 /**
  * Get all novel templates
@@ -38,7 +40,7 @@ export async function getNovelTemplateWithChoices(templateId: string) {
 export async function createUserStory(
 	userId: string,
 	templateId: string,
-	preferences: any,
+	preferences: UserPreferences | null,
 	customTitle?: string,
 ) {
 	// Get template title for auto-generation
@@ -99,10 +101,7 @@ export async function createUserStory(
 /**
  * Get user's stories with template info
  */
-export async function getUserStories(
-	userId: string,
-	status?: "in-progress" | "completed",
-) {
+export async function getUserStories(userId: string, status?: StoryStatus) {
 	let query = db
 		.selectFrom("user_stories as us")
 		.selectAll("us")
@@ -164,7 +163,7 @@ export async function getStoryWithDetails(storyId: string, userId: string) {
 export async function updateStoryProgress(
 	storyId: string,
 	currentScene: number,
-	status?: "in-progress" | "completed",
+	status?: StoryStatus,
 ) {
 	return db
 		.updateTable("user_stories")

@@ -48,9 +48,9 @@ export function DataTable<T extends { id: string }>({
 				<table className="w-full">
 					<thead>
 						<tr className="border-b border-slate-200 bg-slate-50">
-							{columns.map((column, index) => (
+							{columns.map((column) => (
 								<th
-									key={index}
+									key={column.header}
 									className={cn(
 										"px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider",
 										column.className,
@@ -71,9 +71,9 @@ export function DataTable<T extends { id: string }>({
 									onRowClick && "cursor-pointer",
 								)}
 							>
-								{columns.map((column, index) => (
+								{columns.map((column) => (
 									<td
-										key={index}
+										key={column.header}
 										className={cn(
 											"px-6 py-4 text-sm text-slate-900",
 											column.className,

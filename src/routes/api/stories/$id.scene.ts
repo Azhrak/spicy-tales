@@ -2,6 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { json } from "@tanstack/react-start";
 import { z } from "zod";
 import { generateScene } from "~/lib/ai/generate";
+import type { StoryPreferences } from "~/lib/ai/prompts";
+import type { StoryStatus } from "~/lib/api/types";
 import { getSessionFromRequest } from "~/lib/auth/session";
 import { db } from "~/lib/db";
 import { getCachedScene } from "~/lib/db/queries/scenes";
@@ -122,11 +124,9 @@ export const Route = createFileRoute("/api/stories/$id/scene")({
 							templateTitle: story.template.title,
 							sceneNumber,
 							estimatedScenes: story.template.estimated_scenes,
-							preferences: story.preferences as any,
+							preferences: story.preferences as unknown as StoryPreferences,
 							lastChoice: lastChoiceData,
-						});
-
-						// Fetch the newly cached scene
+						}); // Fetch the newly cached scene
 						scene = await getCachedScene(storyId, sceneNumber);
 						cached = result.cached;
 					}
@@ -224,10 +224,12 @@ export const Route = createFileRoute("/api/stories/$id/scene")({
 
 					// Check if story is complete
 					const isComplete = currentScene > story.template.estimated_scenes;
-					const newStatus = isComplete ? "completed" : "in-progress";
+					const newStatus: StoryStatus = isComplete
+						? "completed"
+						: "in-progress";
 
 					// Update story progress
-					await updateStoryProgress(storyId, currentScene, newStatus as any);
+					await updateStoryProgress(storyId, currentScene, newStatus);
 
 					return json({
 						success: true,

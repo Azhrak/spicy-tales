@@ -13,20 +13,8 @@ export const Route = createFileRoute("/admin/audit-logs/")({
 	component: AuditLogsPage,
 });
 
-interface AuditLog {
-	id: string;
-	userId: string;
-	action: string;
-	entityType: AuditEntityType;
-	entityId: string | null;
-	changes: Record<string, any> | null;
-	createdAt: string;
-	userEmail?: string;
-	userName?: string;
-}
-
 function AuditLogsPage() {
-	const navigate = useNavigate();
+	const _navigate = useNavigate();
 	const [filters, setFilters] = useState({
 		entityType: "all" as AuditEntityType | "all",
 		userId: "",

@@ -6,7 +6,7 @@ export class ApiError extends Error {
 	constructor(
 		message: string,
 		public status: number,
-		public data?: any,
+		public data?: unknown,
 	) {
 		super(message);
 		this.name = "ApiError";
@@ -121,7 +121,7 @@ export const api = {
 	 */
 	post: <T>(
 		endpoint: string,
-		body?: any,
+		body?: unknown,
 		options?: RequestOptions,
 	): Promise<T> => {
 		return apiFetch<T>(endpoint, {
@@ -136,7 +136,7 @@ export const api = {
 	 */
 	put: <T>(
 		endpoint: string,
-		body?: any,
+		body?: unknown,
 		options?: RequestOptions,
 	): Promise<T> => {
 		return apiFetch<T>(endpoint, {
@@ -151,7 +151,7 @@ export const api = {
 	 */
 	patch: <T>(
 		endpoint: string,
-		body?: any,
+		body?: unknown,
 		options?: RequestOptions,
 	): Promise<T> => {
 		return apiFetch<T>(endpoint, {
@@ -166,7 +166,7 @@ export const api = {
 	 */
 	delete: <T = void>(
 		endpoint: string,
-		body?: any,
+		body?: unknown,
 		options?: RequestOptions,
 	): Promise<T> => {
 		return apiFetch<T>(endpoint, {

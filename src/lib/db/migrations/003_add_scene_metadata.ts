@@ -1,4 +1,4 @@
-import { type Kysely, sql } from "kysely";
+import type { Kysely } from "kysely";
 
 /**
  * Migration 003: Add metadata and summary to scenes table

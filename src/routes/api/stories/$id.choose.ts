@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { json } from "@tanstack/react-start";
 import { z } from "zod";
+import type { StoryStatus } from "~/lib/api/types";
 import { getSessionFromRequest } from "~/lib/auth/session";
 import {
 	getStoryById,
@@ -65,10 +66,12 @@ export const Route = createFileRoute("/api/stories/$id/choose")({
 
 					// Check if story is complete
 					const isComplete = nextScene > story.template.estimated_scenes;
-					const newStatus = isComplete ? "completed" : "in-progress";
+					const newStatus: StoryStatus = isComplete
+						? "completed"
+						: "in-progress";
 
 					// Update story progress
-					await updateStoryProgress(storyId, nextScene, newStatus as any);
+					await updateStoryProgress(storyId, nextScene, newStatus);
 
 					return json({
 						success: true,

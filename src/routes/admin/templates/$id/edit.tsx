@@ -19,7 +19,7 @@ import { useCurrentUserQuery } from "~/hooks/useCurrentUserQuery";
 import { useDeleteTemplateMutation } from "~/hooks/useDeleteTemplateMutation";
 import { useUpdateTemplateMutation } from "~/hooks/useUpdateTemplateMutation";
 import { useUpdateTemplateStatusMutation } from "~/hooks/useUpdateTemplateStatusMutation";
-import type { Template, TemplateStatus } from "~/lib/api/types";
+import type { TemplateStatus } from "~/lib/api/types";
 
 export const Route = createFileRoute("/admin/templates/$id/edit")({
 	component: EditTemplatePage,
@@ -313,7 +313,7 @@ function EditTemplatePage() {
 							</select>
 							<div className="mt-2">
 								<div
-									className={`h-24 rounded-lg bg-gradient-to-br ${formData.cover_gradient}`}
+									className={`h-24 rounded-lg bg-linear-to-br ${formData.cover_gradient}`}
 								/>
 							</div>
 						</div>

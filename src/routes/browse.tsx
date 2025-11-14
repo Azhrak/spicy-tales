@@ -73,6 +73,7 @@ function BrowsePage() {
 					<div className="flex flex-wrap gap-2">
 						{TROPES.map((trope) => (
 							<button
+								type="button"
 								key={trope}
 								onClick={() => toggleTrope(trope)}
 								className={`px-4 py-2 rounded-lg font-medium transition-colors ${

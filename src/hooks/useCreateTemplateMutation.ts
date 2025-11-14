@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "~/lib/api/client";
+import type { TemplateStatus } from "~/lib/db/types";
 import { adminDashboardQueryKey } from "./useAdminDashboardQuery";
 import { adminTemplatesQueryKey } from "./useAdminTemplatesQuery";
 
@@ -9,6 +10,15 @@ interface TemplateFormData {
 	base_tropes: string;
 	estimated_scenes: number;
 	cover_gradient: string;
+}
+
+interface CreateTemplateResponse {
+	template: {
+		id: string;
+		title: string;
+		status: TemplateStatus;
+	};
+	message: string;
 }
 
 export const createTemplateMutationKey = ["createTemplate"] as const;
@@ -23,7 +33,7 @@ export function useCreateTemplateMutation() {
 	return useMutation({
 		mutationKey: createTemplateMutationKey,
 		mutationFn: (data: TemplateFormData) =>
-			api.post("/api/admin/templates", {
+			api.post<CreateTemplateResponse>("/api/admin/templates", {
 				title: data.title,
 				description: data.description,
 				base_tropes: data.base_tropes.split(",").map((t) => t.trim()),

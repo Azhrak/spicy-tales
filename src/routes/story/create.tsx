@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { ArrowLeft, BookOpen, Heart } from "lucide-react";
 import { useState } from "react";
 import { Button } from "~/components/Button";
@@ -15,7 +15,6 @@ import { useCurrentUserQuery } from "~/hooks/useCurrentUserQuery";
 import { useExistingStoriesQuery } from "~/hooks/useExistingStoriesQuery";
 import { useTemplateQuery } from "~/hooks/useTemplateQuery";
 import { useUserPreferencesQuery } from "~/hooks/useUserPreferencesQuery";
-import type { Template } from "~/lib/api/types";
 import {
 	PACING_LABELS,
 	PACING_OPTIONS,
@@ -96,14 +95,15 @@ function StoryCreatePage() {
 	const handleCreateStory = async () => {
 		setIsCreating(true);
 		try {
-			const result = await createStory.mutateAsync({
+			const _result = await createStory.mutateAsync({
 				templateId,
 				storyTitle: storyTitle.trim() || undefined,
 				preferences: {
-					...userPreferences!,
-					spiceLevel: spiceLevel || userPreferences?.spiceLevel!,
-					pacing: pacing || userPreferences?.pacing!,
-					sceneLength: sceneLength || userPreferences?.sceneLength || "medium",
+					genres: userPreferences?.genres ?? [],
+					tropes: userPreferences?.tropes ?? [],
+					spiceLevel: spiceLevel ?? userPreferences?.spiceLevel ?? 3,
+					pacing: pacing ?? userPreferences?.pacing ?? "slow-burn",
+					sceneLength: sceneLength ?? userPreferences?.sceneLength ?? "medium",
 				},
 			});
 			// Navigate to library after successful creation

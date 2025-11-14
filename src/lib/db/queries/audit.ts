@@ -5,10 +5,10 @@ import type { AuditEntityType } from "~/lib/db/types";
  * Extract changes between old and new objects
  */
 export function extractChanges(
-	oldObj: Record<string, any> | null,
-	newObj: Record<string, any>,
-): Record<string, { old: any; new: any }> {
-	const changes: Record<string, { old: any; new: any }> = {};
+	oldObj: Record<string, unknown> | null,
+	newObj: Record<string, unknown>,
+): Record<string, { old: unknown; new: unknown }> {
+	const changes: Record<string, { old: unknown; new: unknown }> = {};
 
 	// If oldObj is null, all fields in newObj are new
 	if (!oldObj) {
@@ -36,7 +36,7 @@ export async function createAuditLog(params: {
 	action: string;
 	entityType: AuditEntityType;
 	entityId: string;
-	changes?: Record<string, any> | null;
+	changes?: Record<string, unknown> | null;
 }): Promise<void> {
 	await db
 		.insertInto("admin_audit_logs")
@@ -45,7 +45,7 @@ export async function createAuditLog(params: {
 			action: params.action,
 			entity_type: params.entityType,
 			entity_id: params.entityId,
-			changes: params.changes || null,
+			changes: params.changes ? JSON.stringify(params.changes) : null,
 		})
 		.execute();
 }
@@ -73,7 +73,7 @@ export interface AuditLogWithUser {
 	action: string;
 	entityType: AuditEntityType;
 	entityId: string;
-	changes: Record<string, any> | null;
+	changes: Record<string, unknown> | null;
 	createdAt: Date;
 }
 
@@ -133,7 +133,7 @@ export async function getAuditLogs(
 
 	return logs.map((log) => ({
 		...log,
-		changes: log.changes as Record<string, any> | null,
+		changes: log.changes as Record<string, unknown> | null,
 	}));
 }
 

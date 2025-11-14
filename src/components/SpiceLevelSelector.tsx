@@ -18,9 +18,9 @@ export function SpiceLevelSelector({
 }: SpiceLevelSelectorProps) {
 	return (
 		<div>
-			<label className="block text-sm font-semibold text-slate-700 mb-3">
+			<div className="block text-sm font-semibold text-slate-700 mb-3">
 				Spice Level
-			</label>
+			</div>
 			<div className="grid grid-cols-5 gap-2">
 				{([1, 2, 3, 4, 5] as SpiceLevel[]).map((level) => (
 					<button
@@ -35,9 +35,9 @@ export function SpiceLevelSelector({
 					>
 						<div className="flex flex-col items-center gap-1">
 							<div className="flex gap-0.5">
-								{Array.from({ length: level }).map((_, i) => (
+								{Array.from({ length: level }).map(() => (
 									<Flame
-										key={i}
+										key={`flame-${level}`}
 										className="w-4 h-4 text-romance-500 fill-romance-500"
 									/>
 								))}

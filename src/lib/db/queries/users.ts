@@ -1,6 +1,7 @@
 import type { GoogleUser } from "~/lib/auth/oauth";
 import { db } from "~/lib/db";
 import type { UserRole } from "~/lib/db/types";
+import type { UserPreferences } from "~/lib/types/preferences";
 import { createAuditLog, extractChanges } from "./audit";
 
 /**
@@ -159,7 +160,10 @@ export async function getUserWithPassword(email: string) {
 /**
  * Update user's default preferences
  */
-export async function updateUserPreferences(userId: string, preferences: any) {
+export async function updateUserPreferences(
+	userId: string,
+	preferences: UserPreferences,
+) {
 	return db
 		.updateTable("users")
 		.set({

@@ -5,14 +5,10 @@ import { getSessionFromRequest } from "~/lib/auth/session";
 import { createUserStory } from "~/lib/db/queries/stories";
 import {
 	GENRES,
-	type Genre,
 	PACING_OPTIONS,
-	type PacingOption,
 	SCENE_LENGTH_OPTIONS,
-	type SceneLengthOption,
 	type SpiceLevel,
 	TROPES,
-	type Trope,
 } from "~/lib/types/preferences";
 
 const createStorySchema = z.object({

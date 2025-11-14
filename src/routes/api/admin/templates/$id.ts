@@ -6,9 +6,7 @@ import {
 	deleteTemplate,
 	getTemplateById,
 	updateTemplate,
-	updateTemplateStatus,
 } from "~/lib/db/queries/templates";
-import type { TemplateStatus } from "~/lib/db/types";
 
 // Validation schema for updating a template
 const updateTemplateSchema = z.object({
@@ -20,7 +18,7 @@ const updateTemplateSchema = z.object({
 });
 
 // Validation schema for updating template status
-const updateStatusSchema = z.object({
+const _updateStatusSchema = z.object({
 	status: z.enum(["draft", "published", "archived"]),
 });
 

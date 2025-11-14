@@ -15,7 +15,6 @@ import { useAdminUserQuery } from "~/hooks/useAdminUserQuery";
 import { useCurrentUserQuery } from "~/hooks/useCurrentUserQuery";
 import { useDeleteUserMutation } from "~/hooks/useDeleteUserMutation";
 import { useUpdateUserMutation } from "~/hooks/useUpdateUserMutation";
-import type { User } from "~/lib/api/types";
 import type { UserRole } from "~/lib/db/types";
 
 export const Route = createFileRoute("/admin/users/$id/edit")({

@@ -5,7 +5,6 @@ import {
 	ChevronRight,
 	Flame,
 	Home,
-	Loader2,
 	Sparkles,
 } from "lucide-react";
 import { useState } from "react";
@@ -13,35 +12,11 @@ import { Button } from "~/components/Button";
 import { FullPageLoader } from "~/components/FullPageLoader";
 import { useMakeChoiceMutation } from "~/hooks/useMakeChoiceMutation";
 import { useStorySceneQuery } from "~/hooks/useStorySceneQuery";
-import { ApiError, api } from "~/lib/api/client";
+import { api } from "~/lib/api/client";
 
 export const Route = createFileRoute("/story/$id/read")({
 	component: ReadingPage,
 });
-
-type SceneData = {
-	scene: {
-		number: number;
-		content: string;
-		wordCount: number;
-		cached: boolean;
-	};
-	story: {
-		id: string;
-		title: string;
-		currentScene: number;
-		estimatedScenes: number;
-		status: string;
-	};
-	choicePoint: {
-		id: string;
-		promptText: string;
-		options: Array<{
-			text: string;
-			tone: string;
-		}>;
-	} | null;
-};
 
 function ReadingPage() {
 	const { id } = Route.useParams();
@@ -57,13 +32,16 @@ function ReadingPage() {
 	// Record choice mutation
 	const choiceMutation = useMakeChoiceMutation(id);
 
-	const handleChoiceSuccess = (result: any) => {
+	const handleChoiceSuccess = (result: {
+		completed: boolean;
+		nextScene?: number;
+	}) => {
 		setSelectedOption(null);
 
 		if (result.completed) {
 			// Story complete - redirect to library
 			navigate({ to: "/library" });
-		} else {
+		} else if (result.nextScene !== undefined) {
 			// Move to next scene and refetch
 			setCurrentSceneNumber(result.nextScene);
 		}
@@ -163,8 +141,8 @@ function ReadingPage() {
 				{/* Scene Content */}
 				<div className="bg-white rounded-xl shadow-lg p-8 mb-6">
 					<div className="prose prose-lg max-w-none">
-						{scene.content.split("\n\n").map((paragraph, index) => (
-							<p key={index} className="mb-4 text-gray-800 leading-relaxed">
+						{scene.content.split("\n\n").map((paragraph) => (
+							<p key={paragraph} className="mb-4 text-gray-800 leading-relaxed">
 								{paragraph}
 							</p>
 						))}
@@ -198,7 +176,7 @@ function ReadingPage() {
 						<div className="space-y-3">
 							{choicePoint.options.map((option, index) => (
 								<button
-									key={index}
+									key={option.text}
 									type="button"
 									onClick={() => setSelectedOption(index)}
 									disabled={choiceMutation.isPending}

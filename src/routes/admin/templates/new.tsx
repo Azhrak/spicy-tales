@@ -21,6 +21,12 @@ interface TemplateFormData {
 	cover_gradient: string;
 }
 
+interface CreateTemplateResponse {
+	template: {
+		id: string;
+	};
+}
+
 function NewTemplatePage() {
 	const navigate = useNavigate();
 	const [formData, setFormData] = useState<TemplateFormData>({
@@ -38,7 +44,7 @@ function NewTemplatePage() {
 	// Create template mutation
 	const createMutation = useCreateTemplateMutation();
 
-	const handleMutationSuccess = (data: any) => {
+	const handleMutationSuccess = (data: CreateTemplateResponse) => {
 		navigate({ to: `/admin/templates/${data.template.id}/edit` });
 	};
 
@@ -216,7 +222,7 @@ function NewTemplatePage() {
 							</select>
 							<div className="mt-2">
 								<div
-									className={`h-24 rounded-lg bg-gradient-to-br ${formData.cover_gradient}`}
+									className={`h-24 rounded-lg bg-linear-to-br ${formData.cover_gradient}`}
 								/>
 							</div>
 						</div>

@@ -41,17 +41,13 @@ export const Route = createFileRoute("/api/preferences")({
 					}
 
 					// Validate genres are valid
-					const invalidGenres = genres.filter(
-						(g) => !GENRES.includes(g as any),
-					);
+					const invalidGenres = genres.filter((g) => !GENRES.includes(g));
 					if (invalidGenres.length > 0) {
 						return json({ error: "Invalid genre selection" }, { status: 400 });
 					}
 
 					// Validate tropes are valid
-					const invalidTropes = tropes.filter(
-						(t) => !TROPES.includes(t as any),
-					);
+					const invalidTropes = tropes.filter((t) => !TROPES.includes(t));
 					if (invalidTropes.length > 0) {
 						return json({ error: "Invalid trope selection" }, { status: 400 });
 					}
@@ -66,7 +62,7 @@ export const Route = createFileRoute("/api/preferences")({
 					}
 
 					// Validate pacing
-					if (!PACING_OPTIONS.includes(pacing as any)) {
+					if (!PACING_OPTIONS.includes(pacing)) {
 						return json({ error: "Invalid pacing selection" }, { status: 400 });
 					}
 

@@ -19,7 +19,7 @@ export function useCurrentUserQuery() {
 		queryFn: async () => {
 			try {
 				return await api.get<CurrentUser>("/api/profile");
-			} catch (error) {
+			} catch (_error) {
 				// Return null for unauthenticated users
 				return null;
 			}

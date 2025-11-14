@@ -38,9 +38,14 @@ export async function cacheScene(
 			})
 			.returning("id")
 			.executeTakeFirstOrThrow();
-	} catch (error: any) {
+	} catch (error: unknown) {
 		// If duplicate, just return - the scene is already cached
-		if (error?.code === "23505") {
+		if (
+			error &&
+			typeof error === "object" &&
+			"code" in error &&
+			error.code === "23505"
+		) {
 			// Duplicate key error code
 			return null;
 		}

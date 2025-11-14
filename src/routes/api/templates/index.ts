@@ -16,7 +16,7 @@ export const Route = createFileRoute("/api/templates/")({
 					const tropesParam = url.searchParams.get("tropes");
 					const searchParam = url.searchParams.get("search");
 
-					let templates;
+					let templates: Awaited<ReturnType<typeof getPublishedTemplates>>;
 
 					// If both tropes and search are provided, filter by both
 					if (tropesParam && searchParam) {

@@ -31,9 +31,9 @@ export function RadioButtonGroup<T extends string>({
 
 	return (
 		<div>
-			<label className="block text-sm font-semibold text-slate-700 mb-3">
+			<div className="block text-sm font-semibold text-slate-700 mb-3">
 				{label}
-			</label>
+			</div>
 			<div className={`grid ${gridClass} gap-3`}>
 				{options.map((option) => (
 					<button

@@ -72,7 +72,7 @@ function NotFoundComponent() {
 				<HeadContent />
 			</head>
 			<body>
-				<div className="min-h-screen bg-gradient-to-br from-romance-50 via-white to-romance-100 flex items-center justify-center p-4">
+				<div className="min-h-screen bg-linear-to-br from-romance-50 via-white to-romance-100 flex items-center justify-center p-4">
 					<div className="text-center">
 						<Heart className="w-24 h-24 text-romance-400 mx-auto mb-6" />
 						<h1 className="text-4xl font-bold text-slate-900 mb-4">

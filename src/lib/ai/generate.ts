@@ -91,7 +91,7 @@ export async function generateScene(
 
 	// Log the prompts being sent
 	console.log("\n=== SYSTEM PROMPT ===");
-	console.log(systemPrompt.substring(0, 500) + "...");
+	console.log(`${systemPrompt.substring(0, 500)}...`);
 	console.log("\n=== USER PROMPT ===");
 	console.log(userPrompt);
 	console.log("=== END PROMPTS ===\n");

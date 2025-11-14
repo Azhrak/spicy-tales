@@ -27,6 +27,18 @@
 			"recommended": true
 		}
 	},
+	"overrides": [
+		{
+			"includes": ["**/src/lib/db/migrations/**/*"],
+			"linter": {
+				"rules": {
+					"suspicious": {
+						"noExplicitAny": "off"
+					}
+				}
+			}
+		}
+	],
 	"javascript": {
 		"formatter": {
 			"quoteStyle": "double"

@@ -6,7 +6,6 @@ import { ErrorMessage } from "~/components/ErrorMessage";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
 import { useAdminTemplatesQuery } from "~/hooks/useAdminTemplatesQuery";
 import { useCurrentUserQuery } from "~/hooks/useCurrentUserQuery";
-import type { Template } from "~/lib/api/types";
 
 export const Route = createFileRoute("/admin/templates/")({
 	component: TemplatesListPage,

@@ -33,7 +33,7 @@ export const Route = createFileRoute("/api/admin/templates/")({
 						"status",
 					) as TemplateStatus | null;
 
-					let templates;
+					let templates: Awaited<ReturnType<typeof getAllTemplates>>;
 
 					if (statusParam) {
 						templates = await getTemplatesByStatus(statusParam);

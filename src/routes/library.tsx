@@ -60,6 +60,7 @@ function LibraryPage() {
 				{/* Tabs */}
 				<div className="flex gap-4 mb-8">
 					<button
+						type="button"
 						onClick={() => setActiveTab("in-progress")}
 						className={`px-6 py-3 rounded-lg font-semibold transition-colors ${
 							activeTab === "in-progress"
@@ -73,6 +74,7 @@ function LibraryPage() {
 						</div>
 					</button>
 					<button
+						type="button"
 						onClick={() => setActiveTab("completed")}
 						className={`px-6 py-3 rounded-lg font-semibold transition-colors ${
 							activeTab === "completed"
