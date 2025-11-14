@@ -2,18 +2,26 @@
 
 This document tracks where all the reusable components created during the refactoring are being used.
 
-**Last Updated:** November 14, 2025
+**Last Updated:** November 14, 2025 (Phase 15.5)
 
 ---
 
 ## Custom Hooks Usage
 
+### useStoryQuery
+**Location:** `src/hooks/useStoryQuery.ts`
+**Used in 1 file:**
+- ✅ src/routes/story/$id.info.tsx
+
+**Purpose:** Fetches a single story with all details including preferences, template info, and progress.
+
 ### useCurrentUserQuery
 **Location:** `src/hooks/useCurrentUserQuery.ts`
-**Used in 11 files:**
+**Used in 12 files:**
 - ✅ src/routes/library.tsx
 - ✅ src/routes/browse.tsx
 - ✅ src/routes/story/create.tsx
+- ✅ src/routes/story/$id.info.tsx
 - ✅ src/routes/template/$id.tsx
 - ✅ src/routes/admin/index.tsx
 - ✅ src/routes/admin/users/index.tsx
@@ -49,12 +57,48 @@ This document tracks where all the reusable components created during the refact
 
 ## Component Usage
 
+### StoryCard
+**Location:** `src/components/StoryCard.tsx`
+**Used in 1 file:**
+- ✅ src/routes/library.tsx - Displays user stories with progress tracking
+
+**Usage Example:**
+```typescript
+<StoryCard
+  id={story.id}
+  storyTitle={story.story_title}
+  templateTitle={story.template.title}
+  templateDescription={story.template.description}
+  coverGradient={story.template.cover_gradient}
+  createdAt={story.created_at}
+  currentScene={story.current_scene}
+  totalScenes={story.template.estimated_scenes}
+  status={activeTab}
+  onDelete={handleDeleteClick}
+  isDeleting={deletingId === story.id}
+/>
+```
+
+**Features:**
+- Clickable cover image that navigates to reading page
+- Info button to view story settings
+- Progress bar integration
+- Delete button with loading state
+- Responsive design
+
+**Benefits:**
+- Reduced 65 lines of duplicate code from library page
+- Reusable across all story list views
+- Consistent styling with NovelCard
+- Centralized story card logic
+
 ### FullPageLoader
 **Location:** `src/components/FullPageLoader.tsx`
-**Used in 3 files:**
+**Used in 4 files:**
 - ✅ src/routes/profile.tsx - Default message
 - ✅ src/routes/preferences.tsx - Custom message: "Loading your preferences..."
 - ✅ src/routes/story/$id.read.tsx - Custom message: "Loading your story..."
+- ✅ src/routes/story/$id.info.tsx - Default message
 
 **Benefits:**
 - Consistent loading UX across all full-page loaders
@@ -63,8 +107,9 @@ This document tracks where all the reusable components created during the refact
 
 ### StoryProgressBar
 **Location:** `src/components/StoryProgressBar.tsx`
-**Used in 1 file:**
-- ✅ src/routes/library.tsx - Shows progress for each story in the library grid
+**Used in 2 files:**
+- ✅ src/routes/library.tsx - Shows progress for each story in the library grid (via StoryCard)
+- ✅ src/routes/story/$id.info.tsx - Shows reading progress on story info page
 
 **Usage Example:**
 ```typescript
@@ -148,9 +193,12 @@ This document tracks where all the reusable components created during the refact
 
 **UserStory** - Used in:
 - ✅ src/hooks/useUserStoriesQuery.ts
+- ✅ src/hooks/useStoryQuery.ts
+- ✅ src/components/StoryCard.tsx (via props)
 
 **StoryStatus** - Used in:
 - ✅ src/hooks/useUserStoriesQuery.ts
+- ✅ src/components/StoryCard.tsx
 
 **TemplateStatus** - Used in:
 - ✅ src/routes/admin/templates/index.tsx
@@ -175,19 +223,22 @@ This document tracks where all the reusable components created during the refact
 ## Summary Statistics
 
 ### Custom Hooks
-- **Created:** 5 hooks
-- **In Use:** 5 hooks (100%)
-- **Total usages:** 18+ locations
+- **Created:** 6 hooks
+- **In Use:** 6 hooks (100%)
+- **Total usages:** 20+ locations
+- **New in Phase 15.5:** useStoryQuery
 
 ### Components
-- **Created:** 5 components
-- **In Use:** 4 components (80%)
+- **Created:** 6 components
+- **In Use:** 5 components (83%)
 - **Not Yet Used:** 1 component (StatCard)
-- **Total usages:** 8 locations
+- **Total usages:** 12+ locations
+- **New in Phase 15.5:** StoryCard
 
 ### Shared Types
 - **Created:** 10+ type definitions
-- **In Use:** All actively used across 20+ files
+- **In Use:** All actively used across 25+ files
+- **Enhanced in Phase 15.5:** UserStory interface (added preferences field)
 
 ### Constants
 - **Created:** 1 constants file
@@ -241,6 +292,14 @@ ls src/lib/constants/
 ---
 
 ## Version History
+
+- **v1.1** (2025-11-14 Phase 15.5) - Added StoryCard component and useStoryQuery hook
+  - Added StoryCard component with clickable cover and info button
+  - Added useStoryQuery hook for fetching single story details
+  - Updated StoryProgressBar usage (now in StoryCard and story info page)
+  - Updated FullPageLoader usage (now in story info page)
+  - Enhanced UserStory type with preferences field
+  - Updated useCurrentUserQuery usage count (12 files)
 
 - **v1.0** (2025-11-14) - Initial component usage tracking
   - Documented all component and hook usage

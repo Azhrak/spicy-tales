@@ -1,12 +1,12 @@
 # Spicy Tales - Project Progress
 
 **Project**: Spicy Tales - AI-Enhanced Romance Novel App  
-**Last Updated**: 2025-11-11 | **Status**: MVP 100% Complete! 🎉  
+**Last Updated**: 2025-11-14 | **Status**: MVP 100% Complete! 🎉
 📄 **Details**: See [SESSION_SUMMARY.md](SESSION_SUMMARY.md) for comprehensive recap
 
 ---
 
-## ✅ Completed Phases (1-14)
+## ✅ Completed Phases (1-15)
 
 ### Phase 1: Foundation & Setup (100% Complete)
 
@@ -553,6 +553,69 @@ docker-compose up --build
 - User management pages
 - Audit log viewer
 - Header navigation update
+
+### Phase 15.5: Story Card Component & Story Info Page (100% Complete)
+
+**Files Created:**
+
+- [src/components/StoryCard.tsx](src/components/StoryCard.tsx) - Reusable story card component
+- [src/routes/story/$id.info.tsx](src/routes/story/$id.info.tsx) - Story information page
+- [src/hooks/useStoryQuery.ts](src/hooks/useStoryQuery.ts) - Query hook for fetching single story
+
+**Files Enhanced:**
+
+- [src/routes/library.tsx](src/routes/library.tsx) - Refactored to use StoryCard component
+- [src/routes/story/$id.read.tsx](src/routes/story/$id.read.tsx) - Added Info link in header
+- [src/components/NovelCard.tsx](src/components/NovelCard.tsx) - Made cover image clickable
+- [src/lib/api/types.ts](src/lib/api/types.ts) - Added preferences field to UserStory interface
+
+**Component Refactoring Features:**
+
+- ✅ StoryCard component extracted from library page
+- ✅ Clickable cover image that navigates to reading page
+- ✅ Info button to view story settings and preferences
+- ✅ Reusable across all story list views
+- ✅ Consistent styling with NovelCard
+- ✅ Reduced code duplication (65 lines → component-based)
+
+**Story Info Page Features:**
+
+- ✅ Beautiful dedicated page showing all story details
+- ✅ Story header with cover, title, and description
+- ✅ Creation date and estimated scenes display
+- ✅ Visual progress bar showing reading completion
+- ✅ Story settings section displaying:
+  - Spice Level (with flame icon and description)
+  - Pacing preference (slow-burn or fast-paced)
+  - Scene Length preference (with word count ranges)
+  - Selected Genres (as styled tags)
+  - Selected Tropes (as styled tags)
+- ✅ Continue Reading button for easy navigation
+- ✅ API integration using existing `/api/stories/$id` endpoint
+- ✅ Loading and error states
+
+**UX Improvements:**
+
+- ✅ NovelCard cover images now clickable (navigate to template)
+- ✅ StoryCard cover images clickable (navigate to reading)
+- ✅ Info link accessible from:
+  - Library page (StoryCard component)
+  - Reading page (header navigation)
+- ✅ Users can now review their story customization at any time
+
+**Architecture:**
+
+- ✅ Leverages existing API endpoint (no new backend needed)
+- ✅ Type-safe with UserPreferences parsing
+- ✅ Handles JSON and object preferences formats
+- ✅ React Query caching for optimal performance
+
+**Benefits:**
+
+- Users can see what preferences they chose when creating a story
+- Better transparency of story settings during reading
+- Improved component reusability and maintainability
+- Consistent UX patterns across template and story cards
 
 ---
 
