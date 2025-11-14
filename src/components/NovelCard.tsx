@@ -22,14 +22,16 @@ export function NovelCard({
 	return (
 		<div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
 			{/* Gradient Cover */}
-			<div
-				className={`h-48 bg-linear-to-br ${coverGradient} flex items-center justify-center`}
-			>
-				<BookOpen
-					className="w-20 h-20 text-white opacity-80"
-					strokeWidth={1.5}
-				/>
-			</div>
+			<Link to="/template/$id" params={{ id }}>
+				<div
+					className={`h-48 bg-linear-to-br ${coverGradient} flex items-center justify-center cursor-pointer hover:opacity-95 transition-opacity`}
+				>
+					<BookOpen
+						className="w-20 h-20 text-white opacity-80"
+						strokeWidth={1.5}
+					/>
+				</div>
+			</Link>
 
 			{/* Content */}
 			<div className="p-6">
