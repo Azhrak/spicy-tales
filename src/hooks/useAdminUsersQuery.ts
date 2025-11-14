@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { api } from "~/lib/api/client";
 import type { User } from "~/lib/api/types";
 
 export const adminUsersQueryKey = ["adminUsers"] as const;
@@ -10,15 +11,7 @@ export const adminUsersQueryKey = ["adminUsers"] as const;
 export function useAdminUsersQuery(enabled = true) {
 	return useQuery({
 		queryKey: adminUsersQueryKey,
-		queryFn: async () => {
-			const response = await fetch("/api/admin/users", {
-				credentials: "include",
-			});
-			if (!response.ok) {
-				throw new Error("Failed to fetch users");
-			}
-			return response.json() as Promise<{ users: User[] }>;
-		},
+		queryFn: () => api.get<{ users: User[] }>("/api/admin/users"),
 		enabled,
 	});
 }

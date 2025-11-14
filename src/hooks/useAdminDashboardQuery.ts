@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { api } from "~/lib/api/client";
 
 interface DashboardStats {
 	templates?: {
@@ -24,15 +25,7 @@ export const adminDashboardQueryKey = ["adminDashboard"] as const;
 export function useAdminDashboardQuery(enabled = true) {
 	return useQuery({
 		queryKey: adminDashboardQueryKey,
-		queryFn: async () => {
-			const response = await fetch("/api/admin/dashboard", {
-				credentials: "include",
-			});
-			if (!response.ok) {
-				throw new Error("Failed to fetch dashboard statistics");
-			}
-			return response.json() as Promise<{ stats: DashboardStats }>;
-		},
+		queryFn: () => api.get<{ stats: DashboardStats }>("/api/admin/dashboard"),
 		enabled,
 	});
 }

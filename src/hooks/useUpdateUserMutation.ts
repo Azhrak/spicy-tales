@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { api } from "~/lib/api/client";
 import type { UserRole } from "~/lib/db/types";
 import { adminUserQueryKey } from "./useAdminUserQuery";
 import { adminUsersQueryKey } from "./useAdminUsersQuery";
@@ -21,21 +22,7 @@ export function useUpdateUserMutation(userId: string) {
 
 	return useMutation({
 		mutationKey: updateUserMutationKey(userId),
-		mutationFn: async (data: UserFormData) => {
-			const response = await fetch(`/api/admin/users/${userId}`, {
-				method: "PATCH",
-				headers: { "Content-Type": "application/json" },
-				credentials: "include",
-				body: JSON.stringify(data),
-			});
-
-			if (!response.ok) {
-				const error = await response.json();
-				throw new Error(error.error || "Failed to update user");
-			}
-
-			return response.json();
-		},
+		mutationFn: (data: UserFormData) => api.patch(`/api/admin/users/${userId}`, data),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: adminUserQueryKey(userId) });
 			queryClient.invalidateQueries({ queryKey: adminUsersQueryKey });

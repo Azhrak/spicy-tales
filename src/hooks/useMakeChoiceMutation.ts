@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { api } from "~/lib/api/client";
 import { storySceneQueryKey } from "./useStorySceneQuery";
 
 interface ChoiceData {
@@ -22,20 +23,7 @@ export function useMakeChoiceMutation(storyId: string) {
 
 	return useMutation({
 		mutationKey: makeChoiceMutationKey(storyId),
-		mutationFn: async (data: ChoiceData) => {
-			const response = await fetch(`/api/stories/${storyId}/choose`, {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify(data),
-			});
-
-			if (!response.ok) {
-				const error = await response.json();
-				throw new Error(error.error || "Failed to record choice");
-			}
-
-			return response.json() as Promise<ChoiceResult>;
-		},
+		mutationFn: (data: ChoiceData) => api.post<ChoiceResult>(`/api/stories/${storyId}/choose`, data),
 		onSuccess: () => {
 			// Invalidate all queries for this story to get fresh data
 			queryClient.invalidateQueries({

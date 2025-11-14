@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { api } from "~/lib/api/client";
 import type { Trope } from "~/lib/types/preferences";
 import type { Template } from "~/lib/api/types";
 
@@ -23,20 +24,15 @@ export function useTemplatesQuery(options: UseTemplatesQueryOptions = {}) {
 	return useQuery({
 		queryKey: templatesQueryKey(tropes, search),
 		queryFn: async () => {
-			const queryParams = new URLSearchParams();
+			const params: Record<string, string> = {};
 			if (tropes.length > 0) {
-				queryParams.set("tropes", tropes.join(","));
+				params.tropes = tropes.join(",");
 			}
 			if (search) {
-				queryParams.set("search", search);
+				params.search = search;
 			}
 
-			const url = `/api/templates${queryParams.toString() ? `?${queryParams.toString()}` : ""}`;
-			const response = await fetch(url, {
-				credentials: "include",
-			});
-			if (!response.ok) throw new Error("Failed to fetch templates");
-			return response.json() as Promise<TemplatesResponse>;
+			return await api.get<TemplatesResponse>("/api/templates", { params });
 		},
 	});
 }

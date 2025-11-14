@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { FullPageLoader } from "~/components/FullPageLoader";
+import { api, ApiError } from "~/lib/api/client";
 import {
 	GENRE_LABELS,
 	GENRES,
@@ -48,19 +49,7 @@ function PreferencesPage() {
 	// Load existing preferences
 	const fetchPreferences = useCallback(async () => {
 		try {
-			const response = await fetch("/api/preferences", {
-				credentials: "include",
-			});
-
-			if (!response.ok) {
-				if (response.status === 401) {
-					navigate({ to: "/auth/login" });
-					return;
-				}
-				throw new Error("Failed to fetch preferences");
-			}
-
-			const data = await response.json();
+			const data = await api.get<{ preferences: any }>("/api/preferences");
 			if (data.preferences) {
 				// Parse the preferences if they're stored as JSON string
 				const prefs =
@@ -77,6 +66,10 @@ function PreferencesPage() {
 				});
 			}
 		} catch (error) {
+			if (error instanceof ApiError && error.status === 401) {
+				navigate({ to: "/auth/login" });
+				return;
+			}
 			console.error("Error fetching preferences:", error);
 			setError("Failed to load preferences");
 		} finally {
@@ -143,24 +136,17 @@ function PreferencesPage() {
 		}
 
 		try {
-			const response = await fetch("/api/preferences", {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify(preferences),
-				credentials: "include",
-			});
-
-			if (!response.ok) {
-				const data = await response.json();
-				throw new Error(data.error || "Failed to save preferences");
-			}
-
+			await api.post("/api/preferences", preferences);
 			// Show success message
 			setSuccess(true);
 			// Auto-hide success message after 3 seconds
 			setTimeout(() => setSuccess(false), 3000);
 		} catch (err) {
-			setError(err instanceof Error ? err.message : "An error occurred");
+			if (err instanceof ApiError) {
+				setError(err.message || "Failed to save preferences");
+			} else {
+				setError("An error occurred");
+			}
 		} finally {
 			setIsSubmitting(false);
 		}

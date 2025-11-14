@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { api } from "~/lib/api/client";
 import { adminTemplatesQueryKey } from "./useAdminTemplatesQuery";
 import { adminDashboardQueryKey } from "./useAdminDashboardQuery";
 
@@ -13,19 +14,7 @@ export function useDeleteTemplateMutation(templateId: string) {
 
 	return useMutation({
 		mutationKey: deleteTemplateMutationKey(templateId),
-		mutationFn: async () => {
-			const response = await fetch(`/api/admin/templates/${templateId}`, {
-				method: "DELETE",
-				credentials: "include",
-			});
-
-			if (!response.ok) {
-				const error = await response.json();
-				throw new Error(error.error || "Failed to delete template");
-			}
-
-			return response.json();
-		},
+		mutationFn: () => api.delete(`/api/admin/templates/${templateId}`),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: adminTemplatesQueryKey });
 			queryClient.invalidateQueries({ queryKey: adminDashboardQueryKey });

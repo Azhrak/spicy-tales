@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { api } from "~/lib/api/client";
 import type { Template } from "~/lib/api/types";
 
 interface ChoiceOption {
@@ -29,16 +30,7 @@ export function useTemplateQuery(templateId: string, enabled = true) {
 	return useQuery({
 		queryKey: templateQueryKey(templateId),
 		queryFn: async () => {
-			const response = await fetch(`/api/templates/${templateId}`, {
-				credentials: "include",
-			});
-			if (!response.ok) {
-				if (response.status === 404) {
-					throw new Error("Template not found");
-				}
-				throw new Error("Failed to fetch template");
-			}
-			const result = await response.json();
+			const result = await api.get<{ template: any }>(`/api/templates/${templateId}`);
 			// Parse options JSON string if needed
 			return {
 				...result,

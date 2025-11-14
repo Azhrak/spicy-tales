@@ -7,6 +7,7 @@ import {
 	Heart,
 } from "lucide-react";
 import { useState } from "react";
+import { api, ApiError } from "~/lib/api/client";
 import {
 	GENRE_LABELS,
 	GENRES,
@@ -98,22 +99,15 @@ function OnboardingPage() {
 		setError(null);
 
 		try {
-			const response = await fetch("/api/preferences", {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify(preferences),
-				credentials: "include",
-			});
-
-			if (!response.ok) {
-				const data = await response.json();
-				throw new Error(data.error || "Failed to save preferences");
-			}
-
+			await api.post("/api/preferences", preferences);
 			// Redirect to browse page
 			navigate({ to: "/browse" });
 		} catch (err) {
-			setError(err instanceof Error ? err.message : "An error occurred");
+			if (err instanceof ApiError) {
+				setError(err.message || "Failed to save preferences");
+			} else {
+				setError("An error occurred");
+			}
 		} finally {
 			setIsSubmitting(false);
 		}

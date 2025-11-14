@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { api } from "~/lib/api/client";
 
 interface SceneData {
 	scene: {
@@ -38,18 +39,9 @@ export function useStorySceneQuery(
 ) {
 	return useQuery<SceneData>({
 		queryKey: storySceneQueryKey(storyId, sceneNumber),
-		queryFn: async () => {
-			const url =
-				sceneNumber !== null
-					? `/api/stories/${storyId}/scene?number=${sceneNumber}`
-					: `/api/stories/${storyId}/scene`;
-			const response = await fetch(url);
-			if (!response.ok) {
-				const error = await response.json();
-				throw new Error(error.error || "Failed to fetch scene");
-			}
-			return response.json();
-		},
+		queryFn: () => api.get<SceneData>(`/api/stories/${storyId}/scene`, {
+			params: sceneNumber !== null ? { number: sceneNumber } : undefined,
+		}),
 		enabled,
 	});
 }

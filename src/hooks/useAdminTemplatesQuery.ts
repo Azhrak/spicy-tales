@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { api } from "~/lib/api/client";
 import type { Template } from "~/lib/api/types";
 
 export const adminTemplatesQueryKey = ["adminTemplates"] as const;
@@ -11,15 +12,7 @@ export const adminTemplatesQueryKey = ["adminTemplates"] as const;
 export function useAdminTemplatesQuery(enabled = true) {
 	return useQuery({
 		queryKey: adminTemplatesQueryKey,
-		queryFn: async () => {
-			const response = await fetch("/api/admin/templates", {
-				credentials: "include",
-			});
-			if (!response.ok) {
-				throw new Error("Failed to fetch templates");
-			}
-			return response.json() as Promise<{ templates: Template[] }>;
-		},
+		queryFn: () => api.get<{ templates: Template[] }>("/api/admin/templates"),
 		enabled,
 	});
 }

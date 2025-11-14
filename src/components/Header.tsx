@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { Heart, LogOut, Menu, User, X, Shield } from "lucide-react";
 import { useState } from "react";
 import type { UserRole } from "~/lib/db/types";
+import { api } from "~/lib/api/client";
 
 interface HeaderProps {
 	currentPath?: string;
@@ -14,10 +15,7 @@ export function Header({ currentPath = "", userRole }: HeaderProps) {
 
 	const handleLogout = async () => {
 		try {
-			await fetch("/api/auth/logout", {
-				method: "POST",
-				credentials: "include",
-			});
+			await api.post("/api/auth/logout");
 			window.location.href = "/";
 		} catch (error) {
 			console.error("Logout error:", error);

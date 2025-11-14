@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Button } from "~/components/Button";
 import { ErrorMessage } from "~/components/ErrorMessage";
 import { FormInput } from "~/components/FormInput";
+import { api, ApiError } from "~/lib/api/client";
 
 export const Route = createFileRoute("/auth/login")({
 	component: LoginPage,
@@ -22,26 +23,18 @@ function LoginPage() {
 		setLoading(true);
 
 		try {
-			const response = await fetch("/api/auth/login", {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ email, password }),
-			});
-
-			const data = await response.json();
-
-			if (!response.ok) {
-				setError(data.error || "Login failed");
-				return;
-			}
-
+			const data = await api.post<{ user?: { hasPreferences: boolean } }>("/api/auth/login", { email, password });
 			// Redirect based on whether user has completed onboarding
 			const redirectTo = data.user?.hasPreferences
 				? "/browse"
 				: "/auth/onboarding";
 			navigate({ to: redirectTo });
-		} catch (_err) {
-			setError("An unexpected error occurred");
+		} catch (err) {
+			if (err instanceof ApiError) {
+				setError(err.message || "Login failed");
+			} else {
+				setError("An unexpected error occurred");
+			}
 		} finally {
 			setLoading(false);
 		}

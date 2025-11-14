@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { api } from "~/lib/api/client";
 import { adminTemplatesQueryKey } from "./useAdminTemplatesQuery";
 import { adminDashboardQueryKey } from "./useAdminDashboardQuery";
 
@@ -21,27 +22,13 @@ export function useCreateTemplateMutation() {
 
 	return useMutation({
 		mutationKey: createTemplateMutationKey,
-		mutationFn: async (data: TemplateFormData) => {
-			const response = await fetch("/api/admin/templates", {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				credentials: "include",
-				body: JSON.stringify({
-					title: data.title,
-					description: data.description,
-					base_tropes: data.base_tropes.split(",").map((t) => t.trim()),
-					estimated_scenes: data.estimated_scenes,
-					cover_gradient: data.cover_gradient,
-				}),
-			});
-
-			if (!response.ok) {
-				const error = await response.json();
-				throw new Error(error.error || "Failed to create template");
-			}
-
-			return response.json();
-		},
+		mutationFn: (data: TemplateFormData) => api.post("/api/admin/templates", {
+			title: data.title,
+			description: data.description,
+			base_tropes: data.base_tropes.split(",").map((t) => t.trim()),
+			estimated_scenes: data.estimated_scenes,
+			cover_gradient: data.cover_gradient,
+		}),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: adminTemplatesQueryKey });
 			queryClient.invalidateQueries({ queryKey: adminDashboardQueryKey });

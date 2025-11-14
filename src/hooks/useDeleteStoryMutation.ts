@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { api } from "~/lib/api/client";
 
 export const deleteStoryMutationKey = ["deleteStory"] as const;
 
@@ -12,15 +13,7 @@ export function useDeleteStoryMutation() {
 	return useMutation({
 		mutationKey: deleteStoryMutationKey,
 		mutationFn: async (storyId: string) => {
-			const response = await fetch(`/api/stories/${storyId}`, {
-				method: "DELETE",
-				credentials: "include",
-			});
-			if (!response.ok) {
-				const error = await response.json();
-				throw new Error(error.error || "Failed to delete story");
-			}
-			return response.json();
+			return await api.delete(`/api/stories/${storyId}`);
 		},
 		onSuccess: () => {
 			// Invalidate and refetch stories

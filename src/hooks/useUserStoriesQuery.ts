@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { api } from "~/lib/api/client";
 import type { UserStory, StoryStatus } from "~/lib/api/types";
 
 interface UserStoriesResponse {
@@ -15,11 +16,9 @@ export function useUserStoriesQuery(status: StoryStatus) {
 	return useQuery({
 		queryKey: userStoriesQueryKey(status),
 		queryFn: async () => {
-			const response = await fetch(`/api/stories/user?status=${status}`, {
-				credentials: "include",
+			return await api.get<UserStoriesResponse>("/api/stories/user", {
+				params: { status },
 			});
-			if (!response.ok) throw new Error("Failed to fetch stories");
-			return response.json() as Promise<UserStoriesResponse>;
 		},
 	});
 }

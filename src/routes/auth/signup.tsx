@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Button } from "~/components/Button";
 import { ErrorMessage } from "~/components/ErrorMessage";
 import { FormInput } from "~/components/FormInput";
+import { api, ApiError } from "~/lib/api/client";
 
 export const Route = createFileRoute("/auth/signup")({
 	component: SignupPage,
@@ -30,19 +31,15 @@ function SignupPage() {
 		setLoading(true);
 
 		try {
-			const response = await fetch("/api/auth/signup", {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ email, name, password }),
-			});
-
-			const data = await response.json();
-
-			if (!response.ok) {
+			await api.post("/api/auth/signup", { email, name, password });
+			// Redirect to onboarding
+			navigate({ to: "/auth/onboarding" });
+		} catch (err) {
+			if (err instanceof ApiError) {
 				// Handle different error formats from API
-				if (data.details && Array.isArray(data.details)) {
+				if (err.details && Array.isArray(err.details)) {
 					// If details is an array of Zod error objects
-					const errorMessages = data.details.map((detail: any) => {
+					const errorMessages = err.details.map((detail: any) => {
 						if (typeof detail === "string") {
 							return detail;
 						}
@@ -51,15 +48,11 @@ function SignupPage() {
 					});
 					setError(errorMessages.join(". "));
 				} else {
-					setError(data.error || "Signup failed");
+					setError(err.message || "Signup failed");
 				}
-				return;
+			} else {
+				setError("An unexpected error occurred");
 			}
-
-			// Redirect to onboarding
-			navigate({ to: "/auth/onboarding" });
-		} catch (_err) {
-			setError("An unexpected error occurred");
 		} finally {
 			setLoading(false);
 		}

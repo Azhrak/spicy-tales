@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { api } from "~/lib/api/client";
 import type { TemplateStatus } from "~/lib/api/types";
 import { adminTemplateQueryKey } from "./useAdminTemplateQuery";
 import { adminTemplatesQueryKey } from "./useAdminTemplatesQuery";
@@ -15,21 +16,7 @@ export function useUpdateTemplateStatusMutation(templateId: string) {
 
 	return useMutation({
 		mutationKey: updateTemplateStatusMutationKey(templateId),
-		mutationFn: async (status: TemplateStatus) => {
-			const response = await fetch(`/api/admin/templates/${templateId}/status`, {
-				method: "PATCH",
-				headers: { "Content-Type": "application/json" },
-				credentials: "include",
-				body: JSON.stringify({ status }),
-			});
-
-			if (!response.ok) {
-				const error = await response.json();
-				throw new Error(error.error || "Failed to update status");
-			}
-
-			return response.json();
-		},
+		mutationFn: (status: TemplateStatus) => api.patch(`/api/admin/templates/${templateId}/status`, { status }),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: adminTemplateQueryKey(templateId) });
 			queryClient.invalidateQueries({ queryKey: adminTemplatesQueryKey });

@@ -6,6 +6,7 @@ import { FullPageLoader } from "~/components/FullPageLoader";
 import { Header } from "~/components/Header";
 import { PageContainer } from "~/components/PageContainer";
 import type { UserRole } from "~/lib/db/types";
+import { api, ApiError } from "~/lib/api/client";
 
 export const Route = createFileRoute("/profile")({
 	component: ProfilePage,
@@ -47,23 +48,15 @@ function ProfilePage() {
 
 	const fetchProfile = useCallback(async () => {
 		try {
-			const response = await fetch("/api/profile", {
-				credentials: "include",
-			});
-
-			if (!response.ok) {
-				if (response.status === 401) {
-					navigate({ to: "/auth/login" });
-					return;
-				}
-				throw new Error("Failed to fetch profile");
-			}
-
-			const data = await response.json();
+			const data = await api.get<UserProfile>("/api/profile");
 			setProfile(data);
 			setName(data.name || "");
 			setEmail(data.email || "");
 		} catch (error) {
+			if (error instanceof ApiError && error.status === 401) {
+				navigate({ to: "/auth/login" });
+				return;
+			}
 			console.error("Error fetching profile:", error);
 		} finally {
 			setLoading(false);
@@ -81,25 +74,16 @@ function ProfilePage() {
 		setProfileUpdating(true);
 
 		try {
-			const response = await fetch("/api/profile", {
-				method: "PATCH",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ name, email }),
-				credentials: "include",
-			});
-
-			const data = await response.json();
-
-			if (!response.ok) {
-				setProfileError(data.error || "Failed to update profile");
-				return;
-			}
-
+			const data = await api.patch<{ name: string; email: string }>("/api/profile", { name, email });
 			setProfileSuccess("Profile updated successfully!");
 			setProfile({ ...profile!, name: data.name, email: data.email });
 			setTimeout(() => setProfileSuccess(""), 3000);
-		} catch (_error) {
-			setProfileError("An unexpected error occurred");
+		} catch (error) {
+			if (error instanceof ApiError) {
+				setProfileError(error.message || "Failed to update profile");
+			} else {
+				setProfileError("An unexpected error occurred");
+			}
 		} finally {
 			setProfileUpdating(false);
 		}
@@ -123,30 +107,21 @@ function ProfilePage() {
 		setPasswordUpdating(true);
 
 		try {
-			const response = await fetch("/api/profile/password", {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({
-					currentPassword,
-					newPassword,
-				}),
-				credentials: "include",
+			await api.post("/api/profile/password", {
+				currentPassword,
+				newPassword,
 			});
-
-			const data = await response.json();
-
-			if (!response.ok) {
-				setPasswordError(data.error || "Failed to change password");
-				return;
-			}
-
 			setPasswordSuccess("Password changed successfully!");
 			setCurrentPassword("");
 			setNewPassword("");
 			setConfirmPassword("");
 			setTimeout(() => setPasswordSuccess(""), 3000);
-		} catch (_error) {
-			setPasswordError("An unexpected error occurred");
+		} catch (error) {
+			if (error instanceof ApiError) {
+				setPasswordError(error.message || "Failed to change password");
+			} else {
+				setPasswordError("An unexpected error occurred");
+			}
 		} finally {
 			setPasswordUpdating(false);
 		}
@@ -157,25 +132,15 @@ function ProfilePage() {
 		setDeleting(true);
 
 		try {
-			const response = await fetch("/api/profile", {
-				method: "DELETE",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ password: deleteConfirmPassword }),
-				credentials: "include",
-			});
-
-			const data = await response.json();
-
-			if (!response.ok) {
-				setDeleteError(data.error || "Failed to delete account");
-				setDeleting(false);
-				return;
-			}
-
+			await api.delete("/api/profile", { password: deleteConfirmPassword });
 			// Account deleted, redirect to home
 			window.location.href = "/";
-		} catch (_error) {
-			setDeleteError("An unexpected error occurred");
+		} catch (error) {
+			if (error instanceof ApiError) {
+				setDeleteError(error.message || "Failed to delete account");
+			} else {
+				setDeleteError("An unexpected error occurred");
+			}
 			setDeleting(false);
 		}
 	};

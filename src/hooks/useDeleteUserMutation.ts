@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { api } from "~/lib/api/client";
 import { adminUsersQueryKey } from "./useAdminUsersQuery";
 import { adminDashboardQueryKey } from "./useAdminDashboardQuery";
 
@@ -13,19 +14,7 @@ export function useDeleteUserMutation(userId: string) {
 
 	return useMutation({
 		mutationKey: deleteUserMutationKey(userId),
-		mutationFn: async () => {
-			const response = await fetch(`/api/admin/users/${userId}`, {
-				method: "DELETE",
-				credentials: "include",
-			});
-
-			if (!response.ok) {
-				const error = await response.json();
-				throw new Error(error.error || "Failed to delete user");
-			}
-
-			return response.json();
-		},
+		mutationFn: () => api.delete(`/api/admin/users/${userId}`),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: adminUsersQueryKey });
 			queryClient.invalidateQueries({ queryKey: adminDashboardQueryKey });

@@ -12,6 +12,7 @@ import { useState } from "react";
 import { FullPageLoader } from "~/components/FullPageLoader";
 import { useStorySceneQuery } from "~/hooks/useStorySceneQuery";
 import { useMakeChoiceMutation } from "~/hooks/useMakeChoiceMutation";
+import { api, ApiError } from "~/lib/api/client";
 
 export const Route = createFileRoute("/story/$id/read")({
 	component: ReadingPage,
@@ -243,17 +244,17 @@ function ReadingPage() {
 						<p className="text-gray-600 mb-6">Ready to continue?</p>
 						<button
 							type="button"
-							onClick={async () => {
-								const nextScene = scene.number + 1;
-								// Update story progress in database
-								await fetch(`/api/stories/${id}/scene`, {
-									method: "PATCH",
-									headers: { "Content-Type": "application/json" },
-									body: JSON.stringify({ currentScene: nextScene }),
-								});
+						onClick={async () => {
+							const nextScene = scene.number + 1;
+							// Update story progress in database
+							try {
+								await api.patch(`/api/stories/${id}/scene`, { currentScene: nextScene });
 								// Navigate to next scene
 								setCurrentSceneNumber(nextScene);
-							}}
+							} catch (error) {
+								console.error('Failed to update scene:', error);
+							}
+						}}
 							className="px-8 py-3 bg-linear-to-r from-rose-600 to-purple-600 text-white font-semibold rounded-lg hover:from-rose-700 hover:to-purple-700 transition-all inline-flex items-center gap-2"
 						>
 							<span>Continue to Next Scene</span>
