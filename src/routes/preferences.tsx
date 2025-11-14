@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { ArrowLeft, CheckCircle2, Settings } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FullPageLoader } from "~/components/FullPageLoader";
 import {
 	GenresSection,
@@ -9,7 +9,9 @@ import {
 	PacingSection,
 	SceneLengthSection,
 } from "~/components/preferences";
-import { api, ApiError } from "~/lib/api/client";
+import { useUserPreferencesQuery } from "~/hooks/useUserPreferencesQuery";
+import { useUpdatePreferencesMutation } from "~/hooks/useUpdatePreferencesMutation";
+import { ApiError } from "~/lib/api/client";
 import type {
 	Genre,
 	PacingOption,
@@ -25,7 +27,9 @@ export const Route = createFileRoute("/preferences")({
 
 function PreferencesPage() {
 	const navigate = useNavigate();
-	const [loading, setLoading] = useState(true);
+	const { data: preferencesData, isLoading, error: queryError } = useUserPreferencesQuery();
+	const updatePreferences = useUpdatePreferencesMutation();
+	
 	const [preferences, setPreferences] = useState<UserPreferences>({
 		genres: [],
 		tropes: [],
@@ -33,44 +37,22 @@ function PreferencesPage() {
 		pacing: "slow-burn",
 		sceneLength: "medium",
 	});
-	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 	const [success, setSuccess] = useState(false);
 
-	// Load existing preferences
-	const fetchPreferences = useCallback(async () => {
-		try {
-			const data = await api.get<{ preferences: any }>("/api/preferences");
-			if (data.preferences) {
-				// Parse the preferences if they're stored as JSON string
-				const prefs =
-					typeof data.preferences === "string"
-						? JSON.parse(data.preferences)
-						: data.preferences;
-
-				setPreferences({
-					genres: prefs.genres || [],
-					tropes: prefs.tropes || [],
-					spiceLevel: prefs.spiceLevel || 3,
-					pacing: prefs.pacing || "slow-burn",
-					sceneLength: prefs.sceneLength || "medium",
-				});
-			}
-		} catch (error) {
-			if (error instanceof ApiError && error.status === 401) {
-				navigate({ to: "/auth/login" });
-				return;
-			}
-			console.error("Error fetching preferences:", error);
-			setError("Failed to load preferences");
-		} finally {
-			setLoading(false);
-		}
-	}, [navigate]);
-
+	// Load existing preferences when data arrives
 	useEffect(() => {
-		fetchPreferences();
-	}, [fetchPreferences]);
+		if (preferencesData) {
+			setPreferences(preferencesData);
+		}
+	}, [preferencesData]);
+
+	// Handle authentication errors
+	useEffect(() => {
+		if (queryError instanceof ApiError && queryError.status === 401) {
+			navigate({ to: "/auth/login" });
+		}
+	}, [queryError, navigate]);
 
 	const handleGenreToggle = (genre: Genre) => {
 		setPreferences((prev) => ({
@@ -109,25 +91,22 @@ function PreferencesPage() {
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
-		setIsSubmitting(true);
 		setError(null);
 		setSuccess(false);
 
 		// Validate
 		if (preferences.genres.length === 0) {
 			setError("Please select at least one genre");
-			setIsSubmitting(false);
 			return;
 		}
 
 		if (preferences.tropes.length === 0) {
 			setError("Please select at least one trope");
-			setIsSubmitting(false);
 			return;
 		}
 
 		try {
-			await api.post("/api/preferences", preferences);
+			await updatePreferences.mutateAsync(preferences);
 			// Show success message
 			setSuccess(true);
 			// Auto-hide success message after 3 seconds
@@ -138,12 +117,10 @@ function PreferencesPage() {
 			} else {
 				setError("An error occurred");
 			}
-		} finally {
-			setIsSubmitting(false);
 		}
 	};
 
-	if (loading) {
+	if (isLoading) {
 		return <FullPageLoader message="Loading your preferences..." />;
 	}
 
@@ -225,10 +202,10 @@ function PreferencesPage() {
 							</Link>
 							<button
 								type="submit"
-								disabled={isSubmitting}
+								disabled={updatePreferences.isPending}
 								className="px-8 py-3 bg-romance-600 text-white rounded-lg font-semibold hover:bg-romance-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
 							>
-								{isSubmitting ? (
+								{updatePreferences.isPending ? (
 									<>
 										<Settings className="w-5 h-5 animate-spin" />
 										Saving...

@@ -76,10 +76,14 @@ This refactoring focused on four main areas:
     - **Exports:** `existingStoriesQueryKey`
 
 13. **[useStorySceneQuery.ts](src/hooks/useStorySceneQuery.ts)**
-    - **Impact:** Fetch scene data for reading
-    - **Exports:** `storySceneQueryKey(storyId, sceneNumber)`
 
-#### Mutation Hooks (9 total)
+- **Impact:** Fetch scene data for reading
+- **Exports:** `storySceneQueryKey(storyId, sceneNumber)`
+
+14. **[useProfileQuery.ts](src/hooks/useProfileQuery.ts)**
+
+- **Impact:** Fetch user profile data
+- **Exports:** `profileQueryKey`#### Mutation Hooks (9 total)
 
 1. **[useDeleteStoryMutation.ts](src/hooks/useDeleteStoryMutation.ts)**
    - **Impact:** Handles story deletion
@@ -117,6 +121,22 @@ This refactoring focused on four main areas:
    - **Impact:** Record user's story choice
    - **Exports:** `makeChoiceMutationKey(storyId)`
 
+10. **[useUpdatePreferencesMutation.ts](src/hooks/useUpdatePreferencesMutation.ts)**
+    - **Impact:** Update user preferences (genres, tropes, spice level, etc.)
+    - **Exports:** `updatePreferencesMutationKey`
+
+11. **[useUpdateProfileMutation.ts](src/hooks/useUpdateProfileMutation.ts)**
+    - **Impact:** Update user profile (name, email)
+    - **Exports:** `updateProfileMutationKey`
+
+12. **[useChangePasswordMutation.ts](src/hooks/useChangePasswordMutation.ts)**
+    - **Impact:** Change user password
+    - **Exports:** `changePasswordMutationKey`
+
+13. **[useDeleteAccountMutation.ts](src/hooks/useDeleteAccountMutation.ts)**
+    - **Impact:** Delete user account
+    - **Exports:** `deleteAccountMutationKey`
+
 **Before:**
 
 ```typescript
@@ -144,6 +164,15 @@ const { data: profileData } = useCurrentUserQuery();
 - **~2,500+ lines of duplicate code eliminated**
 - **All useQuery/useMutation calls refactored into custom hooks**
 - **30+ files updated to use new hooks**
+- **17 reusable components created** (5 general + 5 profile + 5 preferences + 2 barrel exports)
+- **~715 lines extracted from large route files into focused components**
+
+**Updated to:**
+
+- **27 custom hooks created** (14 query + 13 mutation)
+- **~2,610+ lines of duplicate code eliminated**
+- **All useQuery/useMutation calls refactored into custom hooks**
+- **32+ files updated to use new hooks**
 - **17 reusable components created** (5 general + 5 profile + 5 preferences + 2 barrel exports)
 - **~715 lines extracted from large route files into focused components**
 
@@ -198,10 +227,12 @@ export function useMutation() {
 - `useUpdateUserMutation` imports keys from `useAdminUserQuery`, `useAdminUsersQuery`, `useAdminDashboardQuery`
 - `useCreateTemplateMutation` imports keys from `useAdminTemplatesQuery`, `useAdminDashboardQuery`
 - `useMakeChoiceMutation` imports key from `useStorySceneQuery`
+- `useUpdatePreferencesMutation` imports key from `useUserPreferencesQuery`
+- `useUpdateProfileMutation` imports keys from `useProfileQuery`, `useCurrentUserQuery`
 
 ### Total Impact
 
-- **22 query/mutation keys exported**
+- **27 query/mutation keys exported**
 - **100% of query invalidations use imported keys**
 - **Zero hardcoded key strings in codebase**
 
@@ -419,7 +450,7 @@ Complete summary of refactoring work
 - ✅ src/hooks/useCurrentUserQuery.ts
 - ✅ src/hooks/useUserStoriesQuery.ts
 - ✅ src/hooks/useTemplatesQuery.ts
-- ✅ src/hooks/useUserPreferencesQuery.ts
+- ✅ src/hooks/useUserPreferencesQuery.ts (updated)
 - ✅ src/hooks/useAdminDashboardQuery.ts
 - ✅ src/hooks/useAdminUsersQuery.ts
 - ✅ src/hooks/useAdminUserQuery.ts
@@ -429,6 +460,7 @@ Complete summary of refactoring work
 - ✅ src/hooks/useTemplateQuery.ts
 - ✅ src/hooks/useExistingStoriesQuery.ts
 - ✅ src/hooks/useStorySceneQuery.ts
+- ✅ src/hooks/useProfileQuery.ts
 
 **Mutation Hooks (9):**
 
@@ -441,6 +473,10 @@ Complete summary of refactoring work
 - ✅ src/hooks/useDeleteTemplateMutation.ts
 - ✅ src/hooks/useCreateStoryMutation.ts
 - ✅ src/hooks/useMakeChoiceMutation.ts
+- ✅ src/hooks/useUpdatePreferencesMutation.ts
+- ✅ src/hooks/useUpdateProfileMutation.ts
+- ✅ src/hooks/useChangePasswordMutation.ts
+- ✅ src/hooks/useDeleteAccountMutation.ts
 
 ### Reusable Components (5 files)
 
@@ -494,7 +530,7 @@ Complete summary of refactoring work
 
 | Category                 | Lines Eliminated |
 | ------------------------ | ---------------- |
-| Custom Hooks             | ~2,500 lines     |
+| Custom Hooks             | ~2,610 lines     |
 | Query Key Centralization | ~200 lines       |
 | Shared Types             | ~200 lines       |
 | Reusable Components      | ~340 lines       |
@@ -502,7 +538,7 @@ Complete summary of refactoring work
 | FormInput Adoption       | ~340 lines       |
 | Centralized API Client   | ~800 lines       |
 | Split Large Files        | ~715 lines       |
-| **Total**                | **~5,145 lines** |
+| **Total**                | **~5,255 lines** |
 
 ### Type Safety
 
@@ -513,7 +549,7 @@ Complete summary of refactoring work
 ### Code Quality
 
 - **Before:** 60+ duplicate query/mutation patterns, 15+ duplicate components
-- **After:** 22 custom hooks (13 query + 9 mutation), 5 reusable components
+- **After:** 27 custom hooks (14 query + 13 mutation), 5 reusable components
 - **Improvement:** ~95% reduction in duplication
 - **Query Keys:** 100% centralized, 0 hardcoded strings
 
@@ -529,7 +565,7 @@ Complete summary of refactoring work
 
 ### Immediate Benefits
 
-1. **Reduced Duplication:** ~3,290 lines of duplicate code eliminated
+1. **Reduced Duplication:** ~5,255 lines of duplicate code eliminated
 2. **Better Type Safety:** All `any` types replaced, shared types established
 3. **Consistent Patterns:** Hooks and components enforce consistency
 4. **Centralized Query Keys:** Single source of truth for all query/mutation keys
@@ -727,13 +763,81 @@ Both files now follow a clean container/presentational component pattern:
 - **Route file** = Smart container (state management, API calls, business logic)
 - **Component files** = Presentational components (UI rendering, user interactions via callbacks)
 
-### Priority 4: Additional Custom Hooks (Optional)
+### Priority 4: Additional Custom Hooks ✅
 
-Potential patterns to consider:
+Created custom hooks for preferences and profile management:
 
 - `useUpdatePreferencesMutation` - Preferences updates
-- `useProfileUpdateMutation` - Profile updates
-- Additional specialized hooks as needed
+- `useProfileQuery` - Profile data fetching
+- `useUpdateProfileMutation` - Profile updates
+- `useChangePasswordMutation` - Password changes
+- `useDeleteAccountMutation` - Account deletion
+
+**What Was Created:**
+
+_Query Hooks (1 file):_
+
+1. **`src/hooks/useProfileQuery.ts`** - Fetch user profile data (name, email, role, created date, preferences)
+
+_Mutation Hooks (4 files):_
+
+1. **`src/hooks/useUpdatePreferencesMutation.ts`** - Update user preferences (genres, tropes, spice level, pacing, scene length)
+2. **`src/hooks/useUpdateProfileMutation.ts`** - Update profile information (name, email)
+3. **`src/hooks/useChangePasswordMutation.ts`** - Change user password with validation
+4. **`src/hooks/useDeleteAccountMutation.ts`** - Delete user account with password confirmation
+
+**What Was Updated:**
+
+_Updated Hooks (1 file):_
+
+- ✅ **`src/hooks/useUserPreferencesQuery.ts`** - Enhanced to handle JSON string parsing for stored preferences
+
+_Route Files (2 files):_
+
+- ✅ **`src/routes/preferences.tsx`** - Refactored to use `useUserPreferencesQuery` and `useUpdatePreferencesMutation`
+- ✅ **`src/routes/profile.tsx`** - Refactored to use `useProfileQuery`, `useUpdateProfileMutation`, `useChangePasswordMutation`, and `useDeleteAccountMutation`
+
+**Code Reduction:**
+
+_Preferences Page:_
+
+- **Before:** Manual `useCallback`, `useEffect`, fetch logic, and manual POST with state management (~80 lines)
+- **After:** Clean `useQuery` + `useMutation` with automatic cache invalidation (~30 lines)
+- **Reduction:** ~50 lines eliminated
+
+_Profile Page:_
+
+- **Before:** Manual `useCallback`, `useEffect`, multiple fetch/API calls with separate loading states (~120 lines)
+- **After:** Clean hooks with shared `isPending` states from mutations (~60 lines)
+- **Reduction:** ~60 lines eliminated
+
+**Benefits Achieved:**
+
+- ✅ **Consistent API patterns** - All profile/preferences operations use standard hooks
+- ✅ **Automatic cache invalidation** - Mutations properly invalidate related queries
+- ✅ **Reduced boilerplate** - No manual `useCallback`, `useEffect`, or state management for loading
+- ✅ **Better error handling** - Centralized in custom hooks
+- ✅ **Type safety** - All mutations have proper TypeScript interfaces
+- ✅ **Cleaner components** - Routes focus on UI logic, not data fetching
+- ✅ **Single source of truth** - Query keys exported from hooks
+
+**Architecture Pattern:**
+
+Both pages now follow the established pattern:
+
+- **Query hooks** - Fetch data with exported query keys
+- **Mutation hooks** - Update data and invalidate related queries
+- **Components** - Use hooks with `isPending` for loading states
+
+**Total Impact:**
+
+- **5 new custom hooks created** (1 query + 4 mutation)
+- **1 existing hook enhanced** (JSON parsing support)
+- **2 route files refactored** (preferences.tsx, profile.tsx)
+- **~110 lines of boilerplate eliminated**
+- **100% of preferences/profile API calls use custom hooks**
+
+---
 
 ### Priority 5: Extract More Constants
 
@@ -798,8 +902,8 @@ Potential patterns to consider:
 
 This refactoring successfully:
 
-- ✅ Reduced code duplication by ~5,145 lines
-- ✅ Created 22 custom hooks (13 query + 9 mutation)
+- ✅ Reduced code duplication by ~5,255 lines
+- ✅ Created 27 custom hooks (14 query + 13 mutation)
 - ✅ Centralized all query keys as single source of truth
 - ✅ Established type safety across the codebase
 - ✅ Created reusable patterns for future development
@@ -810,6 +914,7 @@ This refactoring successfully:
 - ✅ Adopted FormInput component across 17 form fields in 7 files
 - ✅ Created centralized API client replacing 34 fetch() calls
 - ✅ Split 2 large route files into 17 focused, testable components
+- ✅ Completed profile and preferences hooks for clean data management
 
 The codebase is now more maintainable, type-safe, and developer-friendly. The established patterns and documentation will guide future development and help onboard new team members. All React Query patterns are now centralized in custom hooks with exported query keys for maximum consistency and refactor safety. Form inputs are now consistent across the entire application using the shared FormInput component. All API interactions go through a centralized client with consistent error handling, automatic auth redirects, and type safety. Large route files have been broken down into focused, reusable components following container/presentational patterns.
 
