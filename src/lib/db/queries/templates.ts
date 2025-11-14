@@ -358,6 +358,56 @@ export async function bulkUpdateTemplateStatus(
 }
 
 /**
+ * Bulk delete templates (admin only)
+ */
+export async function bulkDeleteTemplates(
+	templateIds: string[],
+	userId: string,
+) {
+	// Get templates info for audit log
+	const templates = await db
+		.selectFrom("novel_templates")
+		.select(["id", "title", "status"])
+		.where("id", "in", templateIds)
+		.execute();
+
+	if (templates.length === 0) {
+		throw new Error("No templates found");
+	}
+
+	// Delete all templates in one query (cascade will handle choice_points)
+	const result = await db
+		.deleteFrom("novel_templates")
+		.where("id", "in", templateIds)
+		.execute();
+
+	const deletedCount =
+		result.length > 0
+			? Number(result[0].numDeletedRows || templates.length)
+			: 0;
+
+	// Log the bulk deletion
+	await createAuditLog({
+		userId,
+		action: "bulk_delete_templates",
+		entityType: "template",
+		entityId: templateIds[0], // Use first ID as reference
+		changes: {
+			deleted: templates.map((t) => ({
+				id: t.id,
+				title: t.title,
+				status: t.status,
+			})),
+			count: deletedCount,
+		},
+	});
+
+	return {
+		deletedCount,
+	};
+}
+
+/**
  * Delete template (admin only)
  */
 export async function deleteTemplate(templateId: string, userId: string) {

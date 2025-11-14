@@ -6,6 +6,7 @@ import {
 	EyeOff,
 	FileText,
 	Plus,
+	Trash2,
 	Upload,
 	X,
 } from "lucide-react";
@@ -151,6 +152,46 @@ function TemplatesListPage() {
 			setSelectedIds(new Set());
 		} catch (err) {
 			setBulkError(err instanceof Error ? err.message : "Bulk update failed");
+		} finally {
+			setIsBulkUpdating(false);
+		}
+	};
+
+	const handleBulkDelete = async () => {
+		const count = selectedIds.size;
+		const confirmed = window.confirm(
+			`Are you sure you want to permanently delete ${count} template${count !== 1 ? "s" : ""}? This action cannot be undone.`,
+		);
+
+		if (!confirmed) {
+			return;
+		}
+
+		setBulkError(null);
+		setIsBulkUpdating(true);
+
+		try {
+			const response = await fetch("/api/admin/templates/bulk-delete", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					templateIds: Array.from(selectedIds),
+				}),
+			});
+
+			const result = await response.json();
+
+			if (!response.ok) {
+				throw new Error(result.error || "Bulk delete failed");
+			}
+
+			// Refetch templates and clear selection
+			await refetch();
+			setSelectedIds(new Set());
+		} catch (err) {
+			setBulkError(err instanceof Error ? err.message : "Bulk delete failed");
 		} finally {
 			setIsBulkUpdating(false);
 		}
@@ -319,6 +360,18 @@ function TemplatesListPage() {
 								<Archive className="w-4 h-4" />
 								Archive
 							</Button>
+							{role === "admin" && (
+								<Button
+									size="sm"
+									variant="danger"
+									onClick={handleBulkDelete}
+									disabled={isBulkUpdating}
+									loading={isBulkUpdating}
+								>
+									<Trash2 className="w-4 h-4" />
+									Delete
+								</Button>
+							)}
 						</div>
 					</div>
 				)}
