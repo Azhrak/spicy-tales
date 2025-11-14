@@ -3,6 +3,7 @@ import { useState } from "react";
 import { FileText, Users, Search, Calendar } from "lucide-react";
 import { AdminLayout, NoPermissions } from "~/components/admin";
 import { ErrorMessage } from "~/components/ErrorMessage";
+import { FormInput } from "~/components/FormInput";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
 import { useCurrentUserQuery } from "~/hooks/useCurrentUserQuery";
 import { useAuditLogsQuery } from "~/hooks/useAuditLogsQuery";
@@ -163,7 +164,8 @@ function AuditLogsPage() {
 								<Search className="w-4 h-4 inline mr-1" />
 								Search
 							</label>
-							<input
+							<FormInput
+								label=""
 								type="text"
 								id="search"
 								value={filters.search}
@@ -171,7 +173,7 @@ function AuditLogsPage() {
 									setFilters({ ...filters, search: e.target.value })
 								}
 								placeholder="Action, user, or entity ID..."
-								className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+								containerClassName="mb-0"
 							/>
 						</div>
 						<div>

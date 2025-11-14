@@ -15,6 +15,7 @@ import {
 	ConfirmDialog,
 } from "~/components/admin";
 import { ErrorMessage } from "~/components/ErrorMessage";
+import { FormInput } from "~/components/FormInput";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
 import { useCurrentUserQuery } from "~/hooks/useCurrentUserQuery";
 import { useAdminTemplateQuery } from "~/hooks/useAdminTemplateQuery";
@@ -231,24 +232,15 @@ function EditTemplatePage() {
 						)}
 
 						{/* Title */}
-						<div>
-							<label
-								htmlFor="title"
-								className="block text-sm font-medium text-slate-900 mb-2"
-							>
-								Title *
-							</label>
-							<input
-								type="text"
-								id="title"
-								value={formData.title}
-								onChange={(e) =>
-									setFormData({ ...formData, title: e.target.value })
-								}
-								className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-								required
-							/>
-						</div>
+						<FormInput
+							label="Title *"
+							type="text"
+							value={formData.title}
+							onChange={(e) =>
+								setFormData({ ...formData, title: e.target.value })
+							}
+							required
+						/>
 
 						{/* Description */}
 						<div>
@@ -271,52 +263,33 @@ function EditTemplatePage() {
 						</div>
 
 						{/* Base Tropes */}
-						<div>
-							<label
-								htmlFor="tropes"
-								className="block text-sm font-medium text-slate-900 mb-2"
-							>
-								Base Tropes *
-							</label>
-							<input
-								type="text"
-								id="tropes"
-								value={formData.base_tropes}
-								onChange={(e) =>
-									setFormData({ ...formData, base_tropes: e.target.value })
-								}
-								className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-								required
-							/>
-							<p className="mt-1 text-sm text-slate-600">
-								Separate multiple tropes with commas
-							</p>
-						</div>
+						<FormInput
+							label="Base Tropes *"
+							type="text"
+							value={formData.base_tropes}
+							onChange={(e) =>
+								setFormData({ ...formData, base_tropes: e.target.value })
+							}
+							helperText="Separate multiple tropes with commas"
+							required
+						/>
 
 						{/* Estimated Scenes */}
-						<div>
-							<label
-								htmlFor="scenes"
-								className="block text-sm font-medium text-slate-900 mb-2"
-							>
-								Estimated Scenes *
-							</label>
-							<input
-								type="number"
-								id="scenes"
-								value={formData.estimated_scenes}
-								onChange={(e) =>
-									setFormData({
-										...formData,
-										estimated_scenes: Number.parseInt(e.target.value, 10),
-									})
-								}
-								min={1}
-								max={100}
-								className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-								required
-							/>
-						</div>
+						<FormInput
+							label="Estimated Scenes *"
+							type="number"
+							value={formData.estimated_scenes}
+							onChange={(e) =>
+								setFormData({
+									...formData,
+									estimated_scenes: Number.parseInt(e.target.value, 10),
+								})
+							}
+							min={1}
+							max={100}
+							helperText="Approximate number of scenes (1-100)"
+							required
+						/>
 
 						{/* Cover Gradient */}
 						<div>

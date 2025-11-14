@@ -3,6 +3,7 @@ import { Search } from "lucide-react";
 import { useState } from "react";
 import { EmptyState } from "~/components/EmptyState";
 import { ErrorMessage } from "~/components/ErrorMessage";
+import { FormInput } from "~/components/FormInput";
 import { Header } from "~/components/Header";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
 import { NovelCard } from "~/components/NovelCard";
@@ -49,21 +50,21 @@ function BrowsePage() {
 					</p>
 				</div>
 
-				{/* Search Bar */}
-				<div className="mb-6">
-					<div className="relative max-w-2xl mx-auto">
-						<Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
-						<input
-							type="text"
-							placeholder="Search for novels..."
-							value={searchQuery}
-							onChange={(e) => setSearchQuery(e.target.value)}
-							className="w-full pl-12 pr-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-romance-500 focus:border-transparent"
-						/>
-					</div>
+			{/* Search Bar */}
+			<div className="mb-6">
+				<div className="relative max-w-2xl mx-auto">
+					<Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 z-10" />
+					<FormInput
+						label=""
+						type="text"
+						placeholder="Search for novels..."
+						value={searchQuery}
+						onChange={(e) => setSearchQuery(e.target.value)}
+						containerClassName="mb-0"
+						className="pl-12"
+					/>
 				</div>
-
-				{/* Trope Filters */}
+			</div>				{/* Trope Filters */}
 				<div className="mb-8">
 					<h2 className="text-sm font-semibold text-slate-700 mb-3">
 						Filter by Tropes:

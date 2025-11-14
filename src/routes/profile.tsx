@@ -1,6 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { AlertTriangle, Lock, Settings, User } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
+import { FormInput } from "~/components/FormInput";
 import { FullPageLoader } from "~/components/FullPageLoader";
 import { Header } from "~/components/Header";
 import { PageContainer } from "~/components/PageContainer";
@@ -206,41 +207,19 @@ function ProfilePage() {
 					</div>
 
 					<form onSubmit={handleUpdateProfile} className="space-y-4">
-						<div>
-							<label
-								htmlFor="name"
-								className="block text-sm font-medium text-slate-700 mb-1"
-							>
-								Name
-							</label>
-							<input
-								id="name"
-								type="text"
-								value={name}
-								onChange={(e) => setName(e.target.value)}
-								required
-								className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-romance-500 focus:border-transparent"
-							/>
-						</div>
-
-						<div>
-							<label
-								htmlFor="email"
-								className="block text-sm font-medium text-slate-700 mb-1"
-							>
-								Email
-							</label>
-							<input
-								id="email"
-								type="email"
-								value={email}
-								onChange={(e) => setEmail(e.target.value)}
-								required
-								className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-romance-500 focus:border-transparent"
-							/>
-						</div>
-
-						{profile?.createdAt && (
+					<FormInput
+						label="Name"
+						type="text"
+						value={name}
+						onChange={(e) => setName(e.target.value)}
+						required
+					/>					<FormInput
+						label="Email"
+						type="email"
+						value={email}
+						onChange={(e) => setEmail(e.target.value)}
+						required
+					/>						{profile?.createdAt && (
 							<div className="text-sm text-slate-600">
 								Account created:{" "}
 								{new Date(profile.createdAt).toLocaleDateString()}
@@ -279,61 +258,26 @@ function ProfilePage() {
 					</div>
 
 					<form onSubmit={handleChangePassword} className="space-y-4">
-						<div>
-							<label
-								htmlFor="currentPassword"
-								className="block text-sm font-medium text-slate-700 mb-1"
-							>
-								Current Password
-							</label>
-							<input
-								id="currentPassword"
-								type="password"
-								value={currentPassword}
-								onChange={(e) => setCurrentPassword(e.target.value)}
-								required
-								className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-romance-500 focus:border-transparent"
-							/>
-						</div>
-
-						<div>
-							<label
-								htmlFor="newPassword"
-								className="block text-sm font-medium text-slate-700 mb-1"
-							>
-								New Password
-							</label>
-							<input
-								id="newPassword"
-								type="password"
-								value={newPassword}
-								onChange={(e) => setNewPassword(e.target.value)}
-								required
-								className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-romance-500 focus:border-transparent"
-							/>
-							<p className="mt-1 text-xs text-slate-500">
-								At least 8 characters with uppercase, lowercase, and numbers
-							</p>
-						</div>
-
-						<div>
-							<label
-								htmlFor="confirmPassword"
-								className="block text-sm font-medium text-slate-700 mb-1"
-							>
-								Confirm New Password
-							</label>
-							<input
-								id="confirmPassword"
-								type="password"
-								value={confirmPassword}
-								onChange={(e) => setConfirmPassword(e.target.value)}
-								required
-								className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-romance-500 focus:border-transparent"
-							/>
-						</div>
-
-						{passwordError && (
+					<FormInput
+						label="Current Password"
+						type="password"
+						value={currentPassword}
+						onChange={(e) => setCurrentPassword(e.target.value)}
+						required
+					/>					<FormInput
+						label="New Password"
+						type="password"
+						value={newPassword}
+						onChange={(e) => setNewPassword(e.target.value)}
+						required
+						helperText="At least 8 characters with uppercase, lowercase, and numbers"
+					/>					<FormInput
+						label="Confirm New Password"
+						type="password"
+						value={confirmPassword}
+						onChange={(e) => setConfirmPassword(e.target.value)}
+						required
+					/>						{passwordError && (
 							<div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
 								{passwordError}
 							</div>
@@ -559,24 +503,14 @@ function ProfilePage() {
 							deleted.
 						</p>
 
-						<div className="mb-6">
-							<label
-								htmlFor="deletePassword"
-								className="block text-sm font-medium text-slate-700 mb-1"
-							>
-								Enter your password to confirm
-							</label>
-							<input
-								id="deletePassword"
-								type="password"
-								value={deleteConfirmPassword}
-								onChange={(e) => setDeleteConfirmPassword(e.target.value)}
-								className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
-								placeholder="Your password"
-							/>
-						</div>
-
-						{deleteError && (
+					<FormInput
+						label="Enter your password to confirm"
+						type="password"
+						value={deleteConfirmPassword}
+						onChange={(e) => setDeleteConfirmPassword(e.target.value)}
+						placeholder="Your password"
+						containerClassName="mb-6"
+					/>						{deleteError && (
 							<div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
 								{deleteError}
 							</div>

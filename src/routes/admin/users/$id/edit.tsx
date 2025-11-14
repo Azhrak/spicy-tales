@@ -3,6 +3,7 @@ import { useState } from "react";
 import { ArrowLeft, Save, Trash2, Shield } from "lucide-react";
 import { AdminLayout, RoleBadge, ConfirmDialog, NoPermissions } from "~/components/admin";
 import { ErrorMessage } from "~/components/ErrorMessage";
+import { FormInput } from "~/components/FormInput";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
 import { useCurrentUserQuery } from "~/hooks/useCurrentUserQuery";
 import { useAdminUserQuery } from "~/hooks/useAdminUserQuery";
@@ -237,44 +238,26 @@ function EditUserPage() {
 						</div>
 
 						{/* Name */}
-						<div>
-							<label
-								htmlFor="name"
-								className="block text-sm font-medium text-slate-900 mb-2"
-							>
-								Name *
-							</label>
-							<input
-								type="text"
-								id="name"
-								value={formData.name}
-								onChange={(e) =>
-									setFormData({ ...formData, name: e.target.value })
-								}
-								className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-								required
-							/>
-						</div>
+						<FormInput
+							label="Name *"
+							type="text"
+							value={formData.name}
+							onChange={(e) =>
+								setFormData({ ...formData, name: e.target.value })
+							}
+							required
+						/>
 
 						{/* Email */}
-						<div>
-							<label
-								htmlFor="email"
-								className="block text-sm font-medium text-slate-900 mb-2"
-							>
-								Email *
-							</label>
-							<input
-								type="email"
-								id="email"
-								value={formData.email}
-								onChange={(e) =>
-									setFormData({ ...formData, email: e.target.value })
-								}
-								className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-								required
-							/>
-						</div>
+						<FormInput
+							label="Email *"
+							type="email"
+							value={formData.email}
+							onChange={(e) =>
+								setFormData({ ...formData, email: e.target.value })
+							}
+							required
+						/>
 
 						{/* Role */}
 						<div>
