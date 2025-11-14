@@ -16,6 +16,7 @@ import { ErrorMessage } from "~/components/ErrorMessage";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
 import { useAdminTemplatesQuery } from "~/hooks/useAdminTemplatesQuery";
 import { useCurrentUserQuery } from "~/hooks/useCurrentUserQuery";
+import type { TemplateStatus } from "~/lib/db/types";
 
 export const Route = createFileRoute("/admin/templates/")({
 	component: TemplatesListPage,
@@ -23,6 +24,7 @@ export const Route = createFileRoute("/admin/templates/")({
 
 type SortField = "title" | "status" | "scenes" | "created" | "updated";
 type SortDirection = "asc" | "desc";
+type StatusFilter = "all" | TemplateStatus;
 
 function TemplatesListPage() {
 	const navigate = useNavigate();
@@ -31,6 +33,7 @@ function TemplatesListPage() {
 	const [bulkError, setBulkError] = useState<string | null>(null);
 	const [sortField, setSortField] = useState<SortField>("updated");
 	const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
+	const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
 
 	// Fetch current user to get role
 	const { data: userData, isLoading: userLoading } = useCurrentUserQuery();
@@ -78,8 +81,14 @@ function TemplatesListPage() {
 		}
 	};
 
+	// Filter templates by status
+	const filteredTemplates =
+		statusFilter === "all"
+			? templates
+			: templates.filter((t) => t.status === statusFilter);
+
 	// Sort templates
-	const sortedTemplates = [...templates].sort((a, b) => {
+	const sortedTemplates = [...filteredTemplates].sort((a, b) => {
 		let comparison = 0;
 
 		switch (sortField) {
@@ -180,7 +189,7 @@ function TemplatesListPage() {
 				</div>
 
 				{/* Statistics */}
-				<div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+				<div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
 					<StatBox
 						label="Total Templates"
 						value={stats.total}
@@ -205,6 +214,61 @@ function TemplatesListPage() {
 						icon={Archive}
 						color="gray"
 					/>
+				</div>
+
+				{/* Status Filter */}
+				<div className="bg-white rounded-lg border border-slate-200 p-4 mb-4">
+					<div className="flex items-center gap-3">
+						<span className="text-sm font-medium text-slate-700">
+							Filter by Status:
+						</span>
+						<div className="flex gap-2">
+							<button
+								type="button"
+								onClick={() => setStatusFilter("all")}
+								className={`px-3 py-1.5 text-sm rounded-md font-medium transition-colors ${
+									statusFilter === "all"
+										? "bg-romance-600 text-white"
+										: "bg-slate-100 text-slate-700 hover:bg-slate-200"
+								}`}
+							>
+								All ({stats.total})
+							</button>
+							<button
+								type="button"
+								onClick={() => setStatusFilter("published")}
+								className={`px-3 py-1.5 text-sm rounded-md font-medium transition-colors ${
+									statusFilter === "published"
+										? "bg-green-600 text-white"
+										: "bg-slate-100 text-slate-700 hover:bg-slate-200"
+								}`}
+							>
+								Published ({stats.published})
+							</button>
+							<button
+								type="button"
+								onClick={() => setStatusFilter("draft")}
+								className={`px-3 py-1.5 text-sm rounded-md font-medium transition-colors ${
+									statusFilter === "draft"
+										? "bg-yellow-600 text-white"
+										: "bg-slate-100 text-slate-700 hover:bg-slate-200"
+								}`}
+							>
+								Drafts ({stats.draft})
+							</button>
+							<button
+								type="button"
+								onClick={() => setStatusFilter("archived")}
+								className={`px-3 py-1.5 text-sm rounded-md font-medium transition-colors ${
+									statusFilter === "archived"
+										? "bg-gray-600 text-white"
+										: "bg-slate-100 text-slate-700 hover:bg-slate-200"
+								}`}
+							>
+								Archived ({stats.archived})
+							</button>
+						</div>
+					</div>
 				</div>
 
 				{/* Bulk Actions Toolbar */}

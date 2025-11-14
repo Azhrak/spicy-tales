@@ -1,5 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Edit2, Shield, Users as UsersIcon } from "lucide-react";
+import { useState } from "react";
 import {
 	AdminLayout,
 	DataTable,
@@ -10,13 +11,17 @@ import { ErrorMessage } from "~/components/ErrorMessage";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
 import { useAdminUsersQuery } from "~/hooks/useAdminUsersQuery";
 import { useCurrentUserQuery } from "~/hooks/useCurrentUserQuery";
+import type { UserRole } from "~/lib/db/types";
 
 export const Route = createFileRoute("/admin/users/")({
 	component: UsersListPage,
 });
 
+type RoleFilter = "all" | UserRole;
+
 function UsersListPage() {
 	const navigate = useNavigate();
+	const [roleFilter, setRoleFilter] = useState<RoleFilter>("all");
 
 	// Fetch current user to get role
 	const { data: userData, isLoading: userLoading } = useCurrentUserQuery();
@@ -68,7 +73,11 @@ function UsersListPage() {
 	const { role } = userData;
 	const users = usersData.users;
 
-	// Calculate statistics
+	// Filter users by role
+	const filteredUsers =
+		roleFilter === "all" ? users : users.filter((u) => u.role === roleFilter);
+
+	// Calculate statistics (using all users, not filtered)
 	const stats = {
 		total: users.length,
 		user: users.filter((u) => u.role === "user").length,
@@ -90,7 +99,7 @@ function UsersListPage() {
 				</div>
 
 				{/* Statistics */}
-				<div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-8">
+				<div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
 					<StatBox
 						label="Total Users"
 						value={stats.total}
@@ -123,10 +132,65 @@ function UsersListPage() {
 					/>
 				</div>
 
+				{/* Role Filter */}
+				<div className="bg-white rounded-lg border border-slate-200 p-4 mb-4">
+					<div className="flex items-center gap-3">
+						<span className="text-sm font-medium text-slate-700">
+							Filter by Role:
+						</span>
+						<div className="flex gap-2">
+							<button
+								type="button"
+								onClick={() => setRoleFilter("all")}
+								className={`px-3 py-1.5 text-sm rounded-md font-medium transition-colors ${
+									roleFilter === "all"
+										? "bg-purple-600 text-white"
+										: "bg-slate-100 text-slate-700 hover:bg-slate-200"
+								}`}
+							>
+								All ({stats.total})
+							</button>
+							<button
+								type="button"
+								onClick={() => setRoleFilter("user")}
+								className={`px-3 py-1.5 text-sm rounded-md font-medium transition-colors ${
+									roleFilter === "user"
+										? "bg-slate-600 text-white"
+										: "bg-slate-100 text-slate-700 hover:bg-slate-200"
+								}`}
+							>
+								Users ({stats.user})
+							</button>
+							<button
+								type="button"
+								onClick={() => setRoleFilter("editor")}
+								className={`px-3 py-1.5 text-sm rounded-md font-medium transition-colors ${
+									roleFilter === "editor"
+										? "bg-blue-600 text-white"
+										: "bg-slate-100 text-slate-700 hover:bg-slate-200"
+								}`}
+							>
+								Editors ({stats.editor})
+							</button>
+							<button
+								type="button"
+								onClick={() => setRoleFilter("admin")}
+								className={`px-3 py-1.5 text-sm rounded-md font-medium transition-colors ${
+									roleFilter === "admin"
+										? "bg-purple-700 text-white"
+										: "bg-slate-100 text-slate-700 hover:bg-slate-200"
+								}`}
+							>
+								Admins ({stats.admin})
+							</button>
+						</div>
+					</div>
+				</div>
+
 				{/* Users Table */}
 				<div className="bg-white rounded-lg border border-slate-200 overflow-hidden">
 					<DataTable
-						data={users}
+						data={filteredUsers}
 						columns={[
 							{
 								header: "Name",
