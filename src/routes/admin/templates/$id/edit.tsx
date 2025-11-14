@@ -138,6 +138,7 @@ function EditTemplatePage() {
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["adminTemplate", id] });
 			queryClient.invalidateQueries({ queryKey: ["adminTemplates"] });
+			queryClient.invalidateQueries({ queryKey: ["adminDashboard"] });
 			setShowStatusDialog(false);
 			setPendingStatus(null);
 		},
@@ -162,6 +163,8 @@ function EditTemplatePage() {
 			return response.json();
 		},
 		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ["adminTemplates"] });
+			queryClient.invalidateQueries({ queryKey: ["adminDashboard"] });
 			navigate({ to: "/admin/templates" });
 		},
 		onError: (error) => {

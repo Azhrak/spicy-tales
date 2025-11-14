@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { ArrowLeft, Save } from "lucide-react";
@@ -21,6 +21,7 @@ interface TemplateFormData {
 
 function NewTemplatePage() {
 	const navigate = useNavigate();
+	const queryClient = useQueryClient();
 	const [formData, setFormData] = useState<TemplateFormData>({
 		title: "",
 		description: "",
@@ -57,6 +58,8 @@ function NewTemplatePage() {
 			return response.json();
 		},
 		onSuccess: (data) => {
+			queryClient.invalidateQueries({ queryKey: ["adminTemplates"] });
+			queryClient.invalidateQueries({ queryKey: ["adminDashboard"] });
 			navigate({ to: `/admin/templates/${data.template.id}/edit` });
 		},
 		onError: (error) => {

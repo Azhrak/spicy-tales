@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { ArrowLeft, BookOpen, Heart } from "lucide-react";
 import { useState } from "react";
@@ -35,6 +35,7 @@ export const Route = createFileRoute("/story/create")({
 function StoryCreatePage() {
 	const { templateId } = Route.useSearch();
 	const navigate = useNavigate();
+	const queryClient = useQueryClient();
 	const [spiceLevel, setSpiceLevel] = useState<SpiceLevel | null>(null);
 	const [pacing, setPacing] = useState<PacingOption | null>(null);
 	const [sceneLength, setSceneLength] = useState<SceneLengthOption | null>(
@@ -133,6 +134,10 @@ function StoryCreatePage() {
 			return response.json() as Promise<{ story: { id: string } }>;
 		},
 		onSuccess: (data) => {
+			// Invalidate user stories cache to refresh library
+			queryClient.invalidateQueries({ queryKey: ["user-stories"] });
+			// Invalidate existing stories cache for this template
+			queryClient.invalidateQueries({ queryKey: ["existing-stories", templateId] });
 			// TODO: Create reading interface and navigate to /story/$id
 			// For now, redirect to library
 			navigate({ to: "/library" });

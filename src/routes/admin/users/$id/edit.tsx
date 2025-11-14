@@ -87,6 +87,7 @@ function EditUserPage() {
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["adminUser", id] });
 			queryClient.invalidateQueries({ queryKey: ["adminUsers"] });
+			queryClient.invalidateQueries({ queryKey: ["adminDashboard"] });
 			setFormError(null);
 		},
 		onError: (error) => {
@@ -110,6 +111,8 @@ function EditUserPage() {
 			return response.json();
 		},
 		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ["adminUsers"] });
+			queryClient.invalidateQueries({ queryKey: ["adminDashboard"] });
 			navigate({ to: "/admin/users" });
 		},
 		onError: (error) => {
