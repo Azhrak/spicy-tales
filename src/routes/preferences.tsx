@@ -1,31 +1,22 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import {
-	ArrowLeft,
-	BookOpen,
-	CheckCircle2,
-	Flame,
-	Heart,
-	Settings,
-} from "lucide-react";
+import { ArrowLeft, CheckCircle2, Settings } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { FullPageLoader } from "~/components/FullPageLoader";
-import { api, ApiError } from "~/lib/api/client";
 import {
-	GENRE_LABELS,
-	GENRES,
-	type Genre,
-	PACING_LABELS,
-	PACING_OPTIONS,
-	type PacingOption,
-	SCENE_LENGTH_LABELS,
-	SCENE_LENGTH_OPTIONS,
-	type SceneLengthOption,
-	SPICE_LABELS,
-	type SpiceLevel,
-	TROPE_LABELS,
-	TROPES,
-	type Trope,
-	type UserPreferences,
+	GenresSection,
+	TropesSection,
+	SpiceLevelSection,
+	PacingSection,
+	SceneLengthSection,
+} from "~/components/preferences";
+import { api, ApiError } from "~/lib/api/client";
+import type {
+	Genre,
+	PacingOption,
+	SceneLengthOption,
+	SpiceLevel,
+	Trope,
+	UserPreferences,
 } from "~/lib/types/preferences";
 
 export const Route = createFileRoute("/preferences")({
@@ -199,214 +190,30 @@ function PreferencesPage() {
 
 					{/* Form */}
 					<form onSubmit={handleSubmit} className="space-y-8">
-						{/* Genres Section */}
-						<div className="bg-white rounded-2xl shadow-lg p-6">
-							<div className="flex items-center mb-6">
-								<BookOpen className="w-6 h-6 text-romance-500 mr-2" />
-								<h2 className="text-2xl font-bold text-slate-900">Genres</h2>
-							</div>
-							<p className="text-slate-600 mb-6">
-								Select your favorite romance genres
-							</p>
-							<div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-								{GENRES.map((genre) => (
-									<button
-										key={genre}
-										type="button"
-										onClick={() => handleGenreToggle(genre)}
-										className={`p-4 rounded-lg border-2 transition-all ${
-											preferences.genres.includes(genre)
-												? "border-romance-500 bg-romance-50 text-romance-700"
-												: "border-slate-200 hover:border-romance-300 text-slate-700"
-										}`}
-									>
-										<div className="font-semibold">{GENRE_LABELS[genre]}</div>
-									</button>
-								))}
-							</div>
-						</div>
+						<GenresSection
+							selectedGenres={preferences.genres}
+							onToggle={handleGenreToggle}
+						/>
 
-						{/* Tropes Section */}
-						<div className="bg-white rounded-2xl shadow-lg p-6">
-							<div className="flex items-center mb-6">
-								<Heart className="w-6 h-6 text-romance-500 mr-2" />
-								<h2 className="text-2xl font-bold text-slate-900">Tropes</h2>
-							</div>
-							<p className="text-slate-600 mb-6">
-								Choose your favorite romance tropes
-							</p>
-							<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-								{TROPES.map((trope) => (
-									<button
-										key={trope}
-										type="button"
-										onClick={() => handleTropeToggle(trope)}
-										className={`p-4 rounded-lg border-2 transition-all text-left ${
-											preferences.tropes.includes(trope)
-												? "border-romance-500 bg-romance-50 text-romance-700"
-												: "border-slate-200 hover:border-romance-300 text-slate-700"
-										}`}
-									>
-										<div className="font-semibold">{TROPE_LABELS[trope]}</div>
-									</button>
-								))}
-							</div>
-						</div>
+						<TropesSection
+							selectedTropes={preferences.tropes}
+							onToggle={handleTropeToggle}
+						/>
 
-						{/* Spice Level Section */}
-						<div className="bg-white rounded-2xl shadow-lg p-6">
-							<div className="flex items-center mb-6">
-								<Flame className="w-6 h-6 text-romance-500 mr-2" />
-								<h2 className="text-2xl font-bold text-slate-900">
-									Spice Level
-								</h2>
-							</div>
-							<p className="text-slate-600 mb-6">
-								Set your preferred heat level for intimate scenes
-							</p>
-							<div className="space-y-3">
-								{([1, 2, 3, 4, 5] as SpiceLevel[]).map((level) => (
-									<button
-										key={level}
-										type="button"
-										onClick={() => handleSpiceLevelChange(level)}
-										className={`w-full p-4 rounded-lg border-2 transition-all text-left ${
-											preferences.spiceLevel === level
-												? "border-romance-500 bg-romance-50"
-												: "border-slate-200 hover:border-romance-300"
-										}`}
-									>
-										<div className="flex items-center justify-between">
-											<div>
-												<div className="flex items-center gap-2">
-													<span className="font-semibold text-slate-900">
-														{SPICE_LABELS[level].label}
-													</span>
-													<div className="flex gap-1">
-														{Array.from({ length: level }).map((_, i) => (
-															<Flame
-																key={i}
-																className="w-4 h-4 text-romance-500"
-																fill="currentColor"
-															/>
-														))}
-													</div>
-												</div>
-												<p className="text-sm text-slate-600">
-													{SPICE_LABELS[level].description}
-												</p>
-											</div>
-											<div
-												className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-													preferences.spiceLevel === level
-														? "border-romance-500 bg-romance-500"
-														: "border-slate-300"
-												}`}
-											>
-												{preferences.spiceLevel === level && (
-													<div className="w-2 h-2 bg-white rounded-full" />
-												)}
-											</div>
-										</div>
-									</button>
-								))}
-							</div>
-						</div>
+						<SpiceLevelSection
+							selectedLevel={preferences.spiceLevel}
+							onSelect={handleSpiceLevelChange}
+						/>
 
-						{/* Pacing Section */}
-						<div className="bg-white rounded-2xl shadow-lg p-6">
-							<h3 className="text-xl font-bold text-slate-900 mb-4">
-								Relationship Pacing
-							</h3>
-							<p className="text-slate-600 mb-6">
-								How quickly should relationships develop in your stories?
-							</p>
-							<div className="space-y-3">
-								{PACING_OPTIONS.map((pacing) => (
-									<button
-										key={pacing}
-										type="button"
-										onClick={() => handlePacingChange(pacing)}
-										className={`w-full p-4 rounded-lg border-2 transition-all text-left ${
-											preferences.pacing === pacing
-												? "border-romance-500 bg-romance-50"
-												: "border-slate-200 hover:border-romance-300"
-										}`}
-									>
-										<div className="flex items-center justify-between">
-											<div>
-												<div className="font-semibold text-slate-900">
-													{PACING_LABELS[pacing].label}
-												</div>
-												<p className="text-sm text-slate-600">
-													{PACING_LABELS[pacing].description}
-												</p>
-											</div>
-											<div
-												className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-													preferences.pacing === pacing
-														? "border-romance-500 bg-romance-500"
-														: "border-slate-300"
-												}`}
-											>
-												{preferences.pacing === pacing && (
-													<div className="w-2 h-2 bg-white rounded-full" />
-												)}
-											</div>
-										</div>
-									</button>
-								))}
-							</div>
-						</div>
+						<PacingSection
+							selectedPacing={preferences.pacing}
+							onSelect={handlePacingChange}
+						/>
 
-						{/* Scene Length Section */}
-						<div className="bg-white rounded-2xl shadow-lg p-6">
-							<h3 className="text-xl font-bold text-slate-900 mb-4">
-								Scene Length
-							</h3>
-							<p className="text-slate-600 mb-6">
-								Choose your preferred scene length
-							</p>
-							<div className="space-y-3">
-								{SCENE_LENGTH_OPTIONS.map((length) => (
-									<button
-										key={length}
-										type="button"
-										onClick={() => handleSceneLengthChange(length)}
-										className={`w-full p-4 rounded-lg border-2 transition-all text-left ${
-											preferences.sceneLength === length
-												? "border-romance-500 bg-romance-50"
-												: "border-slate-200 hover:border-romance-300"
-										}`}
-									>
-										<div className="flex items-center justify-between">
-											<div className="flex-1">
-												<div className="font-semibold text-slate-900">
-													{SCENE_LENGTH_LABELS[length].label}
-												</div>
-												<p className="text-sm text-slate-600">
-													{SCENE_LENGTH_LABELS[length].description}
-												</p>
-												<p className="text-xs text-slate-500 mt-1">
-													{SCENE_LENGTH_LABELS[length].wordCount}
-												</p>
-											</div>
-											<div
-												className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-													preferences.sceneLength === length
-														? "border-romance-500 bg-romance-500"
-														: "border-slate-300"
-												}`}
-											>
-												{preferences.sceneLength === length && (
-													<div className="w-2 h-2 bg-white rounded-full" />
-												)}
-											</div>
-										</div>
-									</button>
-								))}
-							</div>
-						</div>
+						<SceneLengthSection
+							selectedLength={preferences.sceneLength || "medium"}
+							onSelect={handleSceneLengthChange}
+						/>
 
 						{/* Save Button */}
 						<div className="flex justify-end gap-4">
