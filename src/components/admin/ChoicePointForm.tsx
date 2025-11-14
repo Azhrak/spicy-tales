@@ -34,14 +34,18 @@ export function ChoicePointForm({
 			return;
 		}
 
-		// Find the next available scene number
-		const usedSceneNumbers = new Set(choicePoints.map((cp) => cp.scene_number));
+		// Find the next available scene number (must be after the last choice point)
 		let nextSceneNumber = 1;
-		while (
-			usedSceneNumbers.has(nextSceneNumber) &&
-			nextSceneNumber <= maxScenes
-		) {
-			nextSceneNumber++;
+		if (choicePoints.length > 0) {
+			// Start from after the last choice point's scene number
+			const lastSceneNumber =
+				choicePoints[choicePoints.length - 1].scene_number;
+			nextSceneNumber = lastSceneNumber + 1;
+		}
+
+		// Ensure we don't exceed maxScenes
+		if (nextSceneNumber > maxScenes) {
+			nextSceneNumber = maxScenes;
 		}
 
 		const newChoicePoint: ChoicePoint = {
@@ -109,40 +113,49 @@ export function ChoicePointForm({
 	};
 
 	// Available scene numbers for dropdown
-	const getAvailableSceneNumbers = (currentSceneNumber: number) => {
+	// Ensures chronological order: each choice point must be after the previous one
+	// and before the next one
+	const getAvailableSceneNumbers = (
+		choicePointIndex: number,
+		currentSceneNumber: number,
+	) => {
 		const usedSceneNumbers = new Set(
 			choicePoints
 				.map((cp) => cp.scene_number)
 				.filter((num) => num !== currentSceneNumber),
 		);
 
+		// Find the minimum scene number based on the previous choice point
+		let minSceneNumber = 1;
+		if (choicePointIndex > 0) {
+			// Must be greater than the previous choice point's scene number
+			minSceneNumber = choicePoints[choicePointIndex - 1].scene_number + 1;
+		}
+
+		// Find the maximum scene number based on the next choice point
+		let maxSceneNumber = maxScenes;
+		if (choicePointIndex < choicePoints.length - 1) {
+			// Must be less than the next choice point's scene number
+			maxSceneNumber = choicePoints[choicePointIndex + 1].scene_number - 1;
+		}
+
+		// Generate available scene numbers from min to max
 		return Array.from({ length: maxScenes }, (_, i) => i + 1).filter(
-			(num) => !usedSceneNumbers.has(num),
+			(num) =>
+				num >= minSceneNumber &&
+				num <= maxSceneNumber &&
+				!usedSceneNumbers.has(num),
 		);
 	};
 
 	return (
 		<div className="space-y-6">
-			<div className="flex items-center justify-between">
-				<div>
-					<h3 className="text-lg font-semibold text-slate-900">
-						Choice Points
-					</h3>
-					<p className="text-sm text-slate-600 mt-1">
-						Add choice points that appear after scenes. Maximum{" "}
-						{maxChoicePoints} choice points (one after each scene, except the
-						last).
-					</p>
-				</div>
-				<Button
-					type="button"
-					onClick={addChoicePoint}
-					variant="secondary"
-					disabled={choicePoints.length >= maxChoicePoints}
-				>
-					<Plus className="w-4 h-4" />
-					Add Choice Point
-				</Button>
+			<div>
+				<h3 className="text-lg font-semibold text-slate-900">Choice Points</h3>
+				<p className="text-sm text-slate-600 mt-1">
+					Add choice points in chronological order. Maximum {maxChoicePoints}{" "}
+					choice points (one after each scene, except the last).
+				</p>
 			</div>
 
 			{choicePoints.length === 0 ? (
@@ -194,13 +207,14 @@ export function ChoicePointForm({
 									className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
 									required
 								>
-									{getAvailableSceneNumbers(choicePoint.scene_number).map(
-										(num) => (
-											<option key={num} value={num}>
-												Scene {num}
-											</option>
-										),
-									)}
+									{getAvailableSceneNumbers(
+										cpIndex,
+										choicePoint.scene_number,
+									).map((num) => (
+										<option key={num} value={num}>
+											Scene {num}
+										</option>
+									))}
 								</select>
 							</div>
 
@@ -314,6 +328,17 @@ export function ChoicePointForm({
 					))}
 				</div>
 			)}
+
+			<Button
+				type="button"
+				onClick={addChoicePoint}
+				variant="secondary"
+				disabled={choicePoints.length >= maxChoicePoints}
+				className="w-full"
+			>
+				<Plus className="w-4 h-4" />
+				Add Choice Point
+			</Button>
 		</div>
 	);
 }
