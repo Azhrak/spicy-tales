@@ -68,6 +68,9 @@ export async function generateScene(
 	// Get recent scenes for context (last 2 scenes)
 	const recentScenes = await getRecentScenes(storyId, 2);
 	const previousSceneContents = recentScenes.map((s) => s.content);
+	const previousMetadata = recentScenes
+		.map((s) => s.metadata)
+		.filter((m): m is NonNullable<typeof m> => m !== null);
 
 	// Check if there's a choice point at this scene
 	const choicePoint = await getChoicePointForScene(templateId, sceneNumber);
@@ -78,6 +81,7 @@ export async function generateScene(
 		templateTitle,
 		sceneNumber,
 		previousScenes: previousSceneContents,
+		previousMetadata,
 		lastChoice,
 		choicePoint: choicePoint
 			? {

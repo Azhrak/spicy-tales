@@ -67,12 +67,12 @@ export async function getStoryScenes(storyId: string) {
 
 /**
  * Get the last N scenes for context
- * Returns summaries for efficient context passing
+ * Returns summaries and metadata for efficient context passing
  */
 export async function getRecentScenes(storyId: string, count: number) {
 	const scenes = await db
 		.selectFrom("scenes")
-		.select(["scene_number", "summary", "content"])
+		.select(["scene_number", "summary", "content", "metadata"])
 		.where("story_id", "=", storyId)
 		.orderBy("scene_number", "desc")
 		.limit(count)
@@ -84,6 +84,7 @@ export async function getRecentScenes(storyId: string, count: number) {
 		scene_number: scene.scene_number,
 		// Use summary if available, otherwise fall back to content
 		content: scene.summary || scene.content,
+		metadata: scene.metadata as SceneMetadata | null,
 	}));
 }
 

@@ -27,8 +27,34 @@ interface SceneMetadata {
   tension_threads?: string; // e.g., "secret identity, past trauma"
   relationship_progress?: number; // -5 to +5 scale
   key_moment?: string; // e.g., "first vulnerable confession"
+  key_characters?: string; // Comma-separated list of characters present in scene
+  pov_character?: string; // Whose perspective the scene is told from
+  setting_location?: string; // Where the scene takes place
 }
 ```
+
+### New Character & Setting Tracking (Enhanced)
+
+**key_characters**: A comma-separated list of all significant characters who appear in the scene. This helps:
+
+- Track which characters have been introduced
+- Maintain character consistency across scenes
+- Ensure characters aren't forgotten or reintroduced unnecessarily
+- Build character relationship maps over time
+
+**pov_character**: The name of the character whose perspective the scene is told from. This ensures:
+
+- Consistent point of view within each scene
+- Tracking of perspective shifts across the story
+- Proper limitation to one character's thoughts per scene
+- Clear narrative voice
+
+**setting_location**: Where the scene takes place (e.g., "coffee shop", "protagonist's apartment", "office building"). This helps:
+
+- Maintain spatial continuity
+- Avoid illogical location jumps
+- Build on previously established environmental details
+- Create grounded, consistent settings
 
 ## How It Works
 
@@ -36,12 +62,15 @@ interface SceneMetadata {
 
 The AI is instructed to include a `<SCENE_META>` block after each scene:
 
-```
+```text
 <SCENE_META>
 emotional_beat: tentative trust building
 tension_threads: secret identity, jealousy subplot
 relationship_progress: 2
 key_moment: protagonist reveals past trauma
+key_characters: Emma, Liam
+pov_character: Emma
+setting_location: coffee shop downtown
 </SCENE_META>
 ```
 
@@ -71,9 +100,21 @@ await cacheScene(
 
 When generating the next scene:
 
-- `getRecentScenes()` returns summaries instead of full content
+- `getRecentScenes()` returns summaries AND metadata instead of full content
+- Character context is built from previous scenes' metadata
+- Established characters are tracked and not reintroduced
+- POV consistency is maintained or shifts are deliberate
+- Setting continuity is preserved with location tracking
 - Summaries are generated from metadata when available
 - Falls back to heuristic analysis if metadata is missing
+
+**Character Context Building:**
+
+The system now extracts character information from recent scenes:
+
+- **Established Characters**: Lists all characters who have appeared, reminding the AI not to reintroduce them with full descriptions
+- **Recent POV**: Tracks whose perspective was used, encouraging consistency
+- **Recent Setting**: Notes the last location to maintain spatial continuity or make transitions clear
 
 ## Benefits
 
@@ -88,6 +129,10 @@ When generating the next scene:
 - Tracks emotional progression numerically
 - Maintains awareness of unresolved tensions
 - Highlights key moments for callback opportunities
+- **NEW: Tracks introduced characters and their consistency**
+- **NEW: Maintains POV consistency across scenes**
+- **NEW: Preserves setting continuity and spatial logic**
+- **NEW: Enables character relationship mapping over time**
 
 ### Future Features
 
@@ -215,7 +260,9 @@ const recentScenes = await getRecentScenes(storyId, 2);
 - Add `scene_tone` field (e.g., "playful", "intense", "melancholic")
 - Track `character_development` for protagonist growth
 - Add `foreshadowing` hints for future callbacks
-- Include `setting_detail` for location continuity
+- ~~Include `setting_detail` for location continuity~~ **✅ IMPLEMENTED as `setting_location`**
+- Expand `key_characters` to include character relationship states
+- Add `subplot_threads` separate from main tension threads
 
 ## Testing
 

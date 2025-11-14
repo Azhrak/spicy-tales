@@ -84,9 +84,12 @@ ${traitLine}
 ${settingLine}
 
 CONTINUITY & ECONOMY:
-- Do NOT reintroduce established characters with full descriptors—evolve or contrast prior details
+- CHARACTER TRACKING: When introducing a character for the first time, establish their key traits, appearance, and mannerisms. In subsequent appearances, reference established details and show character evolution rather than restating descriptions.
+- POV CONSISTENCY: Maintain single POV per scene. Stay deeply rooted in the POV character's thoughts, perceptions, and emotional responses. Show other characters only through the POV character's observations.
+- SETTING CONTINUITY: Ground each scene in a specific location. Build on previously established environmental details. Make location transitions clear and purposeful.
 - Avoid redundant backstory recaps; only reference prior events if it advances emotional stakes
 - Maintain internal logic from prior scenes and choices
+- Track introduced characters, their established traits, and relationship dynamics
 
 PROSE GUARDRAILS:
 - No meta commentary about 'the story' or 'this scene'
@@ -125,6 +128,7 @@ export function buildScenePrompt(params: {
 	templateTitle: string;
 	sceneNumber: number;
 	previousScenes?: string[];
+	previousMetadata?: SceneMetadata[]; // Metadata from recent scenes for character/setting context
 	lastChoice?: { text: string; tone: string };
 	choicePoint?: { sceneNumber: number; promptText: string };
 	estimatedScenes: number;
@@ -134,6 +138,7 @@ export function buildScenePrompt(params: {
 		templateTitle,
 		sceneNumber,
 		previousScenes = [],
+		previousMetadata = [],
 		lastChoice,
 		choicePoint,
 		estimatedScenes,
@@ -183,6 +188,48 @@ export function buildScenePrompt(params: {
 
 	const objectivesBlock = objectives.map((o) => `- ${o}`).join("\n");
 
+	// Build character continuity context from previous scenes
+	let characterContext = "";
+	if (previousMetadata.length > 0) {
+		const introducedCharacters = new Set<string>();
+		const povCharacters: string[] = [];
+		const recentLocations: string[] = [];
+
+		for (const meta of previousMetadata) {
+			if (meta.key_characters) {
+				for (const char of meta.key_characters.split(",")) {
+					introducedCharacters.add(char.trim());
+				}
+			}
+			if (meta.pov_character) {
+				povCharacters.push(meta.pov_character);
+			}
+			if (meta.setting_location) {
+				recentLocations.push(meta.setting_location);
+			}
+		}
+
+		if (introducedCharacters.size > 0) {
+			characterContext += `ESTABLISHED CHARACTERS: ${Array.from(introducedCharacters).join(", ")}\n`;
+			characterContext +=
+				"These characters have already been introduced. Maintain their established traits, appearance, and mannerisms. Do NOT reintroduce them with full descriptions.\n\n";
+		}
+
+		if (povCharacters.length > 0) {
+			const lastPOV = povCharacters[povCharacters.length - 1];
+			characterContext += `RECENT POV: ${lastPOV}\n`;
+			characterContext +=
+				"Maintain consistent POV unless there's a deliberate perspective shift. Stay in one character's head per scene.\n\n";
+		}
+
+		if (recentLocations.length > 0) {
+			const lastLocation = recentLocations[recentLocations.length - 1];
+			characterContext += `RECENT SETTING: ${lastLocation}\n`;
+			characterContext +=
+				"If the scene continues in the same location, build on established details. If location changes, make the transition clear and logical.\n\n";
+		}
+	}
+
 	let contextSection = "";
 	if (previousScenes.length > 0) {
 		contextSection += "RECENT SCENE SNAPSHOTS:\n";
@@ -216,7 +263,7 @@ You MUST write exactly within this range. Count words as you write and stop when
 OBJECTIVES:
 ${objectivesBlock}
 
-${contextSection}${choiceImpact}${choiceDirective}Write the scene narrative now (no meta, no lists, no outlines). Remember: ${lengthRange.min}-${lengthRange.max} words MAXIMUM.
+${characterContext}${contextSection}${choiceImpact}${choiceDirective}Write the scene narrative now (no meta, no lists, no outlines). Remember: ${lengthRange.min}-${lengthRange.max} words MAXIMUM.
 
 After the narrative, include a metadata section:
 <SCENE_META>
@@ -224,6 +271,9 @@ emotional_beat: [brief description, e.g., "tentative trust building"]
 tension_threads: [unresolved tensions, comma-separated, e.g., "secret identity, past trauma"]
 relationship_progress: [numeric -5 to +5, where negative is regression, positive is advancement]
 key_moment: [single defining moment of this scene in 5-8 words]
+key_characters: [comma-separated list of characters who appear in this scene]
+pov_character: [name of the POV character for this scene]
+setting_location: [where this scene takes place, e.g., "coffee shop", "protagonist's apartment"]
 </SCENE_META>`;
 }
 
@@ -235,6 +285,9 @@ export interface SceneMetadata {
 	tension_threads?: string;
 	relationship_progress?: number;
 	key_moment?: string;
+	key_characters?: string; // Comma-separated list of characters present in scene
+	pov_character?: string; // Whose perspective the scene is told from
+	setting_location?: string; // Where the scene takes place
 }
 
 /**
@@ -337,6 +390,21 @@ export function parseSceneMeta(rawContent: string): ParsedScene {
 		const keyMomentMatch = metaBlock.match(/key_moment:\s*(.+)/i);
 		if (keyMomentMatch) {
 			metadata.key_moment = keyMomentMatch[1].trim();
+		}
+
+		const keyCharactersMatch = metaBlock.match(/key_characters:\s*(.+)/i);
+		if (keyCharactersMatch) {
+			metadata.key_characters = keyCharactersMatch[1].trim();
+		}
+
+		const povCharacterMatch = metaBlock.match(/pov_character:\s*(.+)/i);
+		if (povCharacterMatch) {
+			metadata.pov_character = povCharacterMatch[1].trim();
+		}
+
+		const settingLocationMatch = metaBlock.match(/setting_location:\s*(.+)/i);
+		if (settingLocationMatch) {
+			metadata.setting_location = settingLocationMatch[1].trim();
 		}
 	}
 
