@@ -132,15 +132,18 @@ function UsersListPage() {
 								header: "Name",
 								accessor: (u) => u.name,
 								className: "font-medium text-slate-900",
+								key: "name",
 							},
 							{
 								header: "Email",
 								accessor: (u) => u.email,
 								className: "text-slate-600",
+								key: "email",
 							},
 							{
 								header: "Role",
 								accessor: (u) => <RoleBadge role={u.role} />,
+								key: "role",
 							},
 							{
 								header: "Verified",
@@ -155,11 +158,13 @@ function UsersListPage() {
 										{u.email_verified ? "Yes" : "No"}
 									</span>
 								),
+								key: "verified",
 							},
 							{
 								header: "Joined",
 								accessor: (u) => new Date(u.created_at).toLocaleDateString(),
 								className: "text-slate-600 text-sm",
+								key: "joined",
 							},
 						]}
 						onRowClick={(user) =>

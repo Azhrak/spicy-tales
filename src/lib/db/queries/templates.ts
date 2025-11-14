@@ -304,6 +304,60 @@ export async function updateTemplateStatus(
 }
 
 /**
+ * Bulk update template status
+ */
+export async function bulkUpdateTemplateStatus(
+	templateIds: string[],
+	status: TemplateStatus,
+	userId: string,
+) {
+	const updates: {
+		status: TemplateStatus;
+		updated_at: Date;
+		archived_at?: Date;
+		archived_by?: string;
+	} = {
+		status,
+		updated_at: new Date(),
+	};
+
+	// If archiving, set archived_at and archived_by
+	if (status === "archived") {
+		updates.archived_at = new Date();
+		updates.archived_by = userId;
+	}
+
+	// Update all templates in one query
+	const result = await db
+		.updateTable("novel_templates")
+		.set(updates)
+		.where("id", "in", templateIds)
+		.execute();
+
+	const updatedCount =
+		result.length > 0
+			? Number(result[0].numUpdatedRows || templateIds.length)
+			: 0;
+
+	// Log the bulk status change
+	await createAuditLog({
+		userId,
+		action: `bulk_${status}_templates`,
+		entityType: "template",
+		entityId: templateIds[0], // Use first ID as reference
+		changes: {
+			status: { old: null, new: status },
+			templateIds,
+			count: updatedCount,
+		},
+	});
+
+	return {
+		updatedCount,
+	};
+}
+
+/**
  * Delete template (admin only)
  */
 export async function deleteTemplate(templateId: string, userId: string) {

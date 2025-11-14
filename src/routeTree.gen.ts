@@ -41,12 +41,15 @@ import { Route as ApiAuthGoogleRouteImport } from './routes/api/auth/google'
 import { Route as ApiAdminDashboardRouteImport } from './routes/api/admin/dashboard'
 import { Route as ApiAdminAuditLogsRouteImport } from './routes/api/admin/audit-logs'
 import { Route as AdminTemplatesNewRouteImport } from './routes/admin/templates/new'
+import { Route as AdminTemplatesBulkImportRouteImport } from './routes/admin/templates/bulk-import'
 import { Route as ApiAdminUsersIndexRouteImport } from './routes/api/admin/users/index'
 import { Route as ApiAdminTemplatesIndexRouteImport } from './routes/api/admin/templates/index'
 import { Route as ApiStoriesIdSceneRouteImport } from './routes/api/stories/$id.scene'
 import { Route as ApiStoriesIdChooseRouteImport } from './routes/api/stories/$id.choose'
 import { Route as ApiAuthCallbackGoogleRouteImport } from './routes/api/auth/callback.google'
 import { Route as ApiAdminUsersIdRouteImport } from './routes/api/admin/users/$id'
+import { Route as ApiAdminTemplatesBulkUpdateRouteImport } from './routes/api/admin/templates/bulk-update'
+import { Route as ApiAdminTemplatesBulkImportRouteImport } from './routes/api/admin/templates/bulk-import'
 import { Route as ApiAdminTemplatesIdRouteImport } from './routes/api/admin/templates/$id'
 import { Route as AdminUsersIdEditRouteImport } from './routes/admin/users/$id/edit'
 import { Route as AdminTemplatesIdEditRouteImport } from './routes/admin/templates/$id/edit'
@@ -213,6 +216,12 @@ const AdminTemplatesNewRoute = AdminTemplatesNewRouteImport.update({
   path: '/admin/templates/new',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminTemplatesBulkImportRoute =
+  AdminTemplatesBulkImportRouteImport.update({
+    id: '/admin/templates/bulk-import',
+    path: '/admin/templates/bulk-import',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiAdminUsersIndexRoute = ApiAdminUsersIndexRouteImport.update({
   id: '/api/admin/users/',
   path: '/api/admin/users/',
@@ -243,6 +252,18 @@ const ApiAdminUsersIdRoute = ApiAdminUsersIdRouteImport.update({
   path: '/api/admin/users/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiAdminTemplatesBulkUpdateRoute =
+  ApiAdminTemplatesBulkUpdateRouteImport.update({
+    id: '/api/admin/templates/bulk-update',
+    path: '/api/admin/templates/bulk-update',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiAdminTemplatesBulkImportRoute =
+  ApiAdminTemplatesBulkImportRouteImport.update({
+    id: '/api/admin/templates/bulk-import',
+    path: '/api/admin/templates/bulk-import',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiAdminTemplatesIdRoute = ApiAdminTemplatesIdRouteImport.update({
   id: '/api/admin/templates/$id',
   path: '/api/admin/templates/$id',
@@ -284,6 +305,7 @@ export interface FileRoutesByFullPath {
   '/story/create': typeof StoryCreateRoute
   '/template/$id': typeof TemplateIdRoute
   '/admin': typeof AdminIndexRoute
+  '/admin/templates/bulk-import': typeof AdminTemplatesBulkImportRoute
   '/admin/templates/new': typeof AdminTemplatesNewRoute
   '/api/admin/audit-logs': typeof ApiAdminAuditLogsRoute
   '/api/admin/dashboard': typeof ApiAdminDashboardRoute
@@ -307,6 +329,8 @@ export interface FileRoutesByFullPath {
   '/admin/templates/$id/edit': typeof AdminTemplatesIdEditRoute
   '/admin/users/$id/edit': typeof AdminUsersIdEditRoute
   '/api/admin/templates/$id': typeof ApiAdminTemplatesIdRouteWithChildren
+  '/api/admin/templates/bulk-import': typeof ApiAdminTemplatesBulkImportRoute
+  '/api/admin/templates/bulk-update': typeof ApiAdminTemplatesBulkUpdateRoute
   '/api/admin/users/$id': typeof ApiAdminUsersIdRoute
   '/api/auth/callback/google': typeof ApiAuthCallbackGoogleRoute
   '/api/stories/$id/choose': typeof ApiStoriesIdChooseRoute
@@ -329,6 +353,7 @@ export interface FileRoutesByTo {
   '/story/create': typeof StoryCreateRoute
   '/template/$id': typeof TemplateIdRoute
   '/admin': typeof AdminIndexRoute
+  '/admin/templates/bulk-import': typeof AdminTemplatesBulkImportRoute
   '/admin/templates/new': typeof AdminTemplatesNewRoute
   '/api/admin/audit-logs': typeof ApiAdminAuditLogsRoute
   '/api/admin/dashboard': typeof ApiAdminDashboardRoute
@@ -352,6 +377,8 @@ export interface FileRoutesByTo {
   '/admin/templates/$id/edit': typeof AdminTemplatesIdEditRoute
   '/admin/users/$id/edit': typeof AdminUsersIdEditRoute
   '/api/admin/templates/$id': typeof ApiAdminTemplatesIdRouteWithChildren
+  '/api/admin/templates/bulk-import': typeof ApiAdminTemplatesBulkImportRoute
+  '/api/admin/templates/bulk-update': typeof ApiAdminTemplatesBulkUpdateRoute
   '/api/admin/users/$id': typeof ApiAdminUsersIdRoute
   '/api/auth/callback/google': typeof ApiAuthCallbackGoogleRoute
   '/api/stories/$id/choose': typeof ApiStoriesIdChooseRoute
@@ -375,6 +402,7 @@ export interface FileRoutesById {
   '/story/create': typeof StoryCreateRoute
   '/template/$id': typeof TemplateIdRoute
   '/admin/': typeof AdminIndexRoute
+  '/admin/templates/bulk-import': typeof AdminTemplatesBulkImportRoute
   '/admin/templates/new': typeof AdminTemplatesNewRoute
   '/api/admin/audit-logs': typeof ApiAdminAuditLogsRoute
   '/api/admin/dashboard': typeof ApiAdminDashboardRoute
@@ -398,6 +426,8 @@ export interface FileRoutesById {
   '/admin/templates/$id/edit': typeof AdminTemplatesIdEditRoute
   '/admin/users/$id/edit': typeof AdminUsersIdEditRoute
   '/api/admin/templates/$id': typeof ApiAdminTemplatesIdRouteWithChildren
+  '/api/admin/templates/bulk-import': typeof ApiAdminTemplatesBulkImportRoute
+  '/api/admin/templates/bulk-update': typeof ApiAdminTemplatesBulkUpdateRoute
   '/api/admin/users/$id': typeof ApiAdminUsersIdRoute
   '/api/auth/callback/google': typeof ApiAuthCallbackGoogleRoute
   '/api/stories/$id/choose': typeof ApiStoriesIdChooseRoute
@@ -422,6 +452,7 @@ export interface FileRouteTypes {
     | '/story/create'
     | '/template/$id'
     | '/admin'
+    | '/admin/templates/bulk-import'
     | '/admin/templates/new'
     | '/api/admin/audit-logs'
     | '/api/admin/dashboard'
@@ -445,6 +476,8 @@ export interface FileRouteTypes {
     | '/admin/templates/$id/edit'
     | '/admin/users/$id/edit'
     | '/api/admin/templates/$id'
+    | '/api/admin/templates/bulk-import'
+    | '/api/admin/templates/bulk-update'
     | '/api/admin/users/$id'
     | '/api/auth/callback/google'
     | '/api/stories/$id/choose'
@@ -467,6 +500,7 @@ export interface FileRouteTypes {
     | '/story/create'
     | '/template/$id'
     | '/admin'
+    | '/admin/templates/bulk-import'
     | '/admin/templates/new'
     | '/api/admin/audit-logs'
     | '/api/admin/dashboard'
@@ -490,6 +524,8 @@ export interface FileRouteTypes {
     | '/admin/templates/$id/edit'
     | '/admin/users/$id/edit'
     | '/api/admin/templates/$id'
+    | '/api/admin/templates/bulk-import'
+    | '/api/admin/templates/bulk-update'
     | '/api/admin/users/$id'
     | '/api/auth/callback/google'
     | '/api/stories/$id/choose'
@@ -512,6 +548,7 @@ export interface FileRouteTypes {
     | '/story/create'
     | '/template/$id'
     | '/admin/'
+    | '/admin/templates/bulk-import'
     | '/admin/templates/new'
     | '/api/admin/audit-logs'
     | '/api/admin/dashboard'
@@ -535,6 +572,8 @@ export interface FileRouteTypes {
     | '/admin/templates/$id/edit'
     | '/admin/users/$id/edit'
     | '/api/admin/templates/$id'
+    | '/api/admin/templates/bulk-import'
+    | '/api/admin/templates/bulk-update'
     | '/api/admin/users/$id'
     | '/api/auth/callback/google'
     | '/api/stories/$id/choose'
@@ -558,6 +597,7 @@ export interface RootRouteChildren {
   StoryCreateRoute: typeof StoryCreateRoute
   TemplateIdRoute: typeof TemplateIdRoute
   AdminIndexRoute: typeof AdminIndexRoute
+  AdminTemplatesBulkImportRoute: typeof AdminTemplatesBulkImportRoute
   AdminTemplatesNewRoute: typeof AdminTemplatesNewRoute
   ApiAdminAuditLogsRoute: typeof ApiAdminAuditLogsRoute
   ApiAdminDashboardRoute: typeof ApiAdminDashboardRoute
@@ -581,6 +621,8 @@ export interface RootRouteChildren {
   AdminTemplatesIdEditRoute: typeof AdminTemplatesIdEditRoute
   AdminUsersIdEditRoute: typeof AdminUsersIdEditRoute
   ApiAdminTemplatesIdRoute: typeof ApiAdminTemplatesIdRouteWithChildren
+  ApiAdminTemplatesBulkImportRoute: typeof ApiAdminTemplatesBulkImportRoute
+  ApiAdminTemplatesBulkUpdateRoute: typeof ApiAdminTemplatesBulkUpdateRoute
   ApiAdminUsersIdRoute: typeof ApiAdminUsersIdRoute
   ApiAuthCallbackGoogleRoute: typeof ApiAuthCallbackGoogleRoute
   ApiAdminTemplatesIndexRoute: typeof ApiAdminTemplatesIndexRoute
@@ -813,6 +855,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminTemplatesNewRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/templates/bulk-import': {
+      id: '/admin/templates/bulk-import'
+      path: '/admin/templates/bulk-import'
+      fullPath: '/admin/templates/bulk-import'
+      preLoaderRoute: typeof AdminTemplatesBulkImportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/admin/users/': {
       id: '/api/admin/users/'
       path: '/api/admin/users'
@@ -853,6 +902,20 @@ declare module '@tanstack/react-router' {
       path: '/api/admin/users/$id'
       fullPath: '/api/admin/users/$id'
       preLoaderRoute: typeof ApiAdminUsersIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/admin/templates/bulk-update': {
+      id: '/api/admin/templates/bulk-update'
+      path: '/api/admin/templates/bulk-update'
+      fullPath: '/api/admin/templates/bulk-update'
+      preLoaderRoute: typeof ApiAdminTemplatesBulkUpdateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/admin/templates/bulk-import': {
+      id: '/api/admin/templates/bulk-import'
+      path: '/api/admin/templates/bulk-import'
+      fullPath: '/api/admin/templates/bulk-import'
+      preLoaderRoute: typeof ApiAdminTemplatesBulkImportRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/admin/templates/$id': {
@@ -933,6 +996,7 @@ const rootRouteChildren: RootRouteChildren = {
   StoryCreateRoute: StoryCreateRoute,
   TemplateIdRoute: TemplateIdRoute,
   AdminIndexRoute: AdminIndexRoute,
+  AdminTemplatesBulkImportRoute: AdminTemplatesBulkImportRoute,
   AdminTemplatesNewRoute: AdminTemplatesNewRoute,
   ApiAdminAuditLogsRoute: ApiAdminAuditLogsRoute,
   ApiAdminDashboardRoute: ApiAdminDashboardRoute,
@@ -956,6 +1020,8 @@ const rootRouteChildren: RootRouteChildren = {
   AdminTemplatesIdEditRoute: AdminTemplatesIdEditRoute,
   AdminUsersIdEditRoute: AdminUsersIdEditRoute,
   ApiAdminTemplatesIdRoute: ApiAdminTemplatesIdRouteWithChildren,
+  ApiAdminTemplatesBulkImportRoute: ApiAdminTemplatesBulkImportRoute,
+  ApiAdminTemplatesBulkUpdateRoute: ApiAdminTemplatesBulkUpdateRoute,
   ApiAdminUsersIdRoute: ApiAdminUsersIdRoute,
   ApiAuthCallbackGoogleRoute: ApiAuthCallbackGoogleRoute,
   ApiAdminTemplatesIndexRoute: ApiAdminTemplatesIndexRoute,

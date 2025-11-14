@@ -1,5 +1,15 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { Archive, Eye, EyeOff, FileText, Plus } from "lucide-react";
+import {
+	Archive,
+	ArrowUpDown,
+	Eye,
+	EyeOff,
+	FileText,
+	Plus,
+	Upload,
+	X,
+} from "lucide-react";
+import { useState } from "react";
 import { AdminLayout, DataTable, StatusBadge } from "~/components/admin";
 import { Button } from "~/components/Button";
 import { ErrorMessage } from "~/components/ErrorMessage";
@@ -11,8 +21,16 @@ export const Route = createFileRoute("/admin/templates/")({
 	component: TemplatesListPage,
 });
 
+type SortField = "title" | "status" | "scenes" | "created" | "updated";
+type SortDirection = "asc" | "desc";
+
 function TemplatesListPage() {
 	const navigate = useNavigate();
+	const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+	const [isBulkUpdating, setIsBulkUpdating] = useState(false);
+	const [bulkError, setBulkError] = useState<string | null>(null);
+	const [sortField, setSortField] = useState<SortField>("updated");
+	const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
 
 	// Fetch current user to get role
 	const { data: userData, isLoading: userLoading } = useCurrentUserQuery();
@@ -22,6 +40,7 @@ function TemplatesListPage() {
 		data: templatesData,
 		isLoading: templatesLoading,
 		error,
+		refetch,
 	} = useAdminTemplatesQuery(!!userData);
 
 	if (userLoading || templatesLoading) {
@@ -49,12 +68,83 @@ function TemplatesListPage() {
 	const { role } = userData;
 	const templates = templatesData.templates;
 
+	// Sorting function
+	const handleSort = (field: SortField) => {
+		if (sortField === field) {
+			setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+		} else {
+			setSortField(field);
+			setSortDirection("asc");
+		}
+	};
+
+	// Sort templates
+	const sortedTemplates = [...templates].sort((a, b) => {
+		let comparison = 0;
+
+		switch (sortField) {
+			case "title":
+				comparison = a.title.localeCompare(b.title);
+				break;
+			case "status":
+				comparison = a.status.localeCompare(b.status);
+				break;
+			case "scenes":
+				comparison = a.estimated_scenes - b.estimated_scenes;
+				break;
+			case "created":
+				comparison =
+					new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
+				break;
+			case "updated":
+				comparison =
+					new Date(a.updated_at).getTime() - new Date(b.updated_at).getTime();
+				break;
+		}
+
+		return sortDirection === "asc" ? comparison : -comparison;
+	});
+
 	// Calculate statistics
 	const stats = {
 		total: templates.length,
 		draft: templates.filter((t) => t.status === "draft").length,
 		published: templates.filter((t) => t.status === "published").length,
 		archived: templates.filter((t) => t.status === "archived").length,
+	};
+
+	const handleBulkStatusUpdate = async (
+		status: "published" | "draft" | "archived",
+	) => {
+		setBulkError(null);
+		setIsBulkUpdating(true);
+
+		try {
+			const response = await fetch("/api/admin/templates/bulk-update", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					templateIds: Array.from(selectedIds),
+					status,
+				}),
+			});
+
+			const result = await response.json();
+
+			if (!response.ok) {
+				throw new Error(result.error || "Bulk update failed");
+			}
+
+			// Refetch templates and clear selection
+			await refetch();
+			setSelectedIds(new Set());
+		} catch (err) {
+			setBulkError(err instanceof Error ? err.message : "Bulk update failed");
+		} finally {
+			setIsBulkUpdating(false);
+		}
 	};
 
 	return (
@@ -69,14 +159,24 @@ function TemplatesListPage() {
 							Manage novel templates, including drafts and archived content.
 						</p>
 					</div>
-					<Button
-						type="button"
-						onClick={() => navigate({ to: "/admin/templates/new" })}
-						variant="primary"
-					>
-						<Plus className="w-5 h-5" />
-						New Template
-					</Button>
+					<div className="flex gap-3">
+						<Button
+							type="button"
+							onClick={() => navigate({ to: "/admin/templates/bulk-import" })}
+							variant="secondary"
+						>
+							<Upload className="w-5 h-5" />
+							Bulk Import
+						</Button>
+						<Button
+							type="button"
+							onClick={() => navigate({ to: "/admin/templates/new" })}
+							variant="primary"
+						>
+							<Plus className="w-5 h-5" />
+							New Template
+						</Button>
+					</div>
 				</div>
 
 				{/* Statistics */}
@@ -107,39 +207,156 @@ function TemplatesListPage() {
 					/>
 				</div>
 
+				{/* Bulk Actions Toolbar */}
+				{selectedIds.size > 0 && (
+					<div className="bg-romance-50 border border-romance-200 rounded-lg p-4 mb-4 flex items-center justify-between">
+						<div className="flex items-center gap-4">
+							<span className="text-sm font-medium text-slate-900">
+								{selectedIds.size} template{selectedIds.size !== 1 ? "s" : ""}{" "}
+								selected
+							</span>
+							<Button
+								size="sm"
+								variant="ghost"
+								onClick={() => setSelectedIds(new Set())}
+							>
+								<X className="w-4 h-4" />
+								Clear
+							</Button>
+						</div>
+						<div className="flex gap-2">
+							<Button
+								size="sm"
+								variant="secondary"
+								onClick={() => handleBulkStatusUpdate("published")}
+								disabled={isBulkUpdating}
+								loading={isBulkUpdating}
+							>
+								<Eye className="w-4 h-4" />
+								Publish
+							</Button>
+							<Button
+								size="sm"
+								variant="secondary"
+								onClick={() => handleBulkStatusUpdate("draft")}
+								disabled={isBulkUpdating}
+								loading={isBulkUpdating}
+							>
+								<EyeOff className="w-4 h-4" />
+								Set as Draft
+							</Button>
+							<Button
+								size="sm"
+								variant="secondary"
+								onClick={() => handleBulkStatusUpdate("archived")}
+								disabled={isBulkUpdating}
+								loading={isBulkUpdating}
+							>
+								<Archive className="w-4 h-4" />
+								Archive
+							</Button>
+						</div>
+					</div>
+				)}
+
+				{bulkError && (
+					<div className="mb-4">
+						<ErrorMessage message={bulkError} />
+					</div>
+				)}
+
 				{/* Templates Table */}
 				<div className="bg-white rounded-lg border border-slate-200 overflow-hidden">
 					<DataTable
-						data={templates}
+						data={sortedTemplates}
+						selectable={true}
+						selectedIds={selectedIds}
+						onSelectionChange={setSelectedIds}
+						onRowClick={(template) =>
+							navigate({ to: `/admin/templates/${template.id}/edit` })
+						}
 						columns={[
 							{
-								header: "Title",
+								header: (
+									<button
+										type="button"
+										onClick={() => handleSort("title")}
+										className="flex items-center gap-1 hover:text-slate-900"
+									>
+										Title
+										<ArrowUpDown className="w-3 h-3" />
+									</button>
+								),
 								accessor: (t) => t.title,
 								className: "font-medium text-slate-900",
+								key: "title",
 							},
 							{
-								header: "Status",
+								header: (
+									<button
+										type="button"
+										onClick={() => handleSort("status")}
+										className="flex items-center gap-1 hover:text-slate-900"
+									>
+										Status
+										<ArrowUpDown className="w-3 h-3" />
+									</button>
+								),
 								accessor: (t) => <StatusBadge status={t.status} />,
+								key: "status",
 							},
 							{
 								header: "Tropes",
 								accessor: (t) => t.base_tropes.join(", "),
 								className: "text-slate-600 text-sm",
+								key: "tropes",
 							},
 							{
-								header: "Scenes",
+								header: (
+									<button
+										type="button"
+										onClick={() => handleSort("scenes")}
+										className="flex items-center gap-1 hover:text-slate-900"
+									>
+										Scenes
+										<ArrowUpDown className="w-3 h-3" />
+									</button>
+								),
 								accessor: (t) => t.estimated_scenes.toString(),
 								className: "text-slate-600 text-center",
+								key: "scenes",
 							},
 							{
-								header: "Updated",
+								header: (
+									<button
+										type="button"
+										onClick={() => handleSort("created")}
+										className="flex items-center gap-1 hover:text-slate-900"
+									>
+										Created
+										<ArrowUpDown className="w-3 h-3" />
+									</button>
+								),
+								accessor: (t) => new Date(t.created_at).toLocaleDateString(),
+								className: "text-slate-600 text-sm",
+								key: "created",
+							},
+							{
+								header: (
+									<button
+										type="button"
+										onClick={() => handleSort("updated")}
+										className="flex items-center gap-1 hover:text-slate-900"
+									>
+										Updated
+										<ArrowUpDown className="w-3 h-3" />
+									</button>
+								),
 								accessor: (t) => new Date(t.updated_at).toLocaleDateString(),
 								className: "text-slate-600 text-sm",
+								key: "updated",
 							},
 						]}
-						onRowClick={(template) =>
-							navigate({ to: `/admin/templates/${template.id}/edit` })
-						}
 						emptyMessage="No templates found. Create your first template to get started."
 					/>
 				</div>
