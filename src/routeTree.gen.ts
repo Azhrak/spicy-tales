@@ -32,6 +32,7 @@ import { Route as ApiTemplatesIdRouteImport } from './routes/api/templates/$id'
 import { Route as ApiStoriesUserRouteImport } from './routes/api/stories/user'
 import { Route as ApiStoriesIdRouteImport } from './routes/api/stories/$id'
 import { Route as ApiProfilePasswordRouteImport } from './routes/api/profile/password'
+import { Route as ApiProfileDataRouteImport } from './routes/api/profile/data'
 import { Route as ApiAuthSignupRouteImport } from './routes/api/auth/signup'
 import { Route as ApiAuthLogoutRouteImport } from './routes/api/auth/logout'
 import { Route as ApiAuthLoginRouteImport } from './routes/api/auth/login'
@@ -165,6 +166,11 @@ const ApiProfilePasswordRoute = ApiProfilePasswordRouteImport.update({
   path: '/api/profile/password',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiProfileDataRoute = ApiProfileDataRouteImport.update({
+  id: '/api/profile/data',
+  path: '/api/profile/data',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiAuthSignupRoute = ApiAuthSignupRouteImport.update({
   id: '/api/auth/signup',
   path: '/api/auth/signup',
@@ -272,6 +278,7 @@ export interface FileRoutesByFullPath {
   '/api/auth/login': typeof ApiAuthLoginRoute
   '/api/auth/logout': typeof ApiAuthLogoutRoute
   '/api/auth/signup': typeof ApiAuthSignupRoute
+  '/api/profile/data': typeof ApiProfileDataRoute
   '/api/profile/password': typeof ApiProfilePasswordRoute
   '/api/stories/$id': typeof ApiStoriesIdRouteWithChildren
   '/api/stories/user': typeof ApiStoriesUserRoute
@@ -314,6 +321,7 @@ export interface FileRoutesByTo {
   '/api/auth/login': typeof ApiAuthLoginRoute
   '/api/auth/logout': typeof ApiAuthLogoutRoute
   '/api/auth/signup': typeof ApiAuthSignupRoute
+  '/api/profile/data': typeof ApiProfileDataRoute
   '/api/profile/password': typeof ApiProfilePasswordRoute
   '/api/stories/$id': typeof ApiStoriesIdRouteWithChildren
   '/api/stories/user': typeof ApiStoriesUserRoute
@@ -357,6 +365,7 @@ export interface FileRoutesById {
   '/api/auth/login': typeof ApiAuthLoginRoute
   '/api/auth/logout': typeof ApiAuthLogoutRoute
   '/api/auth/signup': typeof ApiAuthSignupRoute
+  '/api/profile/data': typeof ApiProfileDataRoute
   '/api/profile/password': typeof ApiProfilePasswordRoute
   '/api/stories/$id': typeof ApiStoriesIdRouteWithChildren
   '/api/stories/user': typeof ApiStoriesUserRoute
@@ -401,6 +410,7 @@ export interface FileRouteTypes {
     | '/api/auth/login'
     | '/api/auth/logout'
     | '/api/auth/signup'
+    | '/api/profile/data'
     | '/api/profile/password'
     | '/api/stories/$id'
     | '/api/stories/user'
@@ -443,6 +453,7 @@ export interface FileRouteTypes {
     | '/api/auth/login'
     | '/api/auth/logout'
     | '/api/auth/signup'
+    | '/api/profile/data'
     | '/api/profile/password'
     | '/api/stories/$id'
     | '/api/stories/user'
@@ -485,6 +496,7 @@ export interface FileRouteTypes {
     | '/api/auth/login'
     | '/api/auth/logout'
     | '/api/auth/signup'
+    | '/api/profile/data'
     | '/api/profile/password'
     | '/api/stories/$id'
     | '/api/stories/user'
@@ -528,6 +540,7 @@ export interface RootRouteChildren {
   ApiAuthLoginRoute: typeof ApiAuthLoginRoute
   ApiAuthLogoutRoute: typeof ApiAuthLogoutRoute
   ApiAuthSignupRoute: typeof ApiAuthSignupRoute
+  ApiProfileDataRoute: typeof ApiProfileDataRoute
   ApiProfilePasswordRoute: typeof ApiProfilePasswordRoute
   ApiStoriesIdRoute: typeof ApiStoriesIdRouteWithChildren
   ApiStoriesUserRoute: typeof ApiStoriesUserRoute
@@ -711,6 +724,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiProfilePasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/profile/data': {
+      id: '/api/profile/data'
+      path: '/api/profile/data'
+      fullPath: '/api/profile/data'
+      preLoaderRoute: typeof ApiProfileDataRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/auth/signup': {
       id: '/api/auth/signup'
       path: '/api/auth/signup'
@@ -878,6 +898,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiAuthLoginRoute: ApiAuthLoginRoute,
   ApiAuthLogoutRoute: ApiAuthLogoutRoute,
   ApiAuthSignupRoute: ApiAuthSignupRoute,
+  ApiProfileDataRoute: ApiProfileDataRoute,
   ApiProfilePasswordRoute: ApiProfilePasswordRoute,
   ApiStoriesIdRoute: ApiStoriesIdRouteWithChildren,
   ApiStoriesUserRoute: ApiStoriesUserRoute,

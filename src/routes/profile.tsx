@@ -6,6 +6,7 @@ import { Header } from "~/components/Header";
 import { PageContainer } from "~/components/PageContainer";
 import {
 	DangerZone,
+	DataDownload,
 	DeleteAccountModal,
 	PasswordChange,
 	PreferencesDisplay,
@@ -181,6 +182,8 @@ function ProfilePage() {
 				/>
 
 				<PreferencesDisplay preferences={profile.preferences} />
+
+				<DataDownload />
 
 				<DangerZone onDeleteClick={() => setShowDeleteModal(true)} />
 			</PageContainer>

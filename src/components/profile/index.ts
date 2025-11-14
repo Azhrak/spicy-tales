@@ -1,4 +1,5 @@
 export { DangerZone } from "./DangerZone";
+export { DataDownload } from "./DataDownload";
 export { DeleteAccountModal } from "./DeleteAccountModal";
 export { PasswordChange } from "./PasswordChange";
 export { PreferencesDisplay } from "./PreferencesDisplay";
