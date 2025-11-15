@@ -9,7 +9,7 @@ interface PreferencesDisplayProps {
 export function PreferencesDisplay({ preferences }: PreferencesDisplayProps) {
 	if (!preferences) {
 		return (
-			<div className="bg-white rounded-2xl shadow-lg p-8 mb-6">
+			<div className="bg-white rounded-2xl shadow-lg p-8">
 				<div className="space-y-4">
 					<div className="flex items-center gap-2">
 						<Settings className="w-5 h-5 text-romance-500" />
@@ -43,7 +43,7 @@ export function PreferencesDisplay({ preferences }: PreferencesDisplayProps) {
 	}
 
 	return (
-		<div className="bg-white rounded-2xl shadow-lg p-8 mb-6">
+		<div className="bg-white rounded-2xl shadow-lg p-8">
 			<div className="space-y-6">
 				<div className="flex items-center gap-2">
 					<Settings className="w-5 h-5 text-romance-500" />

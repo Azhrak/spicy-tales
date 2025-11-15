@@ -63,7 +63,6 @@ function BrowsePage() {
 								placeholder="Search for novels..."
 								value={searchQuery}
 								onChange={(e) => setSearchQuery(e.target.value)}
-								containerClassName="mb-0"
 								className="pl-12"
 							/>
 						</div>
