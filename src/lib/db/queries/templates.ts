@@ -15,6 +15,65 @@ export async function getAllTemplates() {
 }
 
 /**
+ * Get paginated templates for admin management
+ * Returns both the templates for the current page and the total count
+ */
+export async function getAllTemplatesPaginated(params: {
+	page: number;
+	limit: number;
+	status?: TemplateStatus;
+	sortBy?:
+		| "title"
+		| "status"
+		| "estimated_scenes"
+		| "created_at"
+		| "updated_at";
+	sortOrder?: "asc" | "desc";
+}) {
+	const {
+		page,
+		limit,
+		status,
+		sortBy = "updated_at",
+		sortOrder = "desc",
+	} = params;
+	const offset = (page - 1) * limit;
+
+	// Build base query
+	let query = db.selectFrom("novel_templates");
+
+	// Apply status filter if provided
+	if (status) {
+		query = query.where("status", "=", status);
+	}
+
+	// Get total count
+	const countResult = await query
+		.select(({ fn }) => fn.count<number>("id").as("total"))
+		.executeTakeFirst();
+
+	const total = Number(countResult?.total || 0);
+
+	// Get paginated templates with sorting
+	const templates = await query
+		.selectAll()
+		.orderBy(sortBy, sortOrder)
+		.limit(limit)
+		.offset(offset)
+		.execute();
+
+	return {
+		templates,
+		pagination: {
+			page,
+			limit,
+			total,
+			totalPages: Math.ceil(total / limit),
+		},
+	};
+}
+
+/**
  * Get template by ID
  */
 export async function getTemplateById(id: string) {

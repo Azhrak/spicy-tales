@@ -6,6 +6,7 @@ import {
 	createTemplate,
 	createTemplateWithChoicePoints,
 	getAllTemplates,
+	getAllTemplatesPaginated,
 	getTemplatesByStatus,
 } from "~/lib/db/queries/templates";
 import type { TemplateStatus } from "~/lib/db/types";
@@ -52,7 +53,70 @@ export const Route = createFileRoute("/api/admin/templates/")({
 					const statusParam = url.searchParams.get(
 						"status",
 					) as TemplateStatus | null;
+					const pageParam = url.searchParams.get("page");
+					const limitParam = url.searchParams.get("limit");
+					const sortByParam = url.searchParams.get("sortBy");
+					const sortOrderParam = url.searchParams.get("sortOrder");
 
+					// If pagination params are provided, use paginated endpoint
+					if (pageParam || limitParam) {
+						const page = pageParam ? Number.parseInt(pageParam, 10) : 1;
+						const limit = limitParam ? Number.parseInt(limitParam, 10) : 10;
+
+						// Validate pagination params
+						if (Number.isNaN(page) || page < 1) {
+							return json({ error: "Invalid page parameter" }, { status: 400 });
+						}
+
+						if (Number.isNaN(limit) || limit < 1 || limit > 100) {
+							return json(
+								{ error: "Invalid limit parameter (must be 1-100)" },
+								{ status: 400 },
+							);
+						}
+
+						// Validate sort parameters
+						const validSortFields = [
+							"title",
+							"status",
+							"estimated_scenes",
+							"created_at",
+							"updated_at",
+						];
+						const validSortOrders = ["asc", "desc"];
+
+						if (sortByParam && !validSortFields.includes(sortByParam)) {
+							return json(
+								{ error: "Invalid sortBy parameter" },
+								{ status: 400 },
+							);
+						}
+
+						if (sortOrderParam && !validSortOrders.includes(sortOrderParam)) {
+							return json(
+								{ error: "Invalid sortOrder parameter" },
+								{ status: 400 },
+							);
+						}
+
+						const result = await getAllTemplatesPaginated({
+							page,
+							limit,
+							status: statusParam || undefined,
+							sortBy: sortByParam as
+								| "title"
+								| "status"
+								| "estimated_scenes"
+								| "created_at"
+								| "updated_at"
+								| undefined,
+							sortOrder: sortOrderParam as "asc" | "desc" | undefined,
+						});
+
+						return json(result);
+					}
+
+					// Legacy: return all templates (for backwards compatibility)
 					let templates: Awaited<ReturnType<typeof getAllTemplates>>;
 
 					if (statusParam) {

@@ -2,6 +2,8 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import {
 	Archive,
 	ArrowUpDown,
+	ChevronLeft,
+	ChevronRight,
 	Eye,
 	EyeOff,
 	FileText,
@@ -15,39 +17,91 @@ import { AdminLayout, DataTable, StatusBadge } from "~/components/admin";
 import { Button } from "~/components/Button";
 import { ErrorMessage } from "~/components/ErrorMessage";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
-import { useAdminTemplatesQuery } from "~/hooks/useAdminTemplatesQuery";
+import {
+	useAdminTemplatesPaginatedQuery,
+	useAdminTemplatesStatsQuery,
+} from "~/hooks/useAdminTemplatesQuery";
 import { useCurrentUserQuery } from "~/hooks/useCurrentUserQuery";
 import type { TemplateStatus } from "~/lib/db/types";
 
+// Search params schema
+type TemplatesSearch = {
+	page?: number;
+	status?: TemplateStatus | "all";
+	sortBy?: "title" | "status" | "scenes" | "created" | "updated";
+	sortOrder?: "asc" | "desc";
+};
+
 export const Route = createFileRoute("/admin/templates/")({
 	component: TemplatesListPage,
+	validateSearch: (search: Record<string, unknown>): TemplatesSearch => {
+		return {
+			page: Number(search.page) || 1,
+			status: (search.status as TemplateStatus | "all") || "all",
+			sortBy:
+				(search.sortBy as
+					| "title"
+					| "status"
+					| "scenes"
+					| "created"
+					| "updated") || "updated",
+			sortOrder: (search.sortOrder as "asc" | "desc") || "desc",
+		};
+	},
 });
 
 type SortField = "title" | "status" | "scenes" | "created" | "updated";
-type SortDirection = "asc" | "desc";
 type StatusFilter = "all" | TemplateStatus;
+
+// Map frontend sort fields to database column names
+const sortFieldMap: Record<
+	SortField,
+	"title" | "status" | "estimated_scenes" | "created_at" | "updated_at"
+> = {
+	title: "title",
+	status: "status",
+	scenes: "estimated_scenes",
+	created: "created_at",
+	updated: "updated_at",
+};
 
 function TemplatesListPage() {
 	const navigate = useNavigate();
+	const search = Route.useSearch();
 	const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
 	const [isBulkUpdating, setIsBulkUpdating] = useState(false);
 	const [bulkError, setBulkError] = useState<string | null>(null);
-	const [sortField, setSortField] = useState<SortField>("updated");
-	const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
-	const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
+
+	// Get state from URL params
+	const currentPage = search.page || 1;
+	const statusFilter = search.status || "all";
+	const sortField = search.sortBy || "updated";
+	const sortDirection = search.sortOrder || "desc";
+	const itemsPerPage = 10;
 
 	// Fetch current user to get role
 	const { data: userData, isLoading: userLoading } = useCurrentUserQuery();
 
-	// Fetch all templates
+	// Fetch template statistics
+	const { data: statsData, isLoading: statsLoading } =
+		useAdminTemplatesStatsQuery(!!userData);
+
+	// Fetch paginated templates
 	const {
 		data: templatesData,
 		isLoading: templatesLoading,
 		error,
 		refetch,
-	} = useAdminTemplatesQuery(!!userData);
+	} = useAdminTemplatesPaginatedQuery({
+		page: currentPage,
+		limit: itemsPerPage,
+		status: statusFilter,
+		sortBy: sortFieldMap[sortField],
+		sortOrder: sortDirection,
+		enabled: !!userData,
+	});
 
-	if (userLoading || templatesLoading) {
+	if (userLoading || templatesLoading || statsLoading) {
 		return (
 			<div className="flex items-center justify-center min-h-screen">
 				<LoadingSpinner />
@@ -65,63 +119,64 @@ function TemplatesListPage() {
 		);
 	}
 
-	if (!userData || !templatesData?.templates) {
+	if (
+		!userData ||
+		!templatesData?.templates ||
+		!templatesData?.pagination ||
+		!statsData
+	) {
 		return null;
 	}
 
 	const { role } = userData;
-	const templates = templatesData.templates;
+	const { templates, pagination } = templatesData;
 
-	// Sorting function
+	// Sorting function (triggers server-side sorting via React Query)
 	const handleSort = (field: SortField) => {
-		if (sortField === field) {
-			setSortDirection(sortDirection === "asc" ? "desc" : "asc");
-		} else {
-			setSortField(field);
-			setSortDirection("asc");
-		}
+		const newSortOrder =
+			sortField === field && sortDirection === "asc" ? "desc" : "asc";
+
+		navigate({
+			to: "/admin/templates",
+			search: {
+				...search,
+				sortBy: field,
+				sortOrder: newSortOrder,
+			},
+		});
 	};
 
-	// Filter templates by status
-	const filteredTemplates =
-		statusFilter === "all"
-			? templates
-			: templates.filter((t) => t.status === statusFilter);
-
-	// Sort templates
-	const sortedTemplates = [...filteredTemplates].sort((a, b) => {
-		let comparison = 0;
-
-		switch (sortField) {
-			case "title":
-				comparison = a.title.localeCompare(b.title);
-				break;
-			case "status":
-				comparison = a.status.localeCompare(b.status);
-				break;
-			case "scenes":
-				comparison = a.estimated_scenes - b.estimated_scenes;
-				break;
-			case "created":
-				comparison =
-					new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
-				break;
-			case "updated":
-				comparison =
-					new Date(a.updated_at).getTime() - new Date(b.updated_at).getTime();
-				break;
-		}
-
-		return sortDirection === "asc" ? comparison : -comparison;
-	});
-
-	// Calculate statistics
-	const stats = {
-		total: templates.length,
-		draft: templates.filter((t) => t.status === "draft").length,
-		published: templates.filter((t) => t.status === "published").length,
-		archived: templates.filter((t) => t.status === "archived").length,
+	// Reset to page 1 when filters change
+	const handleFilterChange = (filter: StatusFilter) => {
+		navigate({
+			to: "/admin/templates",
+			search: {
+				...search,
+				status: filter,
+				page: 1,
+			},
+		});
 	};
+
+	// Handle page change
+	const handlePageChange = (page: number) => {
+		navigate({
+			to: "/admin/templates",
+			search: {
+				...search,
+				page,
+			},
+		});
+	};
+
+	// Pagination metadata from server
+	const totalItems = pagination.total;
+	const totalPages = pagination.totalPages;
+	const startIndex = (pagination.page - 1) * pagination.limit;
+	const endIndex = Math.min(startIndex + pagination.limit, totalItems);
+
+	// Stats from server (accurate counts for all statuses)
+	const stats = statsData;
 
 	const handleBulkStatusUpdate = async (
 		status: "published" | "draft" | "archived",
@@ -266,7 +321,7 @@ function TemplatesListPage() {
 						<div className="flex gap-2">
 							<button
 								type="button"
-								onClick={() => setStatusFilter("all")}
+								onClick={() => handleFilterChange("all")}
 								className={`px-3 py-1.5 text-sm rounded-md font-medium transition-colors ${
 									statusFilter === "all"
 										? "bg-romance-600 text-white"
@@ -277,7 +332,7 @@ function TemplatesListPage() {
 							</button>
 							<button
 								type="button"
-								onClick={() => setStatusFilter("published")}
+								onClick={() => handleFilterChange("published")}
 								className={`px-3 py-1.5 text-sm rounded-md font-medium transition-colors ${
 									statusFilter === "published"
 										? "bg-green-600 text-white"
@@ -288,7 +343,7 @@ function TemplatesListPage() {
 							</button>
 							<button
 								type="button"
-								onClick={() => setStatusFilter("draft")}
+								onClick={() => handleFilterChange("draft")}
 								className={`px-3 py-1.5 text-sm rounded-md font-medium transition-colors ${
 									statusFilter === "draft"
 										? "bg-yellow-600 text-white"
@@ -299,7 +354,7 @@ function TemplatesListPage() {
 							</button>
 							<button
 								type="button"
-								onClick={() => setStatusFilter("archived")}
+								onClick={() => handleFilterChange("archived")}
 								className={`px-3 py-1.5 text-sm rounded-md font-medium transition-colors ${
 									statusFilter === "archived"
 										? "bg-gray-600 text-white"
@@ -385,7 +440,7 @@ function TemplatesListPage() {
 				{/* Templates Table */}
 				<div className="bg-white rounded-lg border border-slate-200 overflow-hidden">
 					<DataTable
-						data={sortedTemplates}
+						data={templates}
 						selectable={true}
 						selectedIds={selectedIds}
 						onSelectionChange={setSelectedIds}
@@ -398,7 +453,7 @@ function TemplatesListPage() {
 									<button
 										type="button"
 										onClick={() => handleSort("title")}
-										className="flex items-center gap-1 hover:text-slate-900"
+										className="flex items-center gap-1 hover:text-slate-900 cursor-pointer"
 									>
 										Title
 										<ArrowUpDown className="w-3 h-3" />
@@ -413,7 +468,7 @@ function TemplatesListPage() {
 									<button
 										type="button"
 										onClick={() => handleSort("status")}
-										className="flex items-center gap-1 hover:text-slate-900"
+										className="flex items-center gap-1 hover:text-slate-900 cursor-pointer"
 									>
 										Status
 										<ArrowUpDown className="w-3 h-3" />
@@ -433,7 +488,7 @@ function TemplatesListPage() {
 									<button
 										type="button"
 										onClick={() => handleSort("scenes")}
-										className="flex items-center gap-1 hover:text-slate-900"
+										className="flex items-center gap-1 hover:text-slate-900 cursor-pointer"
 									>
 										Scenes
 										<ArrowUpDown className="w-3 h-3" />
@@ -448,7 +503,7 @@ function TemplatesListPage() {
 									<button
 										type="button"
 										onClick={() => handleSort("created")}
-										className="flex items-center gap-1 hover:text-slate-900"
+										className="flex items-center gap-1 hover:text-slate-900 cursor-pointer"
 									>
 										Created
 										<ArrowUpDown className="w-3 h-3" />
@@ -463,7 +518,7 @@ function TemplatesListPage() {
 									<button
 										type="button"
 										onClick={() => handleSort("updated")}
-										className="flex items-center gap-1 hover:text-slate-900"
+										className="flex items-center gap-1 hover:text-slate-900 cursor-pointer"
 									>
 										Updated
 										<ArrowUpDown className="w-3 h-3" />
@@ -477,6 +532,86 @@ function TemplatesListPage() {
 						emptyMessage="No templates found. Create your first template to get started."
 					/>
 				</div>
+
+				{/* Pagination Controls */}
+				{totalPages > 1 && (
+					<div className="mt-4 flex items-center justify-between">
+						<div className="text-sm text-slate-600">
+							Showing {startIndex + 1}-{Math.min(endIndex, totalItems)} of{" "}
+							{totalItems} templates
+						</div>
+						<div className="flex items-center gap-2">
+							<Button
+								type="button"
+								variant="secondary"
+								size="sm"
+								onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
+								disabled={currentPage === 1}
+							>
+								<ChevronLeft className="w-4 h-4" />
+								Previous
+							</Button>
+
+							<div className="flex gap-1">
+								{Array.from({ length: totalPages }, (_, i) => i + 1).map(
+									(page) => {
+										// Show first page, last page, current page, and pages around current
+										const showPage =
+											page === 1 ||
+											page === totalPages ||
+											Math.abs(page - currentPage) <= 1;
+
+										if (!showPage) {
+											// Show ellipsis for gaps
+											if (
+												page === currentPage - 2 ||
+												page === currentPage + 2
+											) {
+												return (
+													<span
+														key={page}
+														className="px-3 py-1.5 text-slate-500"
+													>
+														...
+													</span>
+												);
+											}
+											return null;
+										}
+
+										return (
+											<button
+												key={page}
+												type="button"
+												onClick={() => handlePageChange(page)}
+												className={`px-3 py-1.5 text-sm rounded-md font-medium transition-colors ${
+													currentPage === page
+														? "bg-romance-600 text-white"
+														: "bg-slate-100 text-slate-700 hover:bg-slate-200"
+												}`}
+											>
+												{page}
+											</button>
+										);
+									},
+								)}
+							</div>
+
+							<Button
+								type="button"
+								variant="secondary"
+								size="sm"
+								onClick={() =>
+									handlePageChange(Math.min(totalPages, currentPage + 1))
+								}
+								disabled={currentPage === totalPages}
+							>
+								Next
+								<ChevronRight className="w-4 h-4" />
+							</Button>
+						</div>
+					</div>
+				)}
 			</div>
 		</AdminLayout>
 	);

@@ -48,6 +48,7 @@ import { Route as ApiStoriesIdSceneRouteImport } from './routes/api/stories/$id.
 import { Route as ApiStoriesIdChooseRouteImport } from './routes/api/stories/$id.choose'
 import { Route as ApiAuthCallbackGoogleRouteImport } from './routes/api/auth/callback.google'
 import { Route as ApiAdminUsersIdRouteImport } from './routes/api/admin/users/$id'
+import { Route as ApiAdminTemplatesStatsRouteImport } from './routes/api/admin/templates/stats'
 import { Route as ApiAdminTemplatesBulkUpdateRouteImport } from './routes/api/admin/templates/bulk-update'
 import { Route as ApiAdminTemplatesBulkImportRouteImport } from './routes/api/admin/templates/bulk-import'
 import { Route as ApiAdminTemplatesBulkDeleteRouteImport } from './routes/api/admin/templates/bulk-delete'
@@ -253,6 +254,11 @@ const ApiAdminUsersIdRoute = ApiAdminUsersIdRouteImport.update({
   path: '/api/admin/users/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiAdminTemplatesStatsRoute = ApiAdminTemplatesStatsRouteImport.update({
+  id: '/api/admin/templates/stats',
+  path: '/api/admin/templates/stats',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiAdminTemplatesBulkUpdateRoute =
   ApiAdminTemplatesBulkUpdateRouteImport.update({
     id: '/api/admin/templates/bulk-update',
@@ -339,6 +345,7 @@ export interface FileRoutesByFullPath {
   '/api/admin/templates/bulk-delete': typeof ApiAdminTemplatesBulkDeleteRoute
   '/api/admin/templates/bulk-import': typeof ApiAdminTemplatesBulkImportRoute
   '/api/admin/templates/bulk-update': typeof ApiAdminTemplatesBulkUpdateRoute
+  '/api/admin/templates/stats': typeof ApiAdminTemplatesStatsRoute
   '/api/admin/users/$id': typeof ApiAdminUsersIdRoute
   '/api/auth/callback/google': typeof ApiAuthCallbackGoogleRoute
   '/api/stories/$id/choose': typeof ApiStoriesIdChooseRoute
@@ -388,6 +395,7 @@ export interface FileRoutesByTo {
   '/api/admin/templates/bulk-delete': typeof ApiAdminTemplatesBulkDeleteRoute
   '/api/admin/templates/bulk-import': typeof ApiAdminTemplatesBulkImportRoute
   '/api/admin/templates/bulk-update': typeof ApiAdminTemplatesBulkUpdateRoute
+  '/api/admin/templates/stats': typeof ApiAdminTemplatesStatsRoute
   '/api/admin/users/$id': typeof ApiAdminUsersIdRoute
   '/api/auth/callback/google': typeof ApiAuthCallbackGoogleRoute
   '/api/stories/$id/choose': typeof ApiStoriesIdChooseRoute
@@ -438,6 +446,7 @@ export interface FileRoutesById {
   '/api/admin/templates/bulk-delete': typeof ApiAdminTemplatesBulkDeleteRoute
   '/api/admin/templates/bulk-import': typeof ApiAdminTemplatesBulkImportRoute
   '/api/admin/templates/bulk-update': typeof ApiAdminTemplatesBulkUpdateRoute
+  '/api/admin/templates/stats': typeof ApiAdminTemplatesStatsRoute
   '/api/admin/users/$id': typeof ApiAdminUsersIdRoute
   '/api/auth/callback/google': typeof ApiAuthCallbackGoogleRoute
   '/api/stories/$id/choose': typeof ApiStoriesIdChooseRoute
@@ -489,6 +498,7 @@ export interface FileRouteTypes {
     | '/api/admin/templates/bulk-delete'
     | '/api/admin/templates/bulk-import'
     | '/api/admin/templates/bulk-update'
+    | '/api/admin/templates/stats'
     | '/api/admin/users/$id'
     | '/api/auth/callback/google'
     | '/api/stories/$id/choose'
@@ -538,6 +548,7 @@ export interface FileRouteTypes {
     | '/api/admin/templates/bulk-delete'
     | '/api/admin/templates/bulk-import'
     | '/api/admin/templates/bulk-update'
+    | '/api/admin/templates/stats'
     | '/api/admin/users/$id'
     | '/api/auth/callback/google'
     | '/api/stories/$id/choose'
@@ -587,6 +598,7 @@ export interface FileRouteTypes {
     | '/api/admin/templates/bulk-delete'
     | '/api/admin/templates/bulk-import'
     | '/api/admin/templates/bulk-update'
+    | '/api/admin/templates/stats'
     | '/api/admin/users/$id'
     | '/api/auth/callback/google'
     | '/api/stories/$id/choose'
@@ -637,6 +649,7 @@ export interface RootRouteChildren {
   ApiAdminTemplatesBulkDeleteRoute: typeof ApiAdminTemplatesBulkDeleteRoute
   ApiAdminTemplatesBulkImportRoute: typeof ApiAdminTemplatesBulkImportRoute
   ApiAdminTemplatesBulkUpdateRoute: typeof ApiAdminTemplatesBulkUpdateRoute
+  ApiAdminTemplatesStatsRoute: typeof ApiAdminTemplatesStatsRoute
   ApiAdminUsersIdRoute: typeof ApiAdminUsersIdRoute
   ApiAuthCallbackGoogleRoute: typeof ApiAuthCallbackGoogleRoute
   ApiAdminTemplatesIndexRoute: typeof ApiAdminTemplatesIndexRoute
@@ -918,6 +931,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAdminUsersIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/admin/templates/stats': {
+      id: '/api/admin/templates/stats'
+      path: '/api/admin/templates/stats'
+      fullPath: '/api/admin/templates/stats'
+      preLoaderRoute: typeof ApiAdminTemplatesStatsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/admin/templates/bulk-update': {
       id: '/api/admin/templates/bulk-update'
       path: '/api/admin/templates/bulk-update'
@@ -1044,6 +1064,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiAdminTemplatesBulkDeleteRoute: ApiAdminTemplatesBulkDeleteRoute,
   ApiAdminTemplatesBulkImportRoute: ApiAdminTemplatesBulkImportRoute,
   ApiAdminTemplatesBulkUpdateRoute: ApiAdminTemplatesBulkUpdateRoute,
+  ApiAdminTemplatesStatsRoute: ApiAdminTemplatesStatsRoute,
   ApiAdminUsersIdRoute: ApiAdminUsersIdRoute,
   ApiAuthCallbackGoogleRoute: ApiAuthCallbackGoogleRoute,
   ApiAdminTemplatesIndexRoute: ApiAdminTemplatesIndexRoute,
