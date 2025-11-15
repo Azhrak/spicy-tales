@@ -1,5 +1,4 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { Heart } from "lucide-react";
 import { useState } from "react";
 import { AlreadyLoggedInNotice } from "~/components/AlreadyLoggedInNotice";
 import { Button } from "~/components/Button";
