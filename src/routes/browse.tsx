@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Button } from "~/components/Button";
 import { EmptyState } from "~/components/EmptyState";
 import { ErrorMessage } from "~/components/ErrorMessage";
+import { Footer } from "~/components/Footer";
 import { FormInput } from "~/components/FormInput";
 import { Header } from "~/components/Header";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
@@ -143,6 +144,7 @@ function BrowsePage() {
 					</>
 				)}
 			</PageContainer>
+			<Footer />
 		</div>
 	);
 }

@@ -9,7 +9,9 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PreferencesRouteImport } from './routes/preferences'
 import { Route as LibraryRouteImport } from './routes/library'
 import { Route as BrowseRouteImport } from './routes/browse'
@@ -59,9 +61,19 @@ import { Route as AdminTemplatesIdEditRouteImport } from './routes/admin/templat
 import { Route as ApiAdminTemplatesIdStatusRouteImport } from './routes/api/admin/templates/$id.status'
 import { Route as ApiAdminTemplatesIdChoicePointsRouteImport } from './routes/api/admin/templates/$id/choice-points'
 
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProfileRoute = ProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PreferencesRoute = PreferencesRouteImport.update({
@@ -316,7 +328,9 @@ export interface FileRoutesByFullPath {
   '/browse': typeof BrowseRoute
   '/library': typeof LibraryRoute
   '/preferences': typeof PreferencesRoute
+  '/privacy': typeof PrivacyRoute
   '/profile': typeof ProfileRoute
+  '/terms': typeof TermsRoute
   '/api/preferences': typeof ApiPreferencesRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/onboarding': typeof AuthOnboardingRoute
@@ -367,7 +381,9 @@ export interface FileRoutesByTo {
   '/browse': typeof BrowseRoute
   '/library': typeof LibraryRoute
   '/preferences': typeof PreferencesRoute
+  '/privacy': typeof PrivacyRoute
   '/profile': typeof ProfileRoute
+  '/terms': typeof TermsRoute
   '/api/preferences': typeof ApiPreferencesRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/onboarding': typeof AuthOnboardingRoute
@@ -419,7 +435,9 @@ export interface FileRoutesById {
   '/browse': typeof BrowseRoute
   '/library': typeof LibraryRoute
   '/preferences': typeof PreferencesRoute
+  '/privacy': typeof PrivacyRoute
   '/profile': typeof ProfileRoute
+  '/terms': typeof TermsRoute
   '/api/preferences': typeof ApiPreferencesRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/onboarding': typeof AuthOnboardingRoute
@@ -472,7 +490,9 @@ export interface FileRouteTypes {
     | '/browse'
     | '/library'
     | '/preferences'
+    | '/privacy'
     | '/profile'
+    | '/terms'
     | '/api/preferences'
     | '/auth/login'
     | '/auth/onboarding'
@@ -523,7 +543,9 @@ export interface FileRouteTypes {
     | '/browse'
     | '/library'
     | '/preferences'
+    | '/privacy'
     | '/profile'
+    | '/terms'
     | '/api/preferences'
     | '/auth/login'
     | '/auth/onboarding'
@@ -574,7 +596,9 @@ export interface FileRouteTypes {
     | '/browse'
     | '/library'
     | '/preferences'
+    | '/privacy'
     | '/profile'
+    | '/terms'
     | '/api/preferences'
     | '/auth/login'
     | '/auth/onboarding'
@@ -626,7 +650,9 @@ export interface RootRouteChildren {
   BrowseRoute: typeof BrowseRoute
   LibraryRoute: typeof LibraryRoute
   PreferencesRoute: typeof PreferencesRoute
+  PrivacyRoute: typeof PrivacyRoute
   ProfileRoute: typeof ProfileRoute
+  TermsRoute: typeof TermsRoute
   ApiPreferencesRoute: typeof ApiPreferencesRoute
   AuthLoginRoute: typeof AuthLoginRoute
   AuthOnboardingRoute: typeof AuthOnboardingRoute
@@ -671,11 +697,25 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/profile': {
       id: '/profile'
       path: '/profile'
       fullPath: '/profile'
       preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/preferences': {
@@ -1049,7 +1089,9 @@ const rootRouteChildren: RootRouteChildren = {
   BrowseRoute: BrowseRoute,
   LibraryRoute: LibraryRoute,
   PreferencesRoute: PreferencesRoute,
+  PrivacyRoute: PrivacyRoute,
   ProfileRoute: ProfileRoute,
+  TermsRoute: TermsRoute,
   ApiPreferencesRoute: ApiPreferencesRoute,
   AuthLoginRoute: AuthLoginRoute,
   AuthOnboardingRoute: AuthOnboardingRoute,
