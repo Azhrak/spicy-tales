@@ -172,157 +172,160 @@ export function ChoicePointForm({
 							key={`choice-point-${choicePoint.scene_number}-${cpIndex}`}
 							className="bg-slate-50 border border-slate-200 rounded-lg p-6"
 						>
-							{/* Choice Point Header */}
-							<div className="flex items-center justify-between mb-4">
-								<h4 className="text-md font-semibold text-slate-900">
-									Choice Point {cpIndex + 1}
-								</h4>
-								<Button
-									type="button"
-									onClick={() => removeChoicePoint(cpIndex)}
-									variant="ghost"
-									className="text-red-600 hover:text-red-700 hover:bg-red-50"
-								>
-									<Trash2 className="w-4 h-4" />
-									Remove
-								</Button>
-							</div>
-
-							{/* Scene Number */}
-							<div className="mb-4">
-								<label
-									htmlFor={`scene-number-${cpIndex}`}
-									className="block text-sm font-medium text-slate-900 mb-2"
-								>
-									After Scene Number *
-								</label>
-								<select
-									id={`scene-number-${cpIndex}`}
-									value={choicePoint.scene_number}
-									onChange={(e) =>
-										updateChoicePoint(cpIndex, {
-											scene_number: Number.parseInt(e.target.value, 10),
-										})
-									}
-									className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-									required
-								>
-									{getAvailableSceneNumbers(
-										cpIndex,
-										choicePoint.scene_number,
-									).map((num) => (
-										<option key={num} value={num}>
-											Scene {num}
-										</option>
-									))}
-								</select>
-							</div>
-
-							{/* Prompt Text */}
-							<FormTextarea
-								label="Prompt Text *"
-								id={`prompt-text-${cpIndex}`}
-								value={choicePoint.prompt_text}
-								onChange={(e) =>
-									updateChoicePoint(cpIndex, { prompt_text: e.target.value })
-								}
-								rows={2}
-								placeholder="e.g., How do you respond to their proposal?"
-								required
-								containerClassName="mb-4"
-							/>
-
-							{/* Options */}
 							<div className="space-y-4">
+								{/* Choice Point Header */}
 								<div className="flex items-center justify-between">
-									<p className="block text-sm font-medium text-slate-900">
-										Options (2-4 required)
-									</p>
+									<h4 className="text-md font-semibold text-slate-900">
+										Choice Point {cpIndex + 1}
+									</h4>
 									<Button
 										type="button"
-										onClick={() => addOption(cpIndex)}
+										onClick={() => removeChoicePoint(cpIndex)}
 										variant="ghost"
-										disabled={choicePoint.options.length >= 4}
-										className="text-sm"
+										className="text-red-600 hover:text-red-700 hover:bg-red-50"
 									>
-										<Plus className="w-3 h-3" />
-										Add Option
+										<Trash2 className="w-4 h-4" />
+										Remove
 									</Button>
 								</div>
 
-								{choicePoint.options.map((option, optIndex) => (
-									<div
-										key={option.id}
-										className="bg-white border border-slate-200 rounded-lg p-4"
+								{/* Scene Number */}
+								<div className="space-y-2">
+									<label
+										htmlFor={`scene-number-${cpIndex}`}
+										className="block text-sm font-medium text-slate-900"
 									>
-										<div className="flex items-center justify-between mb-3">
-											<span className="text-sm font-medium text-slate-700">
-												Option {optIndex + 1}
-											</span>
-											{choicePoint.options.length > 2 && (
-												<button
-													type="button"
-													onClick={() => removeOption(cpIndex, optIndex)}
-													className="text-red-600 hover:text-red-700"
-													aria-label="Remove option"
-												>
-													<X className="w-4 h-4" />
-												</button>
-											)}
-										</div>
+										After Scene Number *
+									</label>
+									<select
+										id={`scene-number-${cpIndex}`}
+										value={choicePoint.scene_number}
+										onChange={(e) =>
+											updateChoicePoint(cpIndex, {
+												scene_number: Number.parseInt(e.target.value, 10),
+											})
+										}
+										className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+										required
+									>
+										{getAvailableSceneNumbers(
+											cpIndex,
+											choicePoint.scene_number,
+										).map((num) => (
+											<option key={num} value={num}>
+												Scene {num}
+											</option>
+										))}
+									</select>
+								</div>
 
-										<div className="space-y-3">
-											<FormInput
-												label="Text *"
-												type="text"
-												id={`option-text-${cpIndex}-${optIndex}`}
-												value={option.text}
-												onChange={(e) =>
-													updateOption(cpIndex, optIndex, {
-														text: e.target.value,
-													})
-												}
-												className="px-3 py-2 text-sm"
-												labelClassName="text-xs"
-												placeholder="e.g., Challenge them with skepticism"
-												required
-											/>
+								{/* Prompt Text */}
+								<FormTextarea
+									label="Prompt Text *"
+									id={`prompt-text-${cpIndex}`}
+									value={choicePoint.prompt_text}
+									onChange={(e) =>
+										updateChoicePoint(cpIndex, { prompt_text: e.target.value })
+									}
+									rows={2}
+									placeholder="e.g., How do you respond to their proposal?"
+									required
+								/>
 
-											<div className="grid grid-cols-2 gap-3">
-												<FormInput
-													label="Tone *"
-													type="text"
-													id={`option-tone-${cpIndex}-${optIndex}`}
-													value={option.tone}
-													onChange={(e) =>
-														updateOption(cpIndex, optIndex, {
-															tone: e.target.value,
-														})
-													}
-													className="px-3 py-2 text-sm"
-													labelClassName="text-xs"
-													placeholder="e.g., confrontational"
-													required
-												/>
-												<FormInput
-													label="Impact *"
-													type="text"
-													id={`option-impact-${cpIndex}-${optIndex}`}
-													value={option.impact}
-													onChange={(e) =>
-														updateOption(cpIndex, optIndex, {
-															impact: e.target.value,
-														})
-													}
-													className="px-3 py-2 text-sm"
-													labelClassName="text-xs"
-													placeholder="e.g., bold"
-													required
-												/>
+								{/* Options */}
+								<div className="space-y-4">
+									<div className="flex items-center justify-between">
+										<p className="block text-sm font-medium text-slate-900">
+											Options (2-4 required)
+										</p>
+										<Button
+											type="button"
+											onClick={() => addOption(cpIndex)}
+											variant="ghost"
+											disabled={choicePoint.options.length >= 4}
+											className="text-sm"
+										>
+											<Plus className="w-3 h-3" />
+											Add Option
+										</Button>
+									</div>
+
+									{choicePoint.options.map((option, optIndex) => (
+										<div
+											key={option.id}
+											className="bg-white border border-slate-200 rounded-lg p-4"
+										>
+											<div className="space-y-3">
+												<div className="flex items-center justify-between">
+													<span className="text-sm font-medium text-slate-700">
+														Option {optIndex + 1}
+													</span>
+													{choicePoint.options.length > 2 && (
+														<button
+															type="button"
+															onClick={() => removeOption(cpIndex, optIndex)}
+															className="text-red-600 hover:text-red-700"
+															aria-label="Remove option"
+														>
+															<X className="w-4 h-4" />
+														</button>
+													)}
+												</div>
+
+												<div className="space-y-3">
+													<FormInput
+														label="Text *"
+														type="text"
+														id={`option-text-${cpIndex}-${optIndex}`}
+														value={option.text}
+														onChange={(e) =>
+															updateOption(cpIndex, optIndex, {
+																text: e.target.value,
+															})
+														}
+														className="px-3 py-2 text-sm"
+														labelClassName="text-xs"
+														placeholder="e.g., Challenge them with skepticism"
+														required
+													/>
+
+													<div className="grid grid-cols-2 gap-3">
+														<FormInput
+															label="Tone *"
+															type="text"
+															id={`option-tone-${cpIndex}-${optIndex}`}
+															value={option.tone}
+															onChange={(e) =>
+																updateOption(cpIndex, optIndex, {
+																	tone: e.target.value,
+																})
+															}
+															className="px-3 py-2 text-sm"
+															labelClassName="text-xs"
+															placeholder="e.g., confrontational"
+															required
+														/>
+														<FormInput
+															label="Impact *"
+															type="text"
+															id={`option-impact-${cpIndex}-${optIndex}`}
+															value={option.impact}
+															onChange={(e) =>
+																updateOption(cpIndex, optIndex, {
+																	impact: e.target.value,
+																})
+															}
+															className="px-3 py-2 text-sm"
+															labelClassName="text-xs"
+															placeholder="e.g., bold"
+															required
+														/>
+													</div>
+												</div>
 											</div>
 										</div>
-									</div>
-								))}
+									))}
+								</div>
 							</div>
 						</div>
 					))}

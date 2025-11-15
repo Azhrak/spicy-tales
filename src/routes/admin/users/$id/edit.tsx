@@ -164,12 +164,11 @@ function EditUserPage() {
 
 	return (
 		<AdminLayout currentPath="/admin/users" userRole={currentUser.role}>
-			<div>
-				<div className="mb-6">
+			<div className="space-y-6">
+				<div className="space-y-4">
 					<Button
 						variant="ghost"
 						onClick={() => navigate({ to: "/admin/users" })}
-						className="mb-4"
 					>
 						<ArrowLeft className="w-4 h-4" />
 						Back to Users
@@ -268,10 +267,10 @@ function EditUserPage() {
 						/>
 
 						{/* Role */}
-						<div>
+						<div className="space-y-2">
 							<label
 								htmlFor="role"
-								className="block text-sm font-medium text-slate-900 mb-2"
+								className="block text-sm font-medium text-slate-900"
 							>
 								Role *
 							</label>
@@ -295,7 +294,7 @@ function EditUserPage() {
 									Admin - Full system access and user management
 								</option>
 							</select>
-							<p className="mt-1 text-sm text-slate-600">
+							<p className="text-sm text-slate-600">
 								Roles determine what actions a user can perform
 							</p>
 						</div>
@@ -314,12 +313,12 @@ function EditUserPage() {
 					</form>{" "}
 					{/* Danger Zone */}
 					{!isEditingSelf && (
-						<div className="mt-8 pt-8 border-t border-red-200 flex flex-col gap-4">
+						<div className="mt-8 pt-8 border-t border-red-200 space-y-4">
 							<Heading level="h2" variant="danger">
 								Danger Zone
 							</Heading>
-							<div className="bg-red-50 border border-red-200 rounded-lg p-4">
-								<p className="text-sm text-red-800 mb-4">
+							<div className="bg-red-50 border border-red-200 rounded-lg p-4 space-y-4">
+								<p className="text-sm text-red-800">
 									Deleting a user is permanent and will remove their account,
 									but their stories and choices will remain in the database.
 									This action cannot be undone.

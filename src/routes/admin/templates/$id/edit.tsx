@@ -267,12 +267,11 @@ function EditTemplatePage() {
 
 	return (
 		<AdminLayout currentPath="/admin/templates" userRole={role}>
-			<div>
-				<div className="mb-6">
+			<div className="space-y-6">
+				<div className="space-y-4">
 					<Button
 						variant="ghost"
 						onClick={() => navigate({ to: "/admin/templates" })}
-						className="mb-4"
 					>
 						<ArrowLeft className="w-4 h-4" />
 						Back to Templates
@@ -309,10 +308,10 @@ function EditTemplatePage() {
 						/>
 
 						{/* Description */}
-						<div>
+						<div className="space-y-2">
 							<label
 								htmlFor="description"
-								className="block text-sm font-medium text-slate-900 mb-2"
+								className="block text-sm font-medium text-slate-900"
 							>
 								Description *
 							</label>
@@ -358,10 +357,10 @@ function EditTemplatePage() {
 						/>
 
 						{/* Cover Gradient */}
-						<div>
+						<div className="space-y-2">
 							<label
 								htmlFor="gradient"
-								className="block text-sm font-medium text-slate-900 mb-2"
+								className="block text-sm font-medium text-slate-900"
 							>
 								Cover Gradient *
 							</label>
@@ -380,7 +379,7 @@ function EditTemplatePage() {
 									</option>
 								))}
 							</select>
-							<div className="mt-2">
+							<div>
 								<div
 									className={`h-24 rounded-lg bg-linear-to-br ${formData.cover_gradient}`}
 								/>
@@ -401,8 +400,8 @@ function EditTemplatePage() {
 					</form>
 
 					{/* Choice Points Management */}
-					<div className="mt-8 pt-8 border-t border-slate-200">
-						<div className="mb-6 space-y-2">
+					<div className="mt-8 pt-8 border-t border-slate-200 space-y-6">
+						<div className="space-y-2">
 							<Heading level="h2" size="subsection">
 								Choice Points
 							</Heading>
@@ -418,7 +417,7 @@ function EditTemplatePage() {
 							maxScenes={formData.estimated_scenes}
 						/>
 
-						<div className="mt-6">
+						<div>
 							<Button
 								type="button"
 								onClick={handleSaveChoicePoints}
@@ -482,17 +481,12 @@ function EditTemplatePage() {
 
 					{/* Danger Zone (Admin Only) */}
 					{role === "admin" && (
-						<div className="mt-8 pt-8 border-t border-red-200">
-							<Heading
-								level="h2"
-								size="subsection"
-								variant="danger"
-								className="mb-4"
-							>
+						<div className="mt-8 pt-8 border-t border-red-200 space-y-4">
+							<Heading level="h2" size="subsection" variant="danger">
 								Danger Zone
 							</Heading>
-							<div className="bg-red-50 border border-red-200 rounded-lg p-4">
-								<p className="text-sm text-red-800 mb-4">
+							<div className="bg-red-50 border border-red-200 rounded-lg p-4 space-y-4">
+								<p className="text-sm text-red-800">
 									Deleting a template is permanent and will remove all
 									associated choice points. User stories will remain but may
 									have orphaned data.

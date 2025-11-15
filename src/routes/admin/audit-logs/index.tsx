@@ -102,8 +102,8 @@ function AuditLogsPage() {
 
 	return (
 		<AdminLayout currentPath="/admin/audit-logs" userRole={role}>
-			<div>
-				<div className="mb-6 flex flex-col gap-2">
+			<div className="space-y-6">
+				<div className="flex flex-col gap-2">
 					<Heading level="h1">Audit Logs</Heading>
 					<p className="text-slate-600">
 						View all administrative actions and changes. Logs are retained for
@@ -112,7 +112,7 @@ function AuditLogsPage() {
 				</div>
 
 				{/* Statistics */}
-				<div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+				<div className="grid grid-cols-1 md:grid-cols-4 gap-4">
 					<StatBox
 						label="Total Logs"
 						value={stats.total}
@@ -140,12 +140,12 @@ function AuditLogsPage() {
 				</div>
 
 				{/* Filters */}
-				<div className="bg-white rounded-lg border border-slate-200 p-4 mb-6">
+				<div className="bg-white rounded-lg border border-slate-200 p-4">
 					<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-						<div>
+						<div className="space-y-2">
 							<label
 								htmlFor="search"
-								className="block text-sm font-medium text-slate-900 mb-2"
+								className="block text-sm font-medium text-slate-900"
 							>
 								<Search className="w-4 h-4 inline mr-1" />
 								Search
@@ -159,13 +159,12 @@ function AuditLogsPage() {
 									setFilters({ ...filters, search: e.target.value })
 								}
 								placeholder="Action, user, or entity ID..."
-								containerClassName="mb-0"
 							/>
 						</div>
-						<div>
+						<div className="space-y-2">
 							<label
 								htmlFor="entityType"
-								className="block text-sm font-medium text-slate-900 mb-2"
+								className="block text-sm font-medium text-slate-900"
 							>
 								Entity Type
 							</label>

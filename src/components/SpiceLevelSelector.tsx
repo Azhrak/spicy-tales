@@ -17,8 +17,8 @@ export function SpiceLevelSelector({
 	showDescription = true,
 }: SpiceLevelSelectorProps) {
 	return (
-		<div>
-			<div className="block text-sm font-semibold text-slate-700 mb-3">
+		<div className="space-y-3">
+			<div className="block text-sm font-semibold text-slate-700">
 				Spice Level
 			</div>
 			<div className="grid grid-cols-5 gap-2">

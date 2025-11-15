@@ -47,32 +47,36 @@ export function ConfirmDialog({
 						aria-label="Close"
 					>
 						<X className="w-5 h-5" />
-					</Button>{" "}
-					{/* Icon */}
-					<div className="flex items-center justify-center w-12 h-12 rounded-full bg-red-100 mb-4">
-						<AlertTriangle className="w-6 h-6 text-red-600" />
-					</div>
-					{/* Content */}
-					<h3 className="text-lg font-semibold text-slate-900 mb-2">{title}</h3>
-					<div className="text-sm text-slate-600 mb-6">{message}</div>
-					{/* Actions */}
-					<div className="flex gap-3 justify-end">
-						<Button
-							variant="secondary"
-							onClick={onClose}
-							disabled={loading}
-							size="sm"
-						>
-							Cancel
-						</Button>
-						<Button
-							variant={confirmVariant}
-							onClick={onConfirm}
-							loading={loading}
-							size="sm"
-						>
-							{confirmText}
-						</Button>
+					</Button>
+					<div className="space-y-4">
+						{/* Icon */}
+						<div className="flex items-center justify-center w-12 h-12 rounded-full bg-red-100">
+							<AlertTriangle className="w-6 h-6 text-red-600" />
+						</div>
+						<div className="space-y-2">
+							{/* Content */}
+							<h3 className="text-lg font-semibold text-slate-900">{title}</h3>
+							<div className="text-sm text-slate-600">{message}</div>
+						</div>
+						{/* Actions */}
+						<div className="flex gap-3 justify-end">
+							<Button
+								variant="secondary"
+								onClick={onClose}
+								disabled={loading}
+								size="sm"
+							>
+								Cancel
+							</Button>
+							<Button
+								variant={confirmVariant}
+								onClick={onConfirm}
+								loading={loading}
+								size="sm"
+							>
+								{confirmText}
+							</Button>
+						</div>
 					</div>
 				</div>
 			</div>

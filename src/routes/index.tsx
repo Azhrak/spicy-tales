@@ -13,77 +13,79 @@ function Home() {
 		<div className="min-h-screen flex flex-col">
 			<div className="flex-1 bg-linear-to-br from-romance-50 via-white to-romance-100">
 				<div className="container mx-auto px-4 py-16">
-					{/* Hero Section */}
-					<div className="text-center max-w-4xl mx-auto mb-16 space-y-6">
-						<div className="flex justify-center">
-							<img
-								src="/logo-512x512.png"
-								alt="Choose the Heat Logo"
-								className="w-30 h-30"
-							/>
-						</div>
-						<Heading level="h1" size="hero">
-							Your Story, Your Way
-						</Heading>
-						<p className="text-xl text-slate-600">
-							Experience AI-powered romance novels that adapt to your choices.
-							Every decision shapes your perfect love story.
-						</p>
-						<div className="flex gap-4 justify-center">
-							<Link
-								to="/auth/signup"
-								className="px-8 py-3 bg-romance-600 text-white rounded-lg font-semibold hover:bg-romance-700 transition-colors"
-							>
-								Get Started
-							</Link>
-							<Link
-								to="/auth/login"
-								className="px-8 py-3 border-2 border-romance-600 text-romance-600 rounded-lg font-semibold hover:bg-romance-50 transition-colors"
-							>
-								Sign In
-							</Link>
-						</div>
-					</div>
-
-					{/* Features */}
-					<div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-						<div className="text-center p-6 space-y-4">
+					<div className="space-y-16">
+						{/* Hero Section */}
+						<div className="text-center max-w-4xl mx-auto space-y-6">
 							<div className="flex justify-center">
-								<BookOpen className="w-12 h-12 text-romance-500" />
+								<img
+									src="/logo-512x512.png"
+									alt="Choose the Heat Logo"
+									className="w-30 h-30"
+								/>
 							</div>
-							<Heading level="h3" size="subsection">
-								Interactive Stories
+							<Heading level="h1" size="hero">
+								Your Story, Your Way
 							</Heading>
-							<p className="text-slate-600">
-								Make choices that shape the narrative and influence your
-								characters' journey
+							<p className="text-xl text-slate-600">
+								Experience AI-powered romance novels that adapt to your choices.
+								Every decision shapes your perfect love story.
 							</p>
+							<div className="flex gap-4 justify-center">
+								<Link
+									to="/auth/signup"
+									className="px-8 py-3 bg-romance-600 text-white rounded-lg font-semibold hover:bg-romance-700 transition-colors"
+								>
+									Get Started
+								</Link>
+								<Link
+									to="/auth/login"
+									className="px-8 py-3 border-2 border-romance-600 text-romance-600 rounded-lg font-semibold hover:bg-romance-50 transition-colors"
+								>
+									Sign In
+								</Link>
+							</div>
 						</div>
 
-						<div className="text-center p-6 space-y-4">
-							<div className="flex justify-center">
-								<Sparkles className="w-12 h-12 text-romance-500" />
+						{/* Features */}
+						<div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+							<div className="text-center p-6 space-y-4">
+								<div className="flex justify-center">
+									<BookOpen className="w-12 h-12 text-romance-500" />
+								</div>
+								<Heading level="h3" size="subsection">
+									Interactive Stories
+								</Heading>
+								<p className="text-slate-600">
+									Make choices that shape the narrative and influence your
+									characters' journey
+								</p>
 							</div>
-							<Heading level="h3" size="subsection">
-								AI-Powered
-							</Heading>
-							<p className="text-slate-600">
-								Every scene is uniquely generated based on your preferences and
-								decisions
-							</p>
-						</div>
 
-						<div className="text-center p-6 space-y-4">
-							<div className="flex justify-center">
-								<Heart className="w-12 h-12 text-romance-500" />
+							<div className="text-center p-6 space-y-4">
+								<div className="flex justify-center">
+									<Sparkles className="w-12 h-12 text-romance-500" />
+								</div>
+								<Heading level="h3" size="subsection">
+									AI-Powered
+								</Heading>
+								<p className="text-slate-600">
+									Every scene is uniquely generated based on your preferences
+									and decisions
+								</p>
 							</div>
-							<Heading level="h3" size="subsection">
-								Your Preferences
-							</Heading>
-							<p className="text-slate-600">
-								Choose your favorite tropes, spice level, and pacing for a
-								personalized experience
-							</p>
+
+							<div className="text-center p-6 space-y-4">
+								<div className="flex justify-center">
+									<Heart className="w-12 h-12 text-romance-500" />
+								</div>
+								<Heading level="h3" size="subsection">
+									Your Preferences
+								</Heading>
+								<p className="text-slate-600">
+									Choose your favorite tropes, spice level, and pacing for a
+									personalized experience
+								</p>
+							</div>
 						</div>
 					</div>
 				</div>

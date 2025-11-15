@@ -27,8 +27,8 @@ export function Footer() {
 					</div>
 
 					{/* Quick Links */}
-					<div>
-						<h3 className="text-white font-semibold mb-4">Quick Links</h3>
+					<div className="space-y-4">
+						<h3 className="text-white font-semibold">Quick Links</h3>
 						<ul className="space-y-2 text-sm">
 							<li>
 								<Link
@@ -66,15 +66,15 @@ export function Footer() {
 					</div>
 
 					{/* About */}
-					<div>
-						<h3 className="text-white font-semibold mb-4">About</h3>
+					<div className="space-y-4">
+						<h3 className="text-white font-semibold">About</h3>
 						<p className="text-sm">
 							Choose the Heat uses advanced AI to generate personalized romance
 							novels. Each story is unique and crafted to match your reading
 							preferences.
 						</p>
 					</div>
-				</div>{" "}
+				</div>
 				{/* Bottom Bar */}
 				<div className="border-t border-slate-800 mt-8 pt-6 text-sm text-center md:text-left">
 					<div className="flex flex-col md:flex-row justify-between items-center gap-4">

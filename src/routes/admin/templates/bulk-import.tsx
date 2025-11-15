@@ -203,15 +203,15 @@ function BulkImportPage() {
 
 	return (
 		<AdminLayout currentPath="/admin/templates" userRole={role}>
-			<div className="p-6 max-w-6xl">
-				<div className="flex flex-col gap-2 mb-6">
+			<div className="p-6 max-w-6xl space-y-6">
+				<div className="flex flex-col gap-2">
 					<Heading level="h1">Bulk Import Templates</Heading>
 					<p className="text-gray-600">
 						Import multiple story templates with choice points using JSON format
 					</p>
 				</div>
 
-				<div className="bg-white rounded-lg shadow p-6 mb-6 flex flex-col gap-4">
+				<div className="bg-white rounded-lg shadow p-6 flex flex-col gap-4">
 					<div className="flex items-center justify-between">
 						<Heading level="h2">JSON Template</Heading>
 						<div className="space-x-2">
@@ -235,8 +235,8 @@ function BulkImportPage() {
 						</div>
 					)}
 
-					<div className="mt-4 text-sm text-gray-600">
-						<p className="font-medium mb-2">Template Structure:</p>
+					<div className="mt-4 text-sm text-gray-600 space-y-2">
+						<p className="font-medium">Template Structure:</p>
 						<ul className="list-disc list-inside space-y-1 ml-2">
 							<li>
 								<code className="bg-gray-100 px-1 rounded">title</code>:
@@ -266,7 +266,7 @@ function BulkImportPage() {
 							</li>
 						</ul>
 
-						<p className="font-medium mb-2 mt-4">Choice Point Structure:</p>
+						<p className="font-medium">Choice Point Structure:</p>
 						<ul className="list-disc list-inside space-y-1 ml-2">
 							<li>
 								<code className="bg-gray-100 px-1 rounded">scene_number</code>:
@@ -282,7 +282,7 @@ function BulkImportPage() {
 							</li>
 						</ul>
 
-						<p className="font-medium mb-2 mt-4">Option Structure:</p>
+						<p className="font-medium">Option Structure:</p>
 						<ul className="list-disc list-inside space-y-1 ml-2">
 							<li>
 								<code className="bg-gray-100 px-1 rounded">id</code>: Unique

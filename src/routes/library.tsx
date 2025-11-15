@@ -61,7 +61,7 @@ function LibraryPage() {
 						My Library
 					</Heading>
 					{/* Tabs */}
-					<div className="flex gap-4 mb-8">
+					<div className="flex gap-4">
 						<button
 							type="button"
 							onClick={() => setActiveTab("in-progress")}

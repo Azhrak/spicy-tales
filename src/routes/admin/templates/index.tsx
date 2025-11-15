@@ -257,8 +257,8 @@ function TemplatesListPage() {
 
 	return (
 		<AdminLayout currentPath="/admin/templates" userRole={role}>
-			<div>
-				<div className="flex items-center justify-between mb-6">
+			<div className="space-y-6">
+				<div className="flex items-center justify-between">
 					<div className="flex flex-col gap-2">
 						<Heading level="h1">Template Management</Heading>
 						<p className="text-slate-600">
@@ -286,7 +286,7 @@ function TemplatesListPage() {
 				</div>
 
 				{/* Statistics */}
-				<div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+				<div className="grid grid-cols-1 md:grid-cols-4 gap-4">
 					<StatBox
 						label="Total Templates"
 						value={stats.total}

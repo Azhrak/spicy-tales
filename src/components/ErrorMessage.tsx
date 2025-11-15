@@ -19,9 +19,11 @@ export function ErrorMessage({
 			<div
 				className={`bg-red-50 border border-red-200 rounded-lg p-6 text-center ${className}`}
 			>
-				<AlertTriangle className="w-8 h-8 text-red-500 mx-auto mb-3" />
-				<p className="text-red-800 text-lg">{message}</p>
-				{children}
+				<div className="space-y-3">
+					<AlertTriangle className="w-8 h-8 text-red-500 mx-auto" />
+					<p className="text-red-800 text-lg">{message}</p>
+					{children}
+				</div>
 			</div>
 		);
 	}

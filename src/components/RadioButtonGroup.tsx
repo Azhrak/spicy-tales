@@ -30,10 +30,8 @@ export function RadioButtonGroup<T extends string>({
 	}[columns];
 
 	return (
-		<div>
-			<div className="block text-sm font-semibold text-slate-700 mb-3">
-				{label}
-			</div>
+		<div className="space-y-3">
+			<div className="block text-sm font-semibold text-slate-700">{label}</div>
 			<div className={`grid ${gridClass} gap-3`}>
 				{options.map((option) => (
 					<button
@@ -46,10 +44,10 @@ export function RadioButtonGroup<T extends string>({
 								: "border-slate-200 bg-white hover:border-slate-300"
 						}`}
 					>
-						<div className="font-semibold text-slate-900 mb-1">
-							{option.label}
+						<div className="space-y-1">
+							<div className="font-semibold text-slate-900">{option.label}</div>
+							<div className="text-sm text-slate-600">{option.description}</div>
 						</div>
-						<div className="text-sm text-slate-600">{option.description}</div>
 					</button>
 				))}
 			</div>

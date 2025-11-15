@@ -137,8 +137,8 @@ function UsersListPage() {
 
 	return (
 		<AdminLayout currentPath="/admin/users" userRole={role}>
-			<div>
-				<div className="mb-6 flex flex-col gap-2">
+			<div className="space-y-6">
+				<div className="flex flex-col gap-2">
 					<Heading level="h1">User Management</Heading>
 					<p className="text-slate-600">
 						Manage user accounts, roles, and permissions. Admin access only.
@@ -146,7 +146,7 @@ function UsersListPage() {
 				</div>
 
 				{/* Statistics */}
-				<div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
+				<div className="grid grid-cols-1 md:grid-cols-5 gap-4">
 					<StatBox
 						label="Total Users"
 						value={stats.total}

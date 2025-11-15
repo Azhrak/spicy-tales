@@ -53,42 +53,46 @@ export function AdminNav({ currentPath, userRole }: AdminNavProps) {
 
 	return (
 		<nav className="w-64 bg-white border-r border-slate-200 min-h-screen p-6">
-			{/* Back to site link */}
-			<Link
-				to="/browse"
-				className="flex items-center gap-2 text-slate-600 hover:text-romance-600 mb-8 transition-colors"
-			>
-				<ArrowLeft className="w-4 h-4" />
-				<span className="text-sm font-medium">Back to Site</span>
-			</Link>
+			<div className="space-y-8">
+				{/* Back to site link */}
+				<Link
+					to="/browse"
+					className="flex items-center gap-2 text-slate-600 hover:text-romance-600 transition-colors"
+				>
+					<ArrowLeft className="w-4 h-4" />
+					<span className="text-sm font-medium">Back to Site</span>
+				</Link>
 
-			{/* Navigation title */}
-			<h2 className="text-lg font-bold text-slate-900 mb-6">Admin Panel</h2>
+				<div className="space-y-6">
+					{/* Navigation title */}
+					<h2 className="text-lg font-bold text-slate-900">Admin Panel</h2>
 
-			{/* Navigation items */}
-			<ul className="space-y-2">
-				{visibleItems.map((item) => {
-					const Icon = item.icon;
-					const active = isActive(item.path);
+					{/* Navigation items */}
+					<ul className="space-y-2">
+						{visibleItems.map((item) => {
+							const Icon = item.icon;
+							const active = isActive(item.path);
 
-					return (
-						<li key={item.path}>
-							<Link
-								to={item.path}
-								className={cn(
-									"flex items-center gap-3 px-4 py-2.5 rounded-lg font-medium transition-colors",
-									active
-										? "bg-romance-50 text-romance-700"
-										: "text-slate-700 hover:bg-slate-50",
-								)}
-							>
-								<Icon className="w-5 h-5" />
-								{item.label}
-							</Link>
-						</li>
-					);
-				})}
-			</ul>
+							return (
+								<li key={item.path}>
+									<Link
+										to={item.path}
+										className={cn(
+											"flex items-center gap-3 px-4 py-2.5 rounded-lg font-medium transition-colors",
+											active
+												? "bg-romance-50 text-romance-700"
+												: "text-slate-700 hover:bg-slate-50",
+										)}
+									>
+										<Icon className="w-5 h-5" />
+										{item.label}
+									</Link>
+								</li>
+							);
+						})}
+					</ul>
+				</div>
+			</div>
 		</nav>
 	);
 }

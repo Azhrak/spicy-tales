@@ -25,47 +25,48 @@ export function DeleteAccountModal({
 	return (
 		<div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
 			<div className="bg-white rounded-2xl shadow-xl max-w-md w-full p-8">
-				<div className="flex items-center gap-2 mb-4 text-red-600">
-					<AlertTriangle className="w-6 h-6" />
-					<h3 className="text-2xl font-bold">Delete Account</h3>
-				</div>
-
-				<p className="text-slate-600 mb-6">
-					This action cannot be undone. All your data will be permanently
-					deleted.
-				</p>
-
-				<FormInput
-					label="Enter your password to confirm"
-					type="password"
-					value={password}
-					onChange={(e) => onPasswordChange(e.target.value)}
-					placeholder="Your password"
-					containerClassName="mb-6"
-				/>
-				{error && (
-					<div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
-						{error}
+				<div className="space-y-6">
+					<div className="flex items-center gap-2 text-red-600">
+						<AlertTriangle className="w-6 h-6" />
+						<h3 className="text-2xl font-bold">Delete Account</h3>
 					</div>
-				)}
 
-				<div className="flex gap-3">
-					<button
-						type="button"
-						onClick={onCancel}
-						disabled={isDeleting}
-						className="flex-1 px-6 py-3 border-2 border-slate-300 text-slate-700 rounded-lg font-semibold hover:bg-slate-50 transition-colors disabled:opacity-50"
-					>
-						Cancel
-					</button>
-					<button
-						type="button"
-						onClick={onConfirm}
-						disabled={isDeleting || !password}
-						className="flex-1 px-6 py-3 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-					>
-						{isDeleting ? "Deleting..." : "Delete Account"}
-					</button>
+					<p className="text-slate-600">
+						This action cannot be undone. All your data will be permanently
+						deleted.
+					</p>
+
+					<FormInput
+						label="Enter your password to confirm"
+						type="password"
+						value={password}
+						onChange={(e) => onPasswordChange(e.target.value)}
+						placeholder="Your password"
+					/>
+					{error && (
+						<div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+							{error}
+						</div>
+					)}
+
+					<div className="flex gap-3">
+						<button
+							type="button"
+							onClick={onCancel}
+							disabled={isDeleting}
+							className="flex-1 px-6 py-3 border-2 border-slate-300 text-slate-700 rounded-lg font-semibold hover:bg-slate-50 transition-colors disabled:opacity-50"
+						>
+							Cancel
+						</button>
+						<button
+							type="button"
+							onClick={onConfirm}
+							disabled={isDeleting || !password}
+							className="flex-1 px-6 py-3 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+						>
+							{isDeleting ? "Deleting..." : "Delete Account"}
+						</button>
+					</div>
 				</div>
 			</div>
 		</div>

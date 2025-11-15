@@ -134,94 +134,96 @@ function PreferencesPage() {
 			<div className="container mx-auto px-4 py-8">
 				<div className="max-w-4xl mx-auto">
 					{/* Header */}
-					<div className="mb-8">
-						<Link
-							to="/profile"
-							className="inline-flex items-center text-slate-600 hover:text-romance-600 mb-4 transition-colors"
-						>
-							<ArrowLeft className="w-4 h-4 mr-2" />
-							Back to Profile
-						</Link>
-						<div className="flex items-center gap-4">
-							<Settings className="w-10 h-10 text-romance-500" />
-							<div className="space-y-1">
-								<Heading level="h1">Novel Generation Preferences</Heading>
-								<p className="text-slate-600">
-									Customize how AI generates stories for you
-								</p>
-							</div>
-						</div>
-					</div>
-
-					{/* Success Message */}
-					{success && (
-						<div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-center gap-3 text-green-700">
-							<CheckCircle2 className="w-5 h-5" />
-							<span>Your preferences have been saved successfully!</span>
-						</div>
-					)}
-
-					{/* Error Message */}
-					{error && (
-						<div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
-							{error}
-						</div>
-					)}
-
-					{/* Form */}
-					<form onSubmit={handleSubmit} className="space-y-8">
-						<GenresSection
-							selectedGenres={preferences.genres}
-							onToggle={handleGenreToggle}
-						/>
-
-						<TropesSection
-							selectedTropes={preferences.tropes}
-							onToggle={handleTropeToggle}
-						/>
-
-						<SpiceLevelSection
-							selectedLevel={preferences.spiceLevel}
-							onSelect={handleSpiceLevelChange}
-						/>
-
-						<PacingSection
-							selectedPacing={preferences.pacing}
-							onSelect={handlePacingChange}
-						/>
-
-						<SceneLengthSection
-							selectedLength={preferences.sceneLength || "medium"}
-							onSelect={handleSceneLengthChange}
-						/>
-
-						{/* Save Button */}
-						<div className="flex justify-end gap-4">
+					<div className="space-y-8">
+						<div className="space-y-4">
 							<Link
 								to="/profile"
-								className="px-6 py-3 border-2 border-slate-300 text-slate-700 rounded-lg font-semibold hover:bg-slate-50 transition-colors"
+								className="inline-flex items-center text-slate-600 hover:text-romance-600 transition-colors"
 							>
-								Cancel
+								<ArrowLeft className="w-4 h-4 mr-2" />
+								Back to Profile
 							</Link>
-							<button
-								type="submit"
-								disabled={updatePreferences.isPending}
-								className="px-8 py-3 bg-romance-600 text-white rounded-lg font-semibold hover:bg-romance-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-							>
-								{updatePreferences.isPending ? (
-									<>
-										<Settings className="w-5 h-5 animate-spin" />
-										Saving...
-									</>
-								) : (
-									<>
-										<CheckCircle2 className="w-5 h-5" />
-										Save Preferences
-									</>
-								)}
-							</button>
+							<div className="flex items-center gap-4">
+								<Settings className="w-10 h-10 text-romance-500" />
+								<div className="space-y-1">
+									<Heading level="h1">Novel Generation Preferences</Heading>
+									<p className="text-slate-600">
+										Customize how AI generates stories for you
+									</p>
+								</div>
+							</div>
 						</div>
-					</form>
+
+						{/* Success Message */}
+						{success && (
+							<div className="p-4 bg-green-50 border border-green-200 rounded-lg flex items-center gap-3 text-green-700">
+								<CheckCircle2 className="w-5 h-5" />
+								<span>Your preferences have been saved successfully!</span>
+							</div>
+						)}
+
+						{/* Error Message */}
+						{error && (
+							<div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
+								{error}
+							</div>
+						)}
+
+						{/* Form */}
+						<form onSubmit={handleSubmit} className="space-y-8">
+							<GenresSection
+								selectedGenres={preferences.genres}
+								onToggle={handleGenreToggle}
+							/>
+
+							<TropesSection
+								selectedTropes={preferences.tropes}
+								onToggle={handleTropeToggle}
+							/>
+
+							<SpiceLevelSection
+								selectedLevel={preferences.spiceLevel}
+								onSelect={handleSpiceLevelChange}
+							/>
+
+							<PacingSection
+								selectedPacing={preferences.pacing}
+								onSelect={handlePacingChange}
+							/>
+
+							<SceneLengthSection
+								selectedLength={preferences.sceneLength || "medium"}
+								onSelect={handleSceneLengthChange}
+							/>
+
+							{/* Save Button */}
+							<div className="flex justify-end gap-4">
+								<Link
+									to="/profile"
+									className="px-6 py-3 border-2 border-slate-300 text-slate-700 rounded-lg font-semibold hover:bg-slate-50 transition-colors"
+								>
+									Cancel
+								</Link>
+								<button
+									type="submit"
+									disabled={updatePreferences.isPending}
+									className="px-8 py-3 bg-romance-600 text-white rounded-lg font-semibold hover:bg-romance-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+								>
+									{updatePreferences.isPending ? (
+										<>
+											<Settings className="w-5 h-5 animate-spin" />
+											Saving...
+										</>
+									) : (
+										<>
+											<CheckCircle2 className="w-5 h-5" />
+											Save Preferences
+										</>
+									)}
+								</button>
+							</div>
+						</form>
+					</div>
 				</div>
 			</div>
 		</div>

@@ -150,43 +150,45 @@ function ProfilePage() {
 			<Header currentPath="/profile" userRole={profile?.role} />
 
 			<PageContainer maxWidth="md">
-				<div className="flex items-center gap-3 mb-8">
-					<User className="w-8 h-8 text-romance-600" />
-					<Heading level="h1" size="page">
-						Profile Settings
-					</Heading>
+				<div className="space-y-8">
+					<div className="flex items-center gap-3">
+						<User className="w-8 h-8 text-romance-600" />
+						<Heading level="h1" size="page">
+							Profile Settings
+						</Heading>
+					</div>
+
+					<ProfileInformation
+						name={name}
+						email={email}
+						createdAt={profile.createdAt}
+						onNameChange={setName}
+						onEmailChange={setEmail}
+						onSubmit={handleUpdateProfile}
+						isUpdating={updateProfile.isPending}
+						error={profileError}
+						success={profileSuccess}
+					/>
+
+					<PasswordChange
+						currentPassword={currentPassword}
+						newPassword={newPassword}
+						confirmPassword={confirmPassword}
+						onCurrentPasswordChange={setCurrentPassword}
+						onNewPasswordChange={setNewPassword}
+						onConfirmPasswordChange={setConfirmPassword}
+						onSubmit={handleChangePassword}
+						isUpdating={changePassword.isPending}
+						error={passwordError}
+						success={passwordSuccess}
+					/>
+
+					<PreferencesDisplay preferences={profile.preferences} />
+
+					<DataDownload />
+
+					<DangerZone onDeleteClick={() => setShowDeleteModal(true)} />
 				</div>
-
-				<ProfileInformation
-					name={name}
-					email={email}
-					createdAt={profile.createdAt}
-					onNameChange={setName}
-					onEmailChange={setEmail}
-					onSubmit={handleUpdateProfile}
-					isUpdating={updateProfile.isPending}
-					error={profileError}
-					success={profileSuccess}
-				/>
-
-				<PasswordChange
-					currentPassword={currentPassword}
-					newPassword={newPassword}
-					confirmPassword={confirmPassword}
-					onCurrentPasswordChange={setCurrentPassword}
-					onNewPasswordChange={setNewPassword}
-					onConfirmPasswordChange={setConfirmPassword}
-					onSubmit={handleChangePassword}
-					isUpdating={changePassword.isPending}
-					error={passwordError}
-					success={passwordSuccess}
-				/>
-
-				<PreferencesDisplay preferences={profile.preferences} />
-
-				<DataDownload />
-
-				<DangerZone onDeleteClick={() => setShowDeleteModal(true)} />
 			</PageContainer>
 
 			<DeleteAccountModal

@@ -34,12 +34,14 @@ export function NovelCard({
 			</Link>
 
 			{/* Content */}
-			<div className="p-6">
-				<h3 className="text-2xl font-bold text-slate-900 mb-3">{title}</h3>
-				<p className="text-slate-600 mb-4 line-clamp-3">{description}</p>
+			<div className="p-6 space-y-4">
+				<div className="space-y-3">
+					<h3 className="text-2xl font-bold text-slate-900">{title}</h3>
+					<p className="text-slate-600 line-clamp-3">{description}</p>
+				</div>
 
 				{/* Tropes */}
-				<div className="flex flex-wrap gap-2 mb-4">
+				<div className="flex flex-wrap gap-2">
 					{baseTropes.map((trope) => (
 						<span
 							key={trope}
@@ -51,7 +53,7 @@ export function NovelCard({
 				</div>
 
 				{/* Stats */}
-				<div className="flex items-center gap-4 mb-4 text-sm text-slate-500">
+				<div className="flex items-center gap-4 text-sm text-slate-500">
 					<div className="flex items-center gap-1">
 						<Sparkles className="w-4 h-4" />
 						<span>{estimatedScenes} scenes</span>

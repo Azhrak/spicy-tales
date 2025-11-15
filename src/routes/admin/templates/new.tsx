@@ -133,12 +133,11 @@ function NewTemplatePage() {
 
 	return (
 		<AdminLayout currentPath="/admin/templates" userRole={role}>
-			<div>
-				<div className="mb-6">
+			<div className="space-y-6">
+				<div className="space-y-4">
 					<Button
 						variant="ghost"
 						onClick={() => navigate({ to: "/admin/templates" })}
-						className="mb-4"
 					>
 						<ArrowLeft className="w-4 h-4" />
 						Back to Templates
@@ -173,10 +172,10 @@ function NewTemplatePage() {
 						/>
 
 						{/* Description */}
-						<div>
+						<div className="space-y-2">
 							<label
 								htmlFor="description"
-								className="block text-sm font-medium text-slate-900 mb-2"
+								className="block text-sm font-medium text-slate-900"
 							>
 								Description *
 							</label>
@@ -224,10 +223,10 @@ function NewTemplatePage() {
 						/>
 
 						{/* Cover Gradient */}
-						<div>
+						<div className="space-y-2">
 							<label
 								htmlFor="gradient"
-								className="block text-sm font-medium text-slate-900 mb-2"
+								className="block text-sm font-medium text-slate-900"
 							>
 								Cover Gradient *
 							</label>
@@ -246,7 +245,7 @@ function NewTemplatePage() {
 									</option>
 								))}
 							</select>
-							<div className="mt-2">
+							<div>
 								<div
 									className={`h-24 rounded-lg bg-linear-to-br ${formData.cover_gradient}`}
 								/>

@@ -62,8 +62,8 @@ function AdminDashboard() {
 
 	return (
 		<AdminLayout currentPath="/admin" userRole={role}>
-			<div>
-				<div className="flex flex-col gap-2 mb-8">
+			<div className="space-y-8">
+				<div className="flex flex-col gap-2">
 					<Heading level="h1">Dashboard</Heading>
 					<p className="text-slate-600">
 						Welcome to the admin panel. Here's an overview of your site.
@@ -72,7 +72,7 @@ function AdminDashboard() {
 
 				{/* Template Statistics (visible to editors and admins) */}
 				{dashboardStats.templates && (
-					<div className="mb-8 flex flex-col gap-4">
+					<div className="flex flex-col gap-4">
 						<Heading level="h2">Template Statistics</Heading>
 						<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 							<StatCard

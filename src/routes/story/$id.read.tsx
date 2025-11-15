@@ -107,8 +107,8 @@ function ReadingPage() {
 		<div className="min-h-screen bg-linear-to-br from-rose-50 via-purple-50 to-pink-50">
 			{/* Header */}
 			<header className="bg-white/80 backdrop-blur-sm border-b border-rose-200 sticky top-0 z-10">
-				<div className="max-w-4xl mx-auto px-4 py-4">
-					<div className="flex items-center justify-between mb-3">
+				<div className="max-w-4xl mx-auto px-4 py-4 space-y-3">
+					<div className="flex items-center justify-between">
 						<Link
 							to="/library"
 							className="flex items-center gap-2 text-gray-600 hover:text-rose-600 transition-colors"
@@ -154,14 +154,14 @@ function ReadingPage() {
 			</header>
 
 			{/* Main Content */}
-			<main className="max-w-2xl mx-auto px-4 py-8">
+			<main className="max-w-2xl mx-auto px-4 py-8 space-y-6">
 				{/* Scene Content */}
-				<div className="bg-white rounded-xl shadow-lg p-8 mb-6">
-					<div className="prose prose-lg max-w-none">
+				<div className="bg-white rounded-xl shadow-lg p-8">
+					<div className="prose prose-lg max-w-none space-y-4">
 						{scene.content.split("\n\n").map((paragraph) => (
 							<p
 								key={paragraph}
-								className="mb-4 text-gray-800 leading-relaxed font-garamond"
+								className="text-gray-800 leading-relaxed font-garamond"
 							>
 								{paragraph}
 							</p>
@@ -184,14 +184,16 @@ function ReadingPage() {
 				</div>
 				{/* Choice Point */}
 				{choicePoint && !isLastScene && (
-					<div className="bg-white rounded-xl shadow-lg p-8 mb-6">
-						<div className="flex items-center gap-2 mb-4">
-							<Flame className="w-5 h-5 text-rose-500" />
-							<Heading level="h2" size="subsection" className="text-gray-800">
-								What happens next?
-							</Heading>
+					<div className="bg-white rounded-xl shadow-lg p-8 space-y-6">
+						<div className="space-y-4">
+							<div className="flex items-center gap-2">
+								<Flame className="w-5 h-5 text-rose-500" />
+								<Heading level="h2" size="subsection" className="text-gray-800">
+									What happens next?
+								</Heading>
+							</div>
+							<p className="text-gray-600">{choicePoint.promptText}</p>
 						</div>
-						<p className="text-gray-600 mb-6">{choicePoint.promptText}</p>
 
 						<div className="space-y-3">
 							{choicePoint.options.map((option, index) => (
@@ -224,7 +226,7 @@ function ReadingPage() {
 							disabled={selectedOption === null}
 							loading={choiceMutation.isPending}
 							variant="primary"
-							className="w-full mt-6 bg-linear-to-r from-rose-600 to-purple-600 hover:from-rose-700 hover:to-purple-700"
+							className="w-full bg-linear-to-r from-rose-600 to-purple-600 hover:from-rose-700 hover:to-purple-700"
 						>
 							<span>Continue Story</span>
 							<ChevronRight className="w-5 h-5" />
@@ -233,8 +235,8 @@ function ReadingPage() {
 				)}{" "}
 				{/* No Choice Point - Continue to Next Scene */}
 				{!choicePoint && !isLastScene && (
-					<div className="bg-white rounded-xl shadow-lg p-8 mb-6 text-center">
-						<p className="text-gray-600 mb-6">Ready to continue?</p>
+					<div className="bg-white rounded-xl shadow-lg p-8 text-center space-y-6">
+						<p className="text-gray-600">Ready to continue?</p>
 						<Button
 							type="button"
 							onClick={async () => {

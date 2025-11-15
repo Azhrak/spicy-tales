@@ -40,7 +40,7 @@ export function FilterBar<T extends string = string>({
 	onChange,
 }: FilterBarProps<T>) {
 	return (
-		<div className="bg-white rounded-lg border border-slate-200 p-4 mb-4">
+		<div className="bg-white rounded-lg border border-slate-200 p-4">
 			<div className="flex items-center gap-3">
 				<span className="text-sm font-medium text-slate-700">{label}</span>
 				<div className="flex gap-2">

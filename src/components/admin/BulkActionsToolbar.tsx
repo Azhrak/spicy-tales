@@ -48,9 +48,9 @@ export function BulkActionsToolbar({
 	);
 
 	return (
-		<>
+		<div className="space-y-4">
 			<div
-				className={`${accentColorClasses[accentColor]} border rounded-lg p-4 mb-4 flex items-center justify-between`}
+				className={`${accentColorClasses[accentColor]} border rounded-lg p-4 flex items-center justify-between`}
 			>
 				<div className="flex items-center gap-4">
 					<span className="text-sm font-medium text-slate-900">
@@ -79,11 +79,7 @@ export function BulkActionsToolbar({
 				</div>
 			</div>
 
-			{error && (
-				<div className="mb-4">
-					<ErrorMessage message={error} />
-				</div>
-			)}
-		</>
+			{error && <ErrorMessage message={error} />}
+		</div>
 	);
 }
