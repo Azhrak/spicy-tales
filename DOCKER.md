@@ -1,6 +1,6 @@
-# Docker Setup for Spicy Tales
+# Docker Setup for Choose the Heat
 
-This guide will help you run the entire Spicy Tales application stack using Docker, including:
+This guide will help you run the entire Choose the Heat application stack using Docker, including:
 - 🚀 Node.js 24 Application (TanStack Start)
 - 🐘 PostgreSQL 14 Database
 - 🔴 Redis 7 Cache
@@ -285,7 +285,7 @@ docker-compose exec redis redis-cli ping
 docker-compose down -v
 
 # Remove the built image
-docker rmi spicy-tales-app
+docker rmi choose-the-heat-app
 
 # Rebuild and start fresh
 docker-compose up --build
@@ -330,7 +330,7 @@ Data is persisted in Docker volumes:
 
 **View volumes:**
 ```bash
-docker volume ls | grep spicy-tales
+docker volume ls | grep choose-the-heat
 ```
 
 **Backup database:**

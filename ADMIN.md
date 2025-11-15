@@ -1,4 +1,4 @@
-# Admin Dashboard - Spicy Tales
+# Admin Dashboard - Choose the Heat
 
 Complete guide to the admin dashboard system for managing users and novel templates.
 
@@ -18,7 +18,7 @@ Complete guide to the admin dashboard system for managing users and novel templa
 
 ## Overview
 
-The admin dashboard provides role-based access control for managing the Spicy Tales platform. It includes:
+The admin dashboard provides role-based access control for managing the Choose the Heat platform. It includes:
 
 - **Role-based permissions** (User, Editor, Admin)
 - **Template management** (Create, edit, publish, archive)
@@ -395,14 +395,14 @@ Add a cron job to run the cleanup script:
 
 ```bash
 # Run daily at 2 AM
-0 2 * * * cd /path/to/spicy-tales && pnpm cleanup:audit-logs
+0 2 * * * cd /path/to/choose-the-heat && pnpm cleanup:audit-logs
 ```
 
 **Docker:**
 
 ```bash
 # Add to docker-compose.yml or run manually
-docker exec spicy-tales-app pnpm cleanup:audit-logs
+docker exec choose-the-heat-app pnpm cleanup:audit-logs
 ```
 
 ### Database Migrations
@@ -524,7 +524,7 @@ For issues or questions:
 
 1. Check this documentation
 2. Review [PROGRESS.md](PROGRESS.md) for implementation details
-3. Open a GitHub issue at [github.com/Azhrak/spicy-tales](https://github.com/Azhrak/spicy-tales)
+3. Open a GitHub issue at [github.com/Azhrak/choose-the-heat](https://github.com/Azhrak/choose-the-heat)
 
 ---
 

@@ -12,11 +12,13 @@ export function Footer() {
 					<div className="space-y-4">
 						<div className="flex items-center gap-2">
 							<img
-								src="/spicy-tales-logo-200x200.png"
-								alt="Spicy Tales Logo"
+								src="/logo-200x200.png"
+								alt="Choose the Heat Logo"
 								className="w-8 h-8"
 							/>
-							<span className="text-xl font-bold text-white">Spicy Tales</span>
+							<span className="text-xl font-bold text-white">
+								Choose the Heat
+							</span>
 						</div>
 						<p className="text-sm">
 							AI-powered romance novels tailored to your preferences. Discover
@@ -67,18 +69,17 @@ export function Footer() {
 					<div>
 						<h3 className="text-white font-semibold mb-4">About</h3>
 						<p className="text-sm">
-							Spicy Tales uses advanced AI to generate personalized romance
+							Choose the Heat uses advanced AI to generate personalized romance
 							novels. Each story is unique and crafted to match your reading
 							preferences.
 						</p>
 					</div>
-				</div>
-
+				</div>{" "}
 				{/* Bottom Bar */}
 				<div className="border-t border-slate-800 mt-8 pt-6 text-sm text-center md:text-left">
 					<div className="flex flex-col md:flex-row justify-between items-center gap-4">
 						<p>
-							© {currentYear} Spicy Tales. Made with{" "}
+							© {currentYear} Choose the Heat. Made with{" "}
 							<Heart
 								className="w-4 h-4 inline text-romance-500"
 								fill="currentColor"

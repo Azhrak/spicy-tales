@@ -1,6 +1,6 @@
 # Refactoring Summary
 
-This document summarizes the major refactoring work completed on the Spicy Tales project.
+This document summarizes the major refactoring work completed on the Choose the Heat project.
 
 **Date:** November 14, 2025
 **Goal:** Improve code maintainability, reduce duplication, enhance type safety, and establish coding standards

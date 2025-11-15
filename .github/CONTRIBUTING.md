@@ -1,6 +1,6 @@
-# Contributing to Spicy Tales
+# Contributing to Choose the Heat
 
-First off, thank you for considering contributing to Spicy Tales! 🎉
+First off, thank you for considering contributing to Choose the Heat! 🎉
 
 ## Code of Conduct
 
@@ -51,8 +51,8 @@ Enhancement suggestions are tracked as GitHub issues. When creating an enhanceme
 1. Clone your fork:
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/spicy-tales.git
-cd spicy-tales
+git clone https://github.com/YOUR_USERNAME/choose-the-heat.git
+cd choose-the-heat
 ```
 
 2. Install dependencies:

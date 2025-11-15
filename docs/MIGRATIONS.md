@@ -1,10 +1,10 @@
 # Database Migrations Guide
 
-This guide explains how to manage database migrations for Spicy Tales, with specific instructions for production deployment on Vercel + Neon.
+This guide explains how to manage database migrations for Choose the Heat, with specific instructions for production deployment on Vercel + Neon.
 
 ## Overview
 
-Spicy Tales uses [Kysely](https://kysely.dev/) for type-safe database queries and migrations. Migrations are TypeScript files that define schema changes.
+Choose the Heat uses [Kysely](https://kysely.dev/) for type-safe database queries and migrations. Migrations are TypeScript files that define schema changes.
 
 ## Migration Files
 

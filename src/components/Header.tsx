@@ -31,12 +31,12 @@ export function Header({ currentPath = "", userRole }: HeaderProps) {
 					{/* Logo */}
 					<Link to="/browse" className="flex items-center gap-2">
 						<img
-							src="/spicy-tales-logo-200x200.png"
-							alt="Spicy Tales Logo"
+							src="/logo-200x200.png"
+							alt="Choose the Heat Logo"
 							className="w-8 h-8"
 						/>
 						<span className="text-xl font-bold text-slate-900">
-							Spicy Tales
+							Choose the Heat
 						</span>
 					</Link>
 

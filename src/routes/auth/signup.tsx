@@ -4,8 +4,8 @@ import { useState } from "react";
 import { Button } from "~/components/Button";
 import { ErrorMessage } from "~/components/ErrorMessage";
 import { FormInput } from "~/components/FormInput";
-import { ApiError, api } from "~/lib/api/client";
 import { useCurrentUserQuery } from "~/hooks/useCurrentUserQuery";
+import { ApiError, api } from "~/lib/api/client";
 
 export const Route = createFileRoute("/auth/signup")({
 	component: SignupPage,
@@ -100,11 +100,12 @@ function SignupPage() {
 				{currentUser && (
 					<div className="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
 						<p className="text-sm text-blue-900 mb-3">
-							You are already logged in as <strong>{currentUser.name || currentUser.email}</strong>
+							You are already logged in as{" "}
+							<strong>{currentUser.name || currentUser.email}</strong>
 						</p>
 						<div className="flex gap-2">
 							<Link
-								to="/"
+								to="/browse"
 								className="flex-1 px-3 py-2 text-sm bg-white border border-blue-300 text-blue-700 rounded-md hover:bg-blue-50 transition-colors flex items-center justify-center gap-2"
 							>
 								<Home className="w-4 h-4" />

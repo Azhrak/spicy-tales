@@ -1,6 +1,6 @@
-# Spicy Tales - Project Progress
+# Choose the Heat - Project Progress
 
-**Project**: Spicy Tales - AI-Enhanced Romance Novel App
+**Project**: Choose the Heat - AI-Enhanced Romance Novel App
 **Last Updated**: 2025-11-14 | **Status**: MVP 100% Complete + Admin Bulk Operations! 🎉
 📄 **Details**: See [SESSION_SUMMARY.md](SESSION_SUMMARY.md) for comprehensive recap
 

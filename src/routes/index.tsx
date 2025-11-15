@@ -16,8 +16,8 @@ function Home() {
 					<div className="text-center max-w-4xl mx-auto mb-16">
 						<div className="flex justify-center mb-6">
 							<img
-								src="/spicy-tales-logo-512x512.png"
-								alt="Spicy Tales Logo"
+								src="/logo-512x512.png"
+								alt="Choose the Heat Logo"
 								className="w-30 h-30"
 							/>
 						</div>
@@ -90,11 +90,13 @@ function Home() {
 					<div className="max-w-4xl mx-auto text-center space-y-4">
 						<div className="flex items-center justify-center gap-2">
 							<img
-								src="/spicy-tales-logo-200x200.png"
-								alt="Spicy Tales Logo"
+								src="/logo-200x200.png"
+								alt="Choose the Heat Logo"
 								className="w-8 h-8"
 							/>
-							<span className="text-xl font-bold text-white">Spicy Tales</span>
+							<span className="text-xl font-bold text-white">
+								Choose the Heat
+							</span>
 						</div>
 						<p className="text-sm">
 							AI-powered romance novels tailored to your preferences. Discover
@@ -115,7 +117,7 @@ function Home() {
 							</Link>
 						</div>
 						<p className="text-sm">
-							© {currentYear} Spicy Tales. Made with{" "}
+							© {currentYear} Choose the Heat. Made with{" "}
 							<Heart
 								className="w-4 h-4 inline text-romance-500"
 								fill="currentColor"

@@ -1,7 +1,7 @@
-#!/bin/sh
+#!/bin/bash
 set -e
 
-echo "🚀 Starting Spicy Tales..."
+echo "🚀 Starting Choose the Heat..."
 
 # Wait for database to be ready
 echo "⏳ Waiting for database..."

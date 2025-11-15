@@ -24,7 +24,7 @@ export default defineEventHandler((event) => {
 
   if (!authHeader || !authHeader.startsWith('Basic ')) {
     event.res.status = 401
-    event.res.headers.set('WWW-Authenticate', 'Basic realm="Spicy Tales - Testing Access"')
+    event.res.headers.set('WWW-Authenticate', 'Basic realm="Choose the Heat - Testing Access"')
     event.res.headers.set('Content-Type', 'text/plain')
     return 'Authentication required'
   }
@@ -37,7 +37,7 @@ export default defineEventHandler((event) => {
   // Check password (username can be anything)
   if (password !== sitePassword) {
     event.res.status = 401
-    event.res.headers.set('WWW-Authenticate', 'Basic realm="Spicy Tales - Testing Access"')
+    event.res.headers.set('WWW-Authenticate', 'Basic realm="Choose the Heat - Testing Access"')
     event.res.headers.set('Content-Type', 'text/plain')
     return 'Invalid credentials'
   }

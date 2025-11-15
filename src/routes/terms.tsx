@@ -35,7 +35,7 @@ function TermsOfService() {
 								1. Acceptance of Terms
 							</h2>
 							<p className="text-slate-700 mb-4">
-								By accessing or using Spicy Tales, you agree to be bound by
+								By accessing or using Choose the Heat, you agree to be bound by
 								these Terms of Service and all applicable laws and regulations.
 								If you do not agree with any of these terms, you are prohibited
 								from using or accessing this service.
@@ -47,11 +47,11 @@ function TermsOfService() {
 								2. Age Requirement
 							</h2>
 							<p className="text-slate-700 mb-4">
-								You must be at least 18 years old to use Spicy Tales. By using
-								this service, you represent and warrant that you are at least 18
-								years of age. The content generated may contain mature themes,
-								including romantic and sexual content, which is intended for
-								adult audiences only.
+								You must be at least 18 years old to use Choose the Heat. By
+								using this service, you represent and warrant that you are at
+								least 18 years of age. The content generated may contain mature
+								themes, including romantic and sexual content, which is intended
+								for adult audiences only.
 							</p>
 						</section>
 
@@ -60,8 +60,8 @@ function TermsOfService() {
 								3. User Accounts
 							</h2>
 							<p className="text-slate-700 mb-4">
-								To access certain features of Spicy Tales, you must create an
-								account. You agree to:
+								To access certain features of Choose the Heat, you must create
+								an account. You agree to:
 							</p>
 							<ul className="list-disc list-inside text-slate-700 space-y-2 ml-4">
 								<li>Provide accurate and complete information</li>
@@ -79,7 +79,7 @@ function TermsOfService() {
 								4. AI-Generated Content
 							</h2>
 							<p className="text-slate-700 mb-4">
-								Spicy Tales uses artificial intelligence to generate romance
+								Choose the Heat uses artificial intelligence to generate romance
 								novels. You acknowledge and agree that:
 							</p>
 							<ul className="list-disc list-inside text-slate-700 space-y-2 ml-4">
@@ -109,8 +109,8 @@ function TermsOfService() {
 								5. Intellectual Property Rights
 							</h2>
 							<p className="text-slate-700 mb-4">
-								The stories generated for you through Spicy Tales are provided
-								for your personal use. You agree that:
+								The stories generated for you through Choose the Heat are
+								provided for your personal use. You agree that:
 							</p>
 							<ul className="list-disc list-inside text-slate-700 space-y-2 ml-4">
 								<li>
@@ -121,8 +121,8 @@ function TermsOfService() {
 									commercially
 								</li>
 								<li>
-									Spicy Tales retains all rights to the service, templates, and
-									underlying technology
+									Choose the Heat retains all rights to the service, templates,
+									and underlying technology
 								</li>
 								<li>
 									Our logo, branding, and interface elements are protected by
@@ -136,7 +136,7 @@ function TermsOfService() {
 								6. Acceptable Use Policy
 							</h2>
 							<p className="text-slate-700 mb-4">
-								You agree not to use Spicy Tales to:
+								You agree not to use Choose the Heat to:
 							</p>
 							<ul className="list-disc list-inside text-slate-700 space-y-2 ml-4">
 								<li>
@@ -166,8 +166,8 @@ function TermsOfService() {
 								7. Content Guidelines
 							</h2>
 							<p className="text-slate-700 mb-4">
-								While Spicy Tales allows mature romantic content, we prohibit
-								content that:
+								While Choose the Heat allows mature romantic content, we
+								prohibit content that:
 							</p>
 							<ul className="list-disc list-inside text-slate-700 space-y-2 ml-4">
 								<li>Depicts or promotes illegal activities</li>
@@ -219,15 +219,16 @@ function TermsOfService() {
 								10. Disclaimers and Limitation of Liability
 							</h2>
 							<p className="text-slate-700 mb-4">
-								Spicy Tales is provided "as is" without warranties of any kind.
-								We disclaim all warranties, express or implied, including
+								Choose the Heat is provided "as is" without warranties of any
+								kind. We disclaim all warranties, express or implied, including
 								warranties of merchantability and fitness for a particular
 								purpose.
 							</p>
 							<p className="text-slate-700 mb-4">
-								To the fullest extent permitted by law, Spicy Tales shall not be
-								liable for any indirect, incidental, special, consequential, or
-								punitive damages, or any loss of profits or revenues.
+								To the fullest extent permitted by law, Choose the Heat shall
+								not be liable for any indirect, incidental, special,
+								consequential, or punitive damages, or any loss of profits or
+								revenues.
 							</p>
 						</section>
 
@@ -236,7 +237,7 @@ function TermsOfService() {
 								11. Indemnification
 							</h2>
 							<p className="text-slate-700 mb-4">
-								You agree to indemnify and hold harmless Spicy Tales, its
+								You agree to indemnify and hold harmless Choose the Heat, its
 								officers, directors, employees, and agents from any claims,
 								damages, losses, liabilities, and expenses arising from your use
 								of the service or violation of these terms.
@@ -292,7 +293,7 @@ function TermsOfService() {
 								contact us at:
 							</p>
 							<p className="text-slate-700">
-								<strong>Email:</strong> legal@spicytales.com
+								<strong>Email:</strong> legal@choosetheheat.com
 							</p>
 						</section>
 					</div>

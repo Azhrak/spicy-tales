@@ -22,7 +22,7 @@ export function useDownloadUserData() {
 
 			// Generate filename with current date
 			const date = new Date().toISOString().split("T")[0];
-			link.download = `spicy-tales-data-${date}.json`;
+			link.download = `choose-the-heat-data-${date}.json`;
 
 			// Trigger download
 			document.body.appendChild(link);

@@ -1,6 +1,6 @@
 # Component Structure Guide
 
-This document describes the component organization patterns used in the Spicy Tales project.
+This document describes the component organization patterns used in the Choose the Heat project.
 
 ## Container/Presentational Pattern
 

@@ -1,4 +1,4 @@
-# Session Summary - Spicy Tales Project
+# Session Summary - Choose the Heat Project
 
 **Date**: January 14, 2025
 **Status**: MVP 100% Complete + Admin Backend Ready! 🎉
@@ -402,7 +402,7 @@ When you return:
 
 ## 🔗 Useful Links
 
-- **GitHub**: https://github.com/Azhrak/spicy-tales
+- **GitHub**: https://github.com/Azhrak/choose-the-heat
 - **TanStack Docs**: https://tanstack.com/start/latest
 - **Vercel AI SDK**: https://sdk.vercel.ai/docs
 - **Kysely Docs**: https://kysely.dev/docs/intro

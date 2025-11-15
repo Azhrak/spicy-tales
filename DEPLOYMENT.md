@@ -1,6 +1,6 @@
 # Deployment Guide: Vercel + Neon PostgreSQL
 
-This guide walks you through deploying Spicy Tales to Vercel with Neon PostgreSQL for free-tier hosting.
+This guide walks you through deploying Choose the Heat to Vercel with Neon PostgreSQL for free-tier hosting.
 
 ## Overview
 
@@ -27,7 +27,7 @@ Configuration files already set up:
 
 - [Vercel account](https://vercel.com/signup) (free)
 - [Neon account](https://neon.tech) (free)
-- Your Spicy Tales GitHub repository
+- Your Choose the Heat GitHub repository
 - Google OAuth credentials (if using social login)
 - AI provider API key (OpenAI, Anthropic, Google, or Mistral)
 
@@ -40,7 +40,7 @@ Configuration files already set up:
 1. Go to [neon.tech](https://neon.tech) and sign up/log in
 2. Click **Create Project**
 3. Configure:
-   - **Name**: `spicy-tales` (or your preferred name)
+   - **Name**: `choose-the-heat` (or your preferred name)
    - **Region**: Choose closest to your users (e.g., US East, EU West)
    - **PostgreSQL Version**: 16 (latest)
 4. Click **Create Project**
@@ -74,7 +74,7 @@ For production, you may want to:
 
 1. Go to [vercel.com](https://vercel.com) and sign in
 2. Click **Add New** → **Project**
-3. Import your `spicy-tales` repository from GitHub
+3. Import your `choose-the-heat` repository from GitHub
    - If not connected, click **Add GitHub Account** and authorize Vercel
 
 #### Step 2: Configure Project
@@ -160,13 +160,13 @@ Copy the output and paste as `SESSION_SECRET` value.
 
 1. Click **Deploy**
 2. Wait 2-3 minutes for build to complete
-3. Once deployed, you'll get a URL like: `https://spicy-tales-abc123.vercel.app`
+3. Once deployed, you'll get a URL like: `https://choose-the-heat-abc123.vercel.app`
 
 #### Step 5: Update APP_URL
 
 1. Copy your new Vercel deployment URL
 2. Go to **Settings** → **Environment Variables**
-3. Edit `APP_URL` and set it to your deployment URL (e.g., `https://spicy-tales-abc123.vercel.app`)
+3. Edit `APP_URL` and set it to your deployment URL (e.g., `https://choose-the-heat-abc123.vercel.app`)
 4. Click **Save**
 5. Go to **Deployments** → Click **⋯** on latest deployment → **Redeploy**
 
@@ -198,7 +198,7 @@ vercel
 # - Set up and deploy? Yes
 # - Which scope? Your account
 # - Link to existing project? No
-# - Project name? spicy-tales
+# - Project name? choose-the-heat
 # - Directory? ./
 # - Override settings? No
 ```
@@ -340,7 +340,7 @@ To use your own domain instead of `*.vercel.app`:
 ### Step 1: Add Domain in Vercel
 
 1. Go to your project → **Settings** → **Domains**
-2. Add your domain (e.g., `spicytales.com`)
+2. Add your domain (e.g., `choosetheheat.com`)
 3. Follow DNS configuration instructions
 
 ### Step 2: Update Environment Variables
@@ -353,7 +353,7 @@ To use your own domain instead of `*.vercel.app`:
 1. Go to Google Cloud Console
 2. Add new redirect URI with custom domain:
    ```
-   https://spicytales.com/api/auth/callback/google
+   https://choosetheheat.com/api/auth/callback/google
    ```
 
 ---
@@ -475,7 +475,7 @@ To protect your staging deployment from public access, you can enable HTTP Basic
 ### Sharing Access with Testers
 
 Send testers:
-1. **URL**: `https://spicy-tales.vercel.app`
+1. **URL**: `https://choose-the-heat.vercel.app`
 2. **Username**: `tester` (or any username)
 3. **Password**: The value you set for `SITE_PASSWORD`
 

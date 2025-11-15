@@ -1,6 +1,6 @@
 # Coding Practices & Standards
 
-This document outlines the coding practices, patterns, and standards for the Spicy Tales project. All developers and AI agents should follow these guidelines to maintain consistency and code quality.
+This document outlines the coding practices, patterns, and standards for the Choose the Heat project. All developers and AI agents should follow these guidelines to maintain consistency and code quality.
 
 ## Table of Contents
 

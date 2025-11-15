@@ -1,8 +1,8 @@
-# Spicy Tales - AI-Enhanced Romance Novel App
+# Choose the Heat - AI-Enhanced Romance Novel App
 
 Full-stack TypeScript app for AI-generated interactive romance novels. Users make choices that influence the narrative, with all preferences and progress saved.
 
-**Repo**: [github.com/Azhrak/spicy-tales](https://github.com/Azhrak/spicy-tales) | **Status**: MVP Complete! 🎉
+**Repo**: [github.com/Azhrak/choose-the-heat](https://github.com/Azhrak/choose-the-heat) | **Status**: MVP Complete! 🎉
 
 ## Features
 
@@ -65,8 +65,8 @@ See [DOCKER.md](DOCKER.md) for full Docker setup.
 
 ```bash
 # 1. Install & setup
-git clone https://github.com/Azhrak/spicy-tales.git
-cd spicy-tales
+git clone https://github.com/Azhrak/choose-the-heat.git
+cd choose-the-heat
 pnpm install
 
 # 2. Create database
@@ -160,8 +160,8 @@ src/
 
 ### Docker
 ```bash
-docker build -t spicy-tales .
-docker run -p 3000:3000 --env-file .env spicy-tales
+docker build -t choose-the-heat .
+docker run -p 3000:3000 --env-file .env choose-the-heat
 ```
 
 ## Development Notes

@@ -22,7 +22,7 @@ export const Route = createRootRoute({
 				content: "width=device-width, initial-scale=1",
 			},
 			{
-				title: "Spicy Tales - AI-Generated Romance Novels",
+				title: "Choose the Heat - AI-Generated Romance Novels",
 			},
 			{
 				name: "description",
@@ -35,7 +35,7 @@ export const Route = createRootRoute({
 			{
 				rel: "icon",
 				type: "image/png",
-				href: "/spicy-tales-favicon-64x64.png",
+				href: "/favicon-64x64.png",
 			},
 		],
 	}),
@@ -89,7 +89,7 @@ function NotFoundComponent() {
 							This story page doesn't exist yet.
 						</p>
 						<Link
-							to="/"
+							to="/browse"
 							className="inline-block px-6 py-3 bg-romance-600 text-white rounded-lg font-medium hover:bg-romance-700 transition-colors"
 						>
 							Go Home

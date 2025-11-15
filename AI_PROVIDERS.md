@@ -1,6 +1,6 @@
 # AI Provider Configuration Guide
 
-Spicy Tales supports multiple AI providers through the Vercel AI SDK. You can easily switch between providers or use different models based on your needs.
+Choose the Heat supports multiple AI providers through the Vercel AI SDK. You can easily switch between providers or use different models based on your needs.
 
 ## Supported Providers
 

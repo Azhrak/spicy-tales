@@ -75,7 +75,7 @@ function PrivacyPolicy() {
 								3. AI-Generated Content
 							</h2>
 							<p className="text-slate-700 mb-4">
-								Spicy Tales uses artificial intelligence to generate
+								Choose the Heat uses artificial intelligence to generate
 								personalized romance novels. The content generated is based on:
 							</p>
 							<ul className="list-disc list-inside text-slate-700 space-y-2 ml-4">
@@ -177,7 +177,7 @@ function PrivacyPolicy() {
 								our data practices, please contact us at:
 							</p>
 							<p className="text-slate-700">
-								<strong>Email:</strong> privacy@spicytales.com
+								<strong>Email:</strong> privacy@choosetheheat.com
 							</p>
 						</section>
 					</div>
