@@ -33,7 +33,7 @@ export function StoryCard({
 	const displayTitle = storyTitle || templateTitle;
 
 	return (
-		<div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+		<div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow h-full flex flex-col">
 			{/* Cover */}
 			<Link to="/story/$id/read" params={{ id }}>
 				<div
@@ -44,7 +44,7 @@ export function StoryCard({
 			</Link>
 
 			{/* Content */}
-			<div className="p-6 space-y-3">
+			<div className="p-6 space-y-3 flex flex-col flex-1">
 				<div className="space-y-1">
 					<h3 className="text-xl font-bold text-slate-900">{displayTitle}</h3>
 					<p className="text-xs text-slate-500">
@@ -67,7 +67,7 @@ export function StoryCard({
 				/>
 
 				{/* Actions */}
-				<div className="flex gap-2">
+				<div className="flex gap-2 mt-auto">
 					<Link
 						to="/story/$id/read"
 						params={{ id }}

@@ -20,7 +20,7 @@ export function NovelCard({
 	coverGradient,
 }: NovelCardProps) {
 	return (
-		<div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+		<div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 h-full flex flex-col">
 			{/* Gradient Cover */}
 			<Link to="/template/$id" params={{ id }}>
 				<div
@@ -34,7 +34,7 @@ export function NovelCard({
 			</Link>
 
 			{/* Content */}
-			<div className="p-6 space-y-4">
+			<div className="p-6 space-y-4 flex flex-col flex-1">
 				<div className="space-y-3">
 					<h3 className="text-2xl font-bold text-slate-900">{title}</h3>
 					<p className="text-slate-600 line-clamp-3">{description}</p>
@@ -61,7 +61,7 @@ export function NovelCard({
 				</div>
 
 				{/* Actions */}
-				<div className="flex gap-3">
+				<div className="flex gap-3 mt-auto">
 					<Link
 						to="/template/$id"
 						params={{ id }}
