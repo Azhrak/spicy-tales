@@ -1,10 +1,11 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { Heart } from "lucide-react";
+import { Heart, Home, LogOut } from "lucide-react";
 import { useState } from "react";
 import { Button } from "~/components/Button";
 import { ErrorMessage } from "~/components/ErrorMessage";
 import { FormInput } from "~/components/FormInput";
 import { ApiError, api } from "~/lib/api/client";
+import { useCurrentUserQuery } from "~/hooks/useCurrentUserQuery";
 
 export const Route = createFileRoute("/auth/login")({
 	component: LoginPage,
@@ -12,10 +13,12 @@ export const Route = createFileRoute("/auth/login")({
 
 function LoginPage() {
 	const navigate = useNavigate();
+	const { data: currentUser } = useCurrentUserQuery();
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [error, setError] = useState("");
 	const [loading, setLoading] = useState(false);
+	const [logoutLoading, setLogoutLoading] = useState(false);
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
@@ -47,6 +50,17 @@ function LoginPage() {
 		window.location.href = "/api/auth/google";
 	};
 
+	const handleLogout = async () => {
+		setLogoutLoading(true);
+		try {
+			await api.post("/api/auth/logout", {});
+			window.location.href = "/";
+		} catch (err) {
+			console.error("Logout failed:", err);
+			setLogoutLoading(false);
+		}
+	};
+
 	return (
 		<div className="min-h-screen bg-linear-to-br from-romance-50 via-white to-romance-100 flex items-center justify-center px-4">
 			<div className="max-w-md w-full">
@@ -58,6 +72,33 @@ function LoginPage() {
 					<h1 className="text-3xl font-bold text-slate-900">Welcome Back</h1>
 					<p className="text-slate-600 mt-2">Sign in to continue your story</p>
 				</div>
+
+				{/* Already Logged In Notice */}
+				{currentUser && (
+					<div className="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+						<p className="text-sm text-blue-900 mb-3">
+							You are already logged in as <strong>{currentUser.name || currentUser.email}</strong>
+						</p>
+						<div className="flex gap-2">
+							<Link
+								to="/"
+								className="flex-1 px-3 py-2 text-sm bg-white border border-blue-300 text-blue-700 rounded-md hover:bg-blue-50 transition-colors flex items-center justify-center gap-2"
+							>
+								<Home className="w-4 h-4" />
+								Go Home
+							</Link>
+							<button
+								type="button"
+								onClick={handleLogout}
+								disabled={logoutLoading}
+								className="flex-1 px-3 py-2 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
+							>
+								<LogOut className="w-4 h-4" />
+								{logoutLoading ? "Logging out..." : "Logout"}
+							</button>
+						</div>
+					</div>
+				)}
 
 				{/* Error Message */}
 				{error && <ErrorMessage message={error} className="mb-4" />}

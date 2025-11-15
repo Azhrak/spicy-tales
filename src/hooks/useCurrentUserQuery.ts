@@ -4,6 +4,8 @@ import type { UserRole } from "~/lib/db/types";
 
 export interface CurrentUser {
 	id: string;
+	email: string;
+	name: string | null;
 	role: UserRole;
 }
 
