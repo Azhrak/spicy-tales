@@ -10,6 +10,7 @@ Choose the Heat supports multiple AI providers through the Vercel AI SDK. You ca
 | **Google Gemini** | Yes | Cost-effective, fast | $0.001-0.01 |
 | **Anthropic Claude** | No | Creative, nuanced writing | $0.015-0.075 |
 | **Mistral AI** | No | European option, multilingual | $0.002-0.02 |
+| **Grok (xAI)** | No | Fast reasoning, real-time data | Varies by model |
 
 ---
 
@@ -20,7 +21,7 @@ Choose the Heat supports multiple AI providers through the Vercel AI SDK. You ca
 Set the `AI_PROVIDER` environment variable in your `.env` file:
 
 ```env
-AI_PROVIDER=openai    # or: google, anthropic, mistral
+AI_PROVIDER=openai    # or: google, anthropic, mistral, grok
 ```
 
 ### 2. Get API Keys
@@ -138,6 +139,34 @@ MISTRAL_MODEL=mistral-large-latest
 - `mistral-small-latest` - Cost-effective ($1/1M input, $3/1M output)
 
 **Pricing:** ~$0.002-0.02 per scene
+
+---
+
+### Grok (xAI)
+
+**Best for:** Fast reasoning and real-time information access
+
+**Get API Key:**
+1. Visit https://console.x.ai/
+2. Sign up or log in with your X/Twitter account
+3. Navigate to API Keys section
+4. Create new API key
+5. Copy the key
+
+**Configuration:**
+```env
+AI_PROVIDER=grok
+GROK_API_KEY=your-grok-api-key-here
+GROK_MODEL=grok-beta
+```
+
+**Recommended Models:**
+- `grok-beta` - Latest model with strong reasoning capabilities
+- `grok-vision-beta` - Vision-enabled model (if/when needed)
+
+**Pricing:** Check https://x.ai/api for current pricing
+
+**Note:** Grok uses an OpenAI-compatible API, so integration is seamless.
 
 ---
 
@@ -330,6 +359,8 @@ try {
 | `ANTHROPIC_MODEL` | No | `claude-3-5-sonnet-20241022` | Claude model name |
 | `MISTRAL_API_KEY` | If using Mistral | - | Mistral API key |
 | `MISTRAL_MODEL` | No | `mistral-large-latest` | Mistral model name |
+| `GROK_API_KEY` | If using Grok | - | Grok/xAI API key |
+| `GROK_MODEL` | No | `grok-beta` | Grok model name |
 
 ---
 
@@ -340,6 +371,7 @@ try {
 - **Google AI Docs:** https://ai.google.dev/docs
 - **Anthropic Docs:** https://docs.anthropic.com/
 - **Mistral Docs:** https://docs.mistral.ai/
+- **xAI (Grok) Docs:** https://docs.x.ai/
 
 ---
 

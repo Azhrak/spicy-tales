@@ -7,7 +7,7 @@ import { generateText } from "ai";
 /**
  * Supported AI providers
  */
-export type AIProvider = "openai" | "google" | "anthropic" | "mistral";
+export type AIProvider = "openai" | "google" | "anthropic" | "mistral" | "grok";
 
 /**
  * AI provider configuration
@@ -27,10 +27,11 @@ function getAIConfig(): AIConfig {
 
 	// Default models for each provider
 	const defaultModels: Record<AIProvider, string> = {
-		openai: process.env.OPENAI_MODEL || "gpt-4-turbo",
-		google: process.env.GOOGLE_MODEL || "gemini-1.5-pro",
+		openai: process.env.OPENAI_MODEL || "gpt-4o-mini",
+		google: process.env.GOOGLE_MODEL || "gemini-2.5-flash-lite",
 		anthropic: process.env.ANTHROPIC_MODEL || "claude-3-5-sonnet-20241022",
-		mistral: process.env.MISTRAL_MODEL || "mistral-large-latest",
+		mistral: process.env.MISTRAL_MODEL || "mistral-medium-2508",
+		grok: process.env.GROK_MODEL || "grok-4-fast-reasoning",
 	};
 
 	return {
@@ -89,6 +90,18 @@ function getAIModel(modelOverride?: string) {
 			return mistral(modelName);
 		}
 
+		case "grok": {
+			if (!process.env.GROK_API_KEY) {
+				throw new Error("GROK_API_KEY environment variable is not set");
+			}
+			// Grok uses OpenAI-compatible API
+			const grok = createOpenAI({
+				apiKey: process.env.GROK_API_KEY,
+				baseURL: "https://api.x.ai/v1",
+			});
+			return grok(modelName);
+		}
+
 		default:
 			throw new Error(`Unsupported AI provider: ${config.provider}`);
 	}
@@ -112,14 +125,14 @@ export function getCurrentProvider(): AIProvider {
  * Generate text completion using Vercel AI SDK
  *
  * The AI SDK provides:
- * - Multi-provider support (OpenAI, Google, Anthropic, Mistral)
+ * - Multi-provider support (OpenAI, Google, Anthropic, Mistral, Grok)
  * - Better streaming support
  * - Unified interface across providers
  * - Built-in error handling
  * - Token usage tracking
  *
  * Configure provider via AI_PROVIDER env var (default: openai)
- * Configure model via provider-specific env var (e.g., OPENAI_MODEL)
+ * Configure model via provider-specific env var (e.g., OPENAI_MODEL, GROK_MODEL)
  */
 export async function generateCompletion(
 	systemPrompt: string,

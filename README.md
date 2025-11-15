@@ -27,11 +27,11 @@ Full-stack TypeScript app for AI-generated interactive romance novels. Users mak
 
 ## Tech Stack
 
-**Frontend**: TanStack Start, React, Tailwind CSS  
-**Backend**: Node.js, Vite  
-**Database**: PostgreSQL + Kysely  
-**Auth**: Arctic (OAuth), Argon2 (passwords)  
-**AI**: Vercel AI SDK (OpenAI, Gemini, Claude, Mistral)  
+**Frontend**: TanStack Start, React, Tailwind CSS
+**Backend**: Node.js, Vite
+**Database**: PostgreSQL + Kysely
+**Auth**: Arctic (OAuth), Argon2 (passwords)
+**AI**: Vercel AI SDK (OpenAI, Gemini, Claude, Mistral, Grok)
 **State**: TanStack Query
 
 ## Prerequisites
@@ -39,7 +39,7 @@ Full-stack TypeScript app for AI-generated interactive romance novels. Users mak
 - Node.js 24+
 - PostgreSQL 14+
 - pnpm 9+ (or npm)
-- AI Provider API key: OpenAI, Google Gemini, Anthropic Claude, or Mistral
+- AI Provider API key: OpenAI, Google Gemini, Anthropic Claude, Mistral, or Grok
 - Google OAuth credentials (optional)
 
 See [AI_PROVIDERS.md](AI_PROVIDERS.md) for detailed configuration.
@@ -107,6 +107,8 @@ ANTHROPIC_API_KEY=your-key
 GOOGLE_API_KEY=your-key
 # OR
 MISTRAL_API_KEY=your-key
+# OR
+GROK_API_KEY=your-key
 
 # Session (generate: openssl rand -base64 32)
 SESSION_SECRET=your-random-secret
