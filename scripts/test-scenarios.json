@@ -1,0 +1,254 @@
+{
+  "scenarios": [
+    {
+      "id": "slow-burn-contemporary",
+      "name": "Slow Burn Contemporary Romance",
+      "description": "Classic slow-burn with moderate spice, tests pacing and tension building",
+      "storyPreferences": {
+        "genres": ["contemporary romance"],
+        "tropes": ["enemies to lovers", "forced proximity"],
+        "spiceLevel": 3,
+        "pacing": "slow-burn",
+        "sceneLength": "short",
+        "protagonistTraits": ["independent", "guarded", "witty"],
+        "settingPreferences": ["urban", "workplace"]
+      },
+      "templateTitle": "Office Rivals Test",
+      "estimatedScenes": 4,
+      "expectedBehavior": {
+        "relationshipProgression": "gradual",
+        "tensionBuilding": "steady",
+        "spiceEscalation": "delayed"
+      }
+    },
+    {
+      "id": "fast-paced-high-spice",
+      "name": "Fast-Paced High Spice",
+      "description": "Rapid romance with explicit content, tests instruction following for pacing and heat",
+      "storyPreferences": {
+        "genres": ["contemporary romance", "erotic romance"],
+        "tropes": ["instant attraction", "one night stand"],
+        "spiceLevel": 5,
+        "pacing": "fast-paced",
+        "sceneLength": "short",
+        "protagonistTraits": ["confident", "passionate"],
+        "settingPreferences": ["upscale hotel", "penthouse"]
+      },
+      "templateTitle": "Passionate Encounter Test",
+      "estimatedScenes": 4,
+      "expectedBehavior": {
+        "relationshipProgression": "rapid",
+        "tensionBuilding": "immediate",
+        "spiceEscalation": "early"
+      }
+    },
+    {
+      "id": "clean-sweet-romance",
+      "name": "Clean Sweet Romance",
+      "description": "Low spice level, tests restraint and emotional focus",
+      "storyPreferences": {
+        "genres": ["contemporary romance"],
+        "tropes": ["friends to lovers", "second chance"],
+        "spiceLevel": 1,
+        "pacing": "slow-burn",
+        "sceneLength": "short",
+        "protagonistTraits": ["kind", "thoughtful", "cautious"],
+        "settingPreferences": ["small town", "coffee shop"]
+      },
+      "templateTitle": "Sweet Reunion Test",
+      "estimatedScenes": 4,
+      "expectedBehavior": {
+        "relationshipProgression": "gentle",
+        "tensionBuilding": "emotional",
+        "spiceEscalation": "minimal"
+      }
+    },
+    {
+      "id": "fantasy-romance",
+      "name": "Fantasy Romance with World-Building",
+      "description": "Fantasy setting, tests setting consistency and creative world-building",
+      "storyPreferences": {
+        "genres": ["fantasy romance"],
+        "tropes": ["fated mates", "magic bond"],
+        "spiceLevel": 4,
+        "pacing": "fast-paced",
+        "sceneLength": "short",
+        "protagonistTraits": ["powerful", "mysterious", "brave"],
+        "settingPreferences": ["magical realm", "enchanted forest"]
+      },
+      "templateTitle": "Fated Bond Test",
+      "estimatedScenes": 4,
+      "expectedBehavior": {
+        "relationshipProgression": "supernatural",
+        "tensionBuilding": "mystical",
+        "spiceEscalation": "magical"
+      }
+    },
+    {
+      "id": "paranormal-shifter",
+      "name": "Paranormal Shifter Romance",
+      "description": "Werewolf/shifter romance, tests handling of non-human characters",
+      "storyPreferences": {
+        "genres": ["paranormal romance"],
+        "tropes": ["alpha male", "fated mates", "pack dynamics"],
+        "spiceLevel": 4,
+        "pacing": "fast-paced",
+        "sceneLength": "short",
+        "protagonistTraits": ["fierce", "protective", "instinctual"],
+        "settingPreferences": ["wilderness", "pack territory"]
+      },
+      "templateTitle": "Alpha's Claim Test",
+      "estimatedScenes": 4,
+      "expectedBehavior": {
+        "relationshipProgression": "primal",
+        "tensionBuilding": "animalistic",
+        "spiceEscalation": "instinctive"
+      }
+    },
+    {
+      "id": "multiple-tropes",
+      "name": "Multiple Tropes Challenge",
+      "description": "Tests ability to weave multiple tropes together coherently",
+      "storyPreferences": {
+        "genres": ["contemporary romance"],
+        "tropes": ["fake relationship", "forced proximity", "only one bed", "workplace romance"],
+        "spiceLevel": 3,
+        "pacing": "fast-paced",
+        "sceneLength": "short",
+        "protagonistTraits": ["organized", "ambitious", "awkward"],
+        "settingPreferences": ["corporate retreat", "shared hotel room"]
+      },
+      "templateTitle": "Trope Stack Test",
+      "estimatedScenes": 4,
+      "expectedBehavior": {
+        "relationshipProgression": "complex",
+        "tensionBuilding": "layered",
+        "spiceEscalation": "situational"
+      }
+    },
+    {
+      "id": "pov-consistency",
+      "name": "POV Consistency Test",
+      "description": "Tests character POV tracking and consistency across scenes",
+      "storyPreferences": {
+        "genres": ["contemporary romance"],
+        "tropes": ["enemies to lovers"],
+        "spiceLevel": 2,
+        "pacing": "slow-burn",
+        "sceneLength": "short",
+        "protagonistTraits": ["stubborn", "intelligent"],
+        "settingPreferences": ["university", "library"]
+      },
+      "templateTitle": "Academic Rivals Test",
+      "estimatedScenes": 4,
+      "expectedBehavior": {
+        "relationshipProgression": "intellectual",
+        "tensionBuilding": "verbal",
+        "povTracking": "strict"
+      }
+    },
+    {
+      "id": "setting-changes",
+      "name": "Dynamic Setting Changes",
+      "description": "Tests handling of location changes and setting continuity",
+      "storyPreferences": {
+        "genres": ["contemporary romance"],
+        "tropes": ["road trip", "opposites attract"],
+        "spiceLevel": 3,
+        "pacing": "fast-paced",
+        "sceneLength": "short",
+        "protagonistTraits": ["adventurous", "spontaneous"],
+        "settingPreferences": ["various locations", "travel"]
+      },
+      "templateTitle": "Journey Together Test",
+      "estimatedScenes": 4,
+      "expectedBehavior": {
+        "relationshipProgression": "adventure-driven",
+        "tensionBuilding": "proximity",
+        "settingTracking": "dynamic"
+      }
+    },
+    {
+      "id": "character-heavy",
+      "name": "Multiple Characters Test",
+      "description": "Tests tracking of multiple named characters and their relationships",
+      "storyPreferences": {
+        "genres": ["contemporary romance"],
+        "tropes": ["brother's best friend", "family interference"],
+        "spiceLevel": 3,
+        "pacing": "slow-burn",
+        "sceneLength": "short",
+        "protagonistTraits": ["loyal", "conflicted"],
+        "settingPreferences": ["family home", "neighborhood"]
+      },
+      "templateTitle": "Family Dynamics Test",
+      "estimatedScenes": 4,
+      "expectedBehavior": {
+        "relationshipProgression": "complicated",
+        "tensionBuilding": "social",
+        "characterTracking": "multiple"
+      }
+    },
+    {
+      "id": "emotional-depth",
+      "name": "Emotional Depth Focus",
+      "description": "Tests handling of complex emotions and internal conflict",
+      "storyPreferences": {
+        "genres": ["contemporary romance"],
+        "tropes": ["second chance", "healing"],
+        "spiceLevel": 2,
+        "pacing": "slow-burn",
+        "sceneLength": "short",
+        "protagonistTraits": ["wounded", "cautious", "empathetic"],
+        "settingPreferences": ["quiet spaces", "meaningful locations"]
+      },
+      "templateTitle": "Second Chances Test",
+      "estimatedScenes": 4,
+      "expectedBehavior": {
+        "relationshipProgression": "healing",
+        "tensionBuilding": "emotional",
+        "emotionalDepth": "high"
+      }
+    },
+    {
+      "id": "varied-scene-length",
+      "name": "Scene Length Compliance",
+      "description": "Tests adherence to word count targets",
+      "storyPreferences": {
+        "genres": ["contemporary romance"],
+        "tropes": ["meet cute", "opposites attract"],
+        "spiceLevel": 2,
+        "pacing": "fast-paced",
+        "sceneLength": "short",
+        "protagonistTraits": ["outgoing", "creative"],
+        "settingPreferences": ["art gallery", "cafe"]
+      },
+      "templateTitle": "Length Test",
+      "estimatedScenes": 4,
+      "expectedBehavior": {
+        "relationshipProgression": "playful",
+        "tensionBuilding": "light",
+        "lengthCompliance": "strict"
+      }
+    },
+    {
+      "id": "minimal-guidance",
+      "name": "Minimal Guidance Test",
+      "description": "Minimal preferences to test creative interpretation",
+      "storyPreferences": {
+        "genres": ["contemporary romance"],
+        "tropes": ["opposites attract"],
+        "spiceLevel": 3,
+        "pacing": "slow-burn",
+        "sceneLength": "short"
+      },
+      "templateTitle": "Open Interpretation Test",
+      "estimatedScenes": 4,
+      "expectedBehavior": {
+        "relationshipProgression": "creative",
+        "tensionBuilding": "varied",
+        "creativity": "high"
+      }
+    }
+  ]
+}

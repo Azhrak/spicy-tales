@@ -19,7 +19,11 @@
     "db:codegen": "kysely-codegen --out-file=src/lib/db/types.ts",
     "db:seed": "tsx --env-file=.env src/lib/db/seed.ts",
     "cleanup:audit-logs": "tsx src/lib/jobs/cleanup-audit-logs.ts",
-    "test": "vitest"
+    "test": "vitest",
+    "test:prompt": "tsx --env-file=.env scripts/run-prompt-test.ts",
+    "test:prompt:list-scenarios": "tsx scripts/run-prompt-test.ts --list-scenarios",
+    "test:prompt:list-variations": "tsx scripts/run-prompt-test.ts --list-variations",
+    "test:compare": "tsx scripts/compare-tests.ts"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^1.0.0",
