@@ -87,18 +87,17 @@ function SignupPage() {
 		<div className="min-h-screen bg-linear-to-br from-romance-50 via-white to-romance-100 flex items-center justify-center px-4 py-8">
 			<div className="max-w-md w-full">
 				{/* Logo */}
-				<div className="text-center mb-8">
-					<div className="flex justify-center mb-4">
+				<div className="text-center mb-8 space-y-4">
+					<div className="flex justify-center">
 						<Heart className="w-12 h-12 text-romance-600" fill="currentColor" />
 					</div>
-					<Heading level="h1" className="mb-2">
-						Create Account
-					</Heading>
-					<p className="text-slate-600 mt-2">
-						Start your personalized romance journey
-					</p>
-				</div>
-
+					<div className="space-y-2">
+						<Heading level="h1">Create Account</Heading>
+						<p className="text-slate-600">
+							Start your personalized romance journey
+						</p>
+					</div>
+				</div>{" "}
 				{/* Already Logged In Notice */}
 				{currentUser && (
 					<div className="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
@@ -126,10 +125,8 @@ function SignupPage() {
 						</div>
 					</div>
 				)}
-
 				{/* Error Message */}
 				{error && <ErrorMessage message={error} className="mb-4" />}
-
 				{/* Google Sign Up */}
 				<button
 					type="button"
@@ -157,7 +154,6 @@ function SignupPage() {
 					</svg>
 					Continue with Google
 				</button>
-
 				<div className="relative mb-4">
 					<div className="absolute inset-0 flex items-center">
 						<div className="w-full border-t border-slate-300"></div>
@@ -168,7 +164,6 @@ function SignupPage() {
 						</span>
 					</div>
 				</div>
-
 				{/* Email/Password Form */}
 				<form onSubmit={handleSubmit} className="space-y-4">
 					<FormInput
@@ -208,7 +203,6 @@ function SignupPage() {
 						Create Account
 					</Button>
 				</form>
-
 				{/* Sign In Link */}
 				<p className="mt-6 text-center text-sm text-slate-600">
 					Already have an account?{" "}

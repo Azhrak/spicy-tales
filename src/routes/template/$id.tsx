@@ -73,14 +73,13 @@ function TemplateDetailPage() {
 								/>
 							</div>
 
-							<div className="p-8">
-								<Heading level="h1" size="page" className="mb-4">
+							<div className="p-8 space-y-4">
+								<Heading level="h1" size="page">
 									{template.title}
 								</Heading>
-								<p className="text-lg text-slate-700 mb-6 leading-relaxed">
+								<p className="text-lg text-slate-700 leading-relaxed">
 									{template.description}
-								</p>
-
+								</p>{" "}
 								{/* Tropes */}
 								<div className="mb-6">
 									<Heading
@@ -102,7 +101,6 @@ function TemplateDetailPage() {
 										))}
 									</div>
 								</div>
-
 								{/* Stats */}
 								<div className="flex items-center gap-6 mb-8 text-slate-600">
 									<div className="flex items-center gap-2">
@@ -118,7 +116,6 @@ function TemplateDetailPage() {
 										</span>
 									</div>
 								</div>
-
 								{/* CTA Button */}
 								<Link
 									to="/story/create"
@@ -132,15 +129,16 @@ function TemplateDetailPage() {
 						</div>
 
 						{/* Choice Points Preview */}
-						<div className="bg-white rounded-2xl shadow-xl p-8">
-							<Heading level="h2" size="section" className="mb-6">
-								Key Decision Points
-							</Heading>
-							<p className="text-slate-600 mb-6">
-								Throughout your story, you'll make choices that shape the
-								narrative. Here's a preview of some key moments:
-							</p>
-
+						<div className="bg-white rounded-2xl shadow-xl p-8 space-y-6">
+							<div className="space-y-2">
+								<Heading level="h2" size="section">
+									Key Decision Points
+								</Heading>
+								<p className="text-slate-600">
+									Throughout your story, you'll make choices that shape the
+									narrative. Here's a preview of some key moments:
+								</p>
+							</div>{" "}
 							<div className="space-y-6">
 								{template.choicePoints.map((choice) => (
 									<div
@@ -153,8 +151,8 @@ function TemplateDetailPage() {
 													{choice.scene_number}
 												</span>
 											</div>
-											<div className="flex-1">
-												<Heading level="h3" size="subsection" className="mb-3">
+											<div className="flex-1 space-y-3">
+												<Heading level="h3" size="subsection">
 													{choice.prompt_text}
 												</Heading>
 												<div className="space-y-2">
@@ -178,7 +176,6 @@ function TemplateDetailPage() {
 									</div>
 								))}
 							</div>
-
 							{/* Bottom CTA */}
 							<div className="mt-8 text-center">
 								<Link

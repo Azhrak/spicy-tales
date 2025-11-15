@@ -75,14 +75,16 @@ function ReadingPage() {
 	if (error) {
 		return (
 			<div className="min-h-screen bg-linear-to-br from-rose-50 via-purple-50 to-pink-50 flex items-center justify-center">
-				<div className="max-w-md mx-auto text-center p-8">
-					<div className="text-red-500 text-6xl mb-4">⚠️</div>
-					<Heading level="h1" size="section" className="text-gray-800 mb-2">
-						Oops! Something went wrong
-					</Heading>
-					<p className="text-gray-600 mb-6">
-						{error instanceof Error ? error.message : "Failed to load scene"}
-					</p>
+				<div className="max-w-md mx-auto text-center p-8 space-y-4">
+					<div className="text-red-500 text-6xl">⚠️</div>
+					<div className="space-y-2">
+						<Heading level="h1" size="section" className="text-gray-800">
+							Oops! Something went wrong
+						</Heading>
+						<p className="text-gray-600">
+							{error instanceof Error ? error.message : "Failed to load scene"}
+						</p>
+					</div>
 					<Link
 						to="/library"
 						className="inline-flex items-center gap-2 px-6 py-3 bg-rose-600 text-white rounded-lg hover:bg-rose-700 transition-colors"
@@ -131,19 +133,23 @@ function ReadingPage() {
 						</div>
 					</div>
 					{/* Title */}
-					<Heading level="h1" size="section" className="text-gray-800 mb-3">
-						{story.title}
-					</Heading>{" "}
-					{/* Progress Bar */}
-					<div className="relative h-2 bg-gray-200 rounded-full overflow-hidden">
-						<div
-							className="absolute inset-y-0 left-0 bg-linear-to-r from-rose-500 to-purple-600 transition-all duration-500"
-							style={{ width: `${progress}%` }}
-						/>
+					<div className="space-y-3">
+						<Heading level="h1" size="section" className="text-gray-800">
+							{story.title}
+						</Heading>
+						{/* Progress Bar */}
+						<div>
+							<div className="relative h-2 bg-gray-200 rounded-full overflow-hidden">
+								<div
+									className="absolute inset-y-0 left-0 bg-linear-to-r from-rose-500 to-purple-600 transition-all duration-500"
+									style={{ width: `${progress}%` }}
+								/>
+							</div>
+							<p className="text-xs text-gray-500 mt-1 text-right">
+								{Math.round(progress)}% complete
+							</p>
+						</div>
 					</div>
-					<p className="text-xs text-gray-500 mt-1 text-right">
-						{Math.round(progress)}% complete
-					</p>
 				</div>
 			</header>
 
@@ -254,14 +260,16 @@ function ReadingPage() {
 				)}
 				{/* Story Complete */}
 				{isLastScene && (
-					<div className="bg-linear-to-br from-purple-100 to-rose-100 rounded-xl shadow-lg p-8 text-center">
-						<Sparkles className="w-16 h-16 text-rose-500 mx-auto mb-4" />
-						<Heading level="h2" size="section" className="text-gray-800 mb-2">
-							The End
-						</Heading>
-						<p className="text-gray-600 mb-6">
-							You've completed this story! Thank you for reading.
-						</p>
+					<div className="bg-linear-to-br from-purple-100 to-rose-100 rounded-xl shadow-lg p-8 text-center space-y-4">
+						<Sparkles className="w-16 h-16 text-rose-500 mx-auto" />
+						<div className="space-y-2">
+							<Heading level="h2" size="section" className="text-gray-800">
+								The End
+							</Heading>
+							<p className="text-gray-600">
+								You've completed this story! Thank you for reading.
+							</p>
+						</div>
 						<Link
 							to="/library"
 							className="inline-flex items-center gap-2 px-6 py-3 bg-rose-600 text-white rounded-lg hover:bg-rose-700 transition-colors"

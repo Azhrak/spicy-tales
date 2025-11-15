@@ -44,8 +44,8 @@ function BrowsePage() {
 
 			<PageContainer maxWidth="full">
 				{/* Welcome Section */}
-				<div className="text-center mb-8">
-					<Heading level="h1" size="page" className="mb-4">
+				<div className="text-center mb-8 space-y-4">
+					<Heading level="h1" size="page">
 						Choose Your Romance Adventure
 					</Heading>
 					<p className="text-lg text-slate-600">
@@ -68,8 +68,8 @@ function BrowsePage() {
 					</div>
 				</div>{" "}
 				{/* Trope Filters */}
-				<div className="mb-8">
-					<Heading level="h2" size="label" className="text-slate-700 mb-3">
+				<div className="mb-8 space-y-3">
+					<Heading level="h2" size="label" className="text-slate-700">
 						Filter by Tropes:
 					</Heading>
 					<div className="flex flex-wrap gap-2">

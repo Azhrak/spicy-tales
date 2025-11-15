@@ -144,10 +144,8 @@ function PreferencesPage() {
 						</Link>
 						<div className="flex items-center gap-4">
 							<Settings className="w-10 h-10 text-romance-500" />
-							<div>
-								<Heading level="h1" className="mb-1">
-									Novel Generation Preferences
-								</Heading>
+							<div className="space-y-1">
+								<Heading level="h1">Novel Generation Preferences</Heading>
 								<p className="text-slate-600">
 									Customize how AI generates stories for you
 								</p>

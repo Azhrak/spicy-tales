@@ -90,11 +90,13 @@ function StoryInfoPage() {
 					</div>
 
 					{/* Title & Metadata */}
-					<div className="p-8">
-						<Heading level="h1" size="page" className="mb-2">
-							{story.story_title || story.template.title}
-						</Heading>
-						<p className="text-slate-600 mb-4">{story.template.description}</p>
+					<div className="p-8 space-y-4">
+						<div className="space-y-2">
+							<Heading level="h1" size="page">
+								{story.story_title || story.template.title}
+							</Heading>
+							<p className="text-slate-600">{story.template.description}</p>
+						</div>
 
 						<div className="flex items-center gap-6 text-sm text-slate-500 mb-6">
 							<div className="flex items-center gap-2">
@@ -144,8 +146,8 @@ function StoryInfoPage() {
 
 				{/* Story Preferences */}
 				{preferences && (
-					<div className="bg-white rounded-2xl shadow-lg p-8">
-						<Heading level="h2" size="section" className="mb-6">
+					<div className="bg-white rounded-2xl shadow-lg p-8 space-y-6">
+						<Heading level="h2" size="section">
 							Story Settings
 						</Heading>
 

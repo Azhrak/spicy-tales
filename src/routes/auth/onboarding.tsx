@@ -121,17 +121,19 @@ function OnboardingPage() {
 			<div className="container mx-auto px-4 py-12">
 				<div className="max-w-3xl mx-auto">
 					{/* Header */}
-					<div className="text-center mb-8">
+					<div className="text-center mb-8 space-y-4">
 						<Heart
-							className="w-16 h-16 text-romance-500 mx-auto mb-4"
+							className="w-16 h-16 text-romance-500 mx-auto"
 							fill="currentColor"
 						/>
-						<Heading level="h1" size="page" className="mb-2">
-							Let's Personalize Your Experience
-						</Heading>
-						<p className="text-slate-600">
-							Tell us what you love, and we'll craft stories just for you
-						</p>
+						<div className="space-y-2">
+							<Heading level="h1" size="page">
+								Let's Personalize Your Experience
+							</Heading>
+							<p className="text-slate-600">
+								Tell us what you love, and we'll craft stories just for you
+							</p>
+						</div>
 					</div>{" "}
 					{/* Progress Stepper */}
 					<div className="flex items-center justify-center mb-12">
@@ -167,16 +169,14 @@ function OnboardingPage() {
 					{/* Step Content */}
 					<div className="bg-white rounded-2xl shadow-lg p-8 mb-6">
 						{step === 1 && (
-							<div>
-								<div className="flex items-center mb-6">
+							<div className="space-y-6">
+								<div className="flex items-center">
 									<BookOpen className="w-6 h-6 text-romance-500 mr-2" />
 									<Heading level="h2" size="section">
 										Choose Your Genres
 									</Heading>
 								</div>
-								<p className="text-slate-600 mb-6">
-									Select all that interest you
-								</p>
+								<p className="text-slate-600">Select all that interest you</p>
 								<div className="grid grid-cols-2 md:grid-cols-3 gap-4">
 									{GENRES.map((genre) => (
 										<button
@@ -197,14 +197,14 @@ function OnboardingPage() {
 						)}
 
 						{step === 2 && (
-							<div>
-								<div className="flex items-center mb-6">
+							<div className="space-y-6">
+								<div className="flex items-center">
 									<Heart className="w-6 h-6 text-romance-500 mr-2" />
 									<Heading level="h2" size="section">
 										Pick Your Tropes
 									</Heading>
 								</div>
-								<p className="text-slate-600 mb-6">
+								<p className="text-slate-600">
 									What romance tropes make your heart race?
 								</p>
 								<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -235,8 +235,8 @@ function OnboardingPage() {
 									</Heading>
 								</div>{" "}
 								{/* Spice Level */}
-								<div className="mb-8">
-									<Heading level="h3" size="subsection" className="mb-4">
+								<div className="mb-8 space-y-4">
+									<Heading level="h3" size="subsection">
 										Spice Level
 									</Heading>
 									<div className="space-y-3">
@@ -288,8 +288,8 @@ function OnboardingPage() {
 									</div>
 								</div>
 								{/* Pacing */}
-								<div>
-									<Heading level="h3" size="subsection" className="mb-4">
+								<div className="space-y-4">
+									<Heading level="h3" size="subsection">
 										Relationship Pacing
 									</Heading>
 									<div className="space-y-3">
@@ -310,8 +310,8 @@ function OnboardingPage() {
 									</div>
 								</div>
 								{/* Scene Length */}
-								<div>
-									<Heading level="h3" size="subsection" className="mb-4">
+								<div className="space-y-4">
+									<Heading level="h3" size="subsection">
 										Scene Length
 									</Heading>
 									<div className="space-y-3">

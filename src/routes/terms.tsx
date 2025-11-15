@@ -22,8 +22,8 @@ function TermsOfService() {
 					</Link>
 
 					{/* Header */}
-					<div className="bg-white rounded-lg shadow-sm p-8 mb-8">
-						<Heading level="h1" size="page" className="mb-4">
+					<div className="bg-white rounded-lg shadow-sm p-8 mb-8 space-y-4">
+						<Heading level="h1" size="page">
 							Terms of Service
 						</Heading>
 						<p className="text-slate-600">Last updated: November 15, 2025</p>
@@ -31,11 +31,11 @@ function TermsOfService() {
 
 					{/* Content */}
 					<div className="bg-white rounded-lg shadow-sm p-8 space-y-8">
-						<section>
-							<Heading level="h2" size="section" className="mb-4">
+						<section className="space-y-4">
+							<Heading level="h2" size="section">
 								1. Acceptance of Terms
 							</Heading>
-							<p className="text-slate-700 mb-4">
+							<p className="text-slate-700">
 								By accessing or using Choose the Heat, you agree to be bound by
 								these Terms of Service and all applicable laws and regulations.
 								If you do not agree with any of these terms, you are prohibited
@@ -43,11 +43,11 @@ function TermsOfService() {
 							</p>
 						</section>
 
-						<section>
-							<Heading level="h2" size="section" className="mb-4">
+						<section className="space-y-4">
+							<Heading level="h2" size="section">
 								2. Age Requirement
 							</Heading>
-							<p className="text-slate-700 mb-4">
+							<p className="text-slate-700">
 								You must be at least 18 years old to use Choose the Heat. By
 								using this service, you represent and warrant that you are at
 								least 18 years of age. The content generated may contain mature
@@ -56,11 +56,11 @@ function TermsOfService() {
 							</p>
 						</section>
 
-						<section>
-							<Heading level="h2" size="section" className="mb-4">
+						<section className="space-y-4">
+							<Heading level="h2" size="section">
 								3. User Accounts
 							</Heading>
-							<p className="text-slate-700 mb-4">
+							<p className="text-slate-700">
 								To access certain features of Choose the Heat, you must create
 								an account. You agree to:
 							</p>
@@ -75,11 +75,11 @@ function TermsOfService() {
 							</ul>
 						</section>
 
-						<section>
-							<Heading level="h2" size="section" className="mb-4">
+						<section className="space-y-4">
+							<Heading level="h2" size="section">
 								4. AI-Generated Content
 							</Heading>
-							<p className="text-slate-700 mb-4">
+							<p className="text-slate-700">
 								Choose the Heat uses artificial intelligence to generate romance
 								novels. You acknowledge and agree that:
 							</p>
@@ -105,11 +105,11 @@ function TermsOfService() {
 							</ul>
 						</section>
 
-						<section>
-							<Heading level="h2" size="section" className="mb-4">
+						<section className="space-y-4">
+							<Heading level="h2" size="section">
 								5. Intellectual Property Rights
 							</Heading>
-							<p className="text-slate-700 mb-4">
+							<p className="text-slate-700">
 								The stories generated for you through Choose the Heat are
 								provided for your personal use. You agree that:
 							</p>
@@ -132,11 +132,11 @@ function TermsOfService() {
 							</ul>
 						</section>
 
-						<section>
-							<Heading level="h2" size="section" className="mb-4">
+						<section className="space-y-4">
+							<Heading level="h2" size="section">
 								6. Acceptable Use Policy
 							</Heading>
-							<p className="text-slate-700 mb-4">
+							<p className="text-slate-700">
 								You agree not to use Choose the Heat to:
 							</p>
 							<ul className="list-disc list-inside text-slate-700 space-y-2 ml-4">
@@ -162,11 +162,11 @@ function TermsOfService() {
 							</ul>
 						</section>
 
-						<section>
-							<Heading level="h2" size="section" className="mb-4">
+						<section className="space-y-4">
+							<Heading level="h2" size="section">
 								7. Content Guidelines
 							</Heading>
-							<p className="text-slate-700 mb-4">
+							<p className="text-slate-700">
 								While Choose the Heat allows mature romantic content, we
 								prohibit content that:
 							</p>
@@ -178,11 +178,11 @@ function TermsOfService() {
 							</ul>
 						</section>
 
-						<section>
-							<Heading level="h2" size="section" className="mb-4">
+						<section className="space-y-4">
+							<Heading level="h2" size="section">
 								8. Service Availability
 							</Heading>
-							<p className="text-slate-700 mb-4">
+							<p className="text-slate-700">
 								We strive to provide reliable service but do not guarantee
 								uninterrupted access. We reserve the right to:
 							</p>
@@ -197,11 +197,11 @@ function TermsOfService() {
 							</ul>
 						</section>
 
-						<section>
-							<Heading level="h2" size="section" className="mb-4">
+						<section className="space-y-4">
+							<Heading level="h2" size="section">
 								9. Payments and Subscriptions
 							</Heading>
-							<p className="text-slate-700 mb-4">
+							<p className="text-slate-700">
 								If you purchase a subscription or paid features:
 							</p>
 							<ul className="list-disc list-inside text-slate-700 space-y-2 ml-4">
@@ -215,17 +215,17 @@ function TermsOfService() {
 							</ul>
 						</section>
 
-						<section>
-							<Heading level="h2" size="section" className="mb-4">
+						<section className="space-y-4">
+							<Heading level="h2" size="section">
 								10. Disclaimers and Limitation of Liability
 							</Heading>
-							<p className="text-slate-700 mb-4">
+							<p className="text-slate-700">
 								Choose the Heat is provided "as is" without warranties of any
 								kind. We disclaim all warranties, express or implied, including
 								warranties of merchantability and fitness for a particular
 								purpose.
 							</p>
-							<p className="text-slate-700 mb-4">
+							<p className="text-slate-700">
 								To the fullest extent permitted by law, Choose the Heat shall
 								not be liable for any indirect, incidental, special,
 								consequential, or punitive damages, or any loss of profits or
@@ -233,11 +233,11 @@ function TermsOfService() {
 							</p>
 						</section>
 
-						<section>
-							<Heading level="h2" size="section" className="mb-4">
+						<section className="space-y-4">
+							<Heading level="h2" size="section">
 								11. Indemnification
 							</Heading>
-							<p className="text-slate-700 mb-4">
+							<p className="text-slate-700">
 								You agree to indemnify and hold harmless Choose the Heat, its
 								officers, directors, employees, and agents from any claims,
 								damages, losses, liabilities, and expenses arising from your use
@@ -245,27 +245,27 @@ function TermsOfService() {
 							</p>
 						</section>
 
-						<section>
-							<Heading level="h2" size="section" className="mb-4">
+						<section className="space-y-4">
+							<Heading level="h2" size="section">
 								12. Termination
 							</Heading>
-							<p className="text-slate-700 mb-4">
+							<p className="text-slate-700">
 								We may terminate or suspend your account immediately, without
 								prior notice, for conduct that we believe violates these Terms
 								of Service or is harmful to other users, us, or third parties,
 								or for any other reason.
 							</p>
-							<p className="text-slate-700 mb-4">
+							<p className="text-slate-700">
 								You may terminate your account at any time through your account
 								settings or by contacting us.
 							</p>
 						</section>
 
-						<section>
-							<Heading level="h2" size="section" className="mb-4">
+						<section className="space-y-4">
+							<Heading level="h2" size="section">
 								13. Governing Law
 							</Heading>
-							<p className="text-slate-700 mb-4">
+							<p className="text-slate-700">
 								These Terms shall be governed by and construed in accordance
 								with applicable laws, without regard to conflict of law
 								principles. Any disputes shall be resolved through binding
@@ -273,11 +273,11 @@ function TermsOfService() {
 							</p>
 						</section>
 
-						<section>
-							<Heading level="h2" size="section" className="mb-4">
+						<section className="space-y-4">
+							<Heading level="h2" size="section">
 								14. Changes to Terms
 							</Heading>
-							<p className="text-slate-700 mb-4">
+							<p className="text-slate-700">
 								We reserve the right to modify these Terms at any time. We will
 								provide notice of material changes by posting the updated terms
 								and updating the "Last updated" date. Your continued use after
@@ -285,11 +285,11 @@ function TermsOfService() {
 							</p>
 						</section>
 
-						<section>
-							<Heading level="h2" size="section" className="mb-4">
+						<section className="space-y-4">
+							<Heading level="h2" size="section">
 								15. Contact Information
 							</Heading>
-							<p className="text-slate-700 mb-4">
+							<p className="text-slate-700">
 								If you have questions about these Terms of Service, please
 								contact us at:
 							</p>

@@ -22,8 +22,8 @@ function PrivacyPolicy() {
 					</Link>
 
 					{/* Header */}
-					<div className="bg-white rounded-lg shadow-sm p-8 mb-8">
-						<Heading level="h1" size="page" className="mb-4">
+					<div className="bg-white rounded-lg shadow-sm p-8 mb-8 space-y-4">
+						<Heading level="h1" size="page">
 							Privacy Policy
 						</Heading>
 						<p className="text-slate-600">Last updated: November 15, 2025</p>
@@ -31,8 +31,8 @@ function PrivacyPolicy() {
 
 					{/* Content */}
 					<div className="bg-white rounded-lg shadow-sm p-8 space-y-8">
-						<section>
-							<Heading level="h2" size="section" className="mb-4">
+						<section className="space-y-4">
+							<Heading level="h2" size="section">
 								1. Information We Collect
 							</Heading>
 							<p className="text-slate-700 mb-4">
@@ -53,11 +53,11 @@ function PrivacyPolicy() {
 							</ul>
 						</section>
 
-						<section>
-							<Heading level="h2" size="section" className="mb-4">
+						<section className="space-y-4">
+							<Heading level="h2" size="section">
 								2. How We Use Your Information
 							</Heading>
-							<p className="text-slate-700 mb-4">
+							<p className="text-slate-700">
 								We use the information we collect to:
 							</p>
 							<ul className="list-disc list-inside text-slate-700 space-y-2 ml-4">
@@ -71,8 +71,8 @@ function PrivacyPolicy() {
 							</ul>
 						</section>
 
-						<section>
-							<Heading level="h2" size="section" className="mb-4">
+						<section className="space-y-4">
+							<Heading level="h2" size="section">
 								3. AI-Generated Content
 							</Heading>
 							<p className="text-slate-700 mb-4">
@@ -91,8 +91,8 @@ function PrivacyPolicy() {
 							</p>
 						</section>
 
-						<section>
-							<Heading level="h2" size="section" className="mb-4">
+						<section className="space-y-4">
+							<Heading level="h2" size="section">
 								4. Data Storage and Security
 							</Heading>
 							<p className="text-slate-700 mb-4">
@@ -103,11 +103,11 @@ function PrivacyPolicy() {
 							</p>
 						</section>
 
-						<section>
-							<Heading level="h2" size="section" className="mb-4">
+						<section className="space-y-4">
+							<Heading level="h2" size="section">
 								5. Data Sharing
 							</Heading>
-							<p className="text-slate-700 mb-4">
+							<p className="text-slate-700">
 								We do not sell your personal information. We may share your
 								information only in the following circumstances:
 							</p>
@@ -120,11 +120,11 @@ function PrivacyPolicy() {
 							</ul>
 						</section>
 
-						<section>
-							<Heading level="h2" size="section" className="mb-4">
+						<section className="space-y-4">
+							<Heading level="h2" size="section">
 								6. Your Rights and Choices
 							</Heading>
-							<p className="text-slate-700 mb-4">You have the right to:</p>
+							<p className="text-slate-700">You have the right to:</p>
 							<ul className="list-disc list-inside text-slate-700 space-y-2 ml-4">
 								<li>Access, update, or delete your account information</li>
 								<li>Export your data in a portable format</li>
@@ -134,11 +134,11 @@ function PrivacyPolicy() {
 							</ul>
 						</section>
 
-						<section>
-							<Heading level="h2" size="section" className="mb-4">
+						<section className="space-y-4">
+							<Heading level="h2" size="section">
 								7. Cookies and Tracking
 							</Heading>
-							<p className="text-slate-700 mb-4">
+							<p className="text-slate-700">
 								We use cookies and similar tracking technologies to maintain
 								your session, remember your preferences, and analyze how you use
 								our service. You can control cookies through your browser
@@ -146,11 +146,11 @@ function PrivacyPolicy() {
 							</p>
 						</section>
 
-						<section>
-							<Heading level="h2" size="section" className="mb-4">
+						<section className="space-y-4">
+							<Heading level="h2" size="section">
 								8. Children's Privacy
 							</Heading>
-							<p className="text-slate-700 mb-4">
+							<p className="text-slate-700">
 								Our service is intended for users 18 years of age and older. We
 								do not knowingly collect information from children under 18. If
 								you believe we have collected information from a child, please
@@ -158,22 +158,22 @@ function PrivacyPolicy() {
 							</p>
 						</section>
 
-						<section>
-							<Heading level="h2" size="section" className="mb-4">
+						<section className="space-y-4">
+							<Heading level="h2" size="section">
 								9. Changes to This Policy
 							</Heading>
-							<p className="text-slate-700 mb-4">
+							<p className="text-slate-700">
 								We may update this Privacy Policy from time to time. We will
 								notify you of any material changes by posting the new policy on
 								this page and updating the "Last updated" date.
 							</p>
 						</section>
 
-						<section>
-							<Heading level="h2" size="section" className="mb-4">
+						<section className="space-y-4">
+							<Heading level="h2" size="section">
 								10. Contact Us
 							</Heading>
-							<p className="text-slate-700 mb-4">
+							<p className="text-slate-700">
 								If you have questions or concerns about this Privacy Policy or
 								our data practices, please contact us at:
 							</p>

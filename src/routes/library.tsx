@@ -56,80 +56,82 @@ function LibraryPage() {
 			<Header currentPath="/library" userRole={profileData?.role} />
 
 			<PageContainer maxWidth="2xl">
-				<Heading level="h1" size="page" className="mb-8">
-					My Library
-				</Heading>
-				{/* Tabs */}
-				<div className="flex gap-4 mb-8">
-					<button
-						type="button"
-						onClick={() => setActiveTab("in-progress")}
-						className={`px-6 py-3 rounded-lg font-semibold transition-colors ${
-							activeTab === "in-progress"
-								? "bg-romance-600 text-white"
-								: "bg-white text-slate-700 hover:bg-slate-50"
-						}`}
-					>
-						<div className="flex items-center gap-2">
-							<Clock className="w-5 h-5" />
-							In Progress
+				<div className="space-y-8">
+					<Heading level="h1" size="page">
+						My Library
+					</Heading>
+					{/* Tabs */}
+					<div className="flex gap-4 mb-8">
+						<button
+							type="button"
+							onClick={() => setActiveTab("in-progress")}
+							className={`px-6 py-3 rounded-lg font-semibold transition-colors ${
+								activeTab === "in-progress"
+									? "bg-romance-600 text-white"
+									: "bg-white text-slate-700 hover:bg-slate-50"
+							}`}
+						>
+							<div className="flex items-center gap-2">
+								<Clock className="w-5 h-5" />
+								In Progress
+							</div>
+						</button>
+						<button
+							type="button"
+							onClick={() => setActiveTab("completed")}
+							className={`px-6 py-3 rounded-lg font-semibold transition-colors ${
+								activeTab === "completed"
+									? "bg-romance-600 text-white"
+									: "bg-white text-slate-700 hover:bg-slate-50"
+							}`}
+						>
+							<div className="flex items-center gap-2">
+								<Sparkles className="w-5 h-5" />
+								Completed
+							</div>
+						</button>
+					</div>{" "}
+					{/* Loading State */}
+					{isLoading && <LoadingSpinner />}
+					{/* Error State */}
+					{error && (
+						<ErrorMessage message="Failed to load stories" variant="centered" />
+					)}
+					{/* Empty State */}
+					{!isLoading && !error && stories.length === 0 && (
+						<EmptyState
+							icon={BookOpen}
+							title={
+								activeTab === "in-progress"
+									? "No Stories in Progress"
+									: "No Completed Stories"
+							}
+							description="Start your first romance adventure from the Browse page"
+							action={{ label: "Browse Stories", href: "/browse" }}
+						/>
+					)}
+					{/* Stories Grid */}
+					{!isLoading && !error && stories.length > 0 && (
+						<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+							{stories.map((story) => (
+								<StoryCard
+									key={story.id}
+									id={story.id}
+									storyTitle={story.story_title}
+									templateTitle={story.template.title}
+									templateDescription={story.template.description}
+									coverGradient={story.template.cover_gradient}
+									createdAt={story.created_at}
+									currentScene={story.current_scene}
+									totalScenes={story.template.estimated_scenes}
+									status={activeTab}
+									onDelete={handleDeleteClick}
+									isDeleting={deletingId === story.id}
+								/>
+							))}
 						</div>
-					</button>
-					<button
-						type="button"
-						onClick={() => setActiveTab("completed")}
-						className={`px-6 py-3 rounded-lg font-semibold transition-colors ${
-							activeTab === "completed"
-								? "bg-romance-600 text-white"
-								: "bg-white text-slate-700 hover:bg-slate-50"
-						}`}
-					>
-						<div className="flex items-center gap-2">
-							<Sparkles className="w-5 h-5" />
-							Completed
-						</div>
-					</button>
-				</div>{" "}
-				{/* Loading State */}
-				{isLoading && <LoadingSpinner />}
-				{/* Error State */}
-				{error && (
-					<ErrorMessage message="Failed to load stories" variant="centered" />
-				)}
-				{/* Empty State */}
-				{!isLoading && !error && stories.length === 0 && (
-					<EmptyState
-						icon={BookOpen}
-						title={
-							activeTab === "in-progress"
-								? "No Stories in Progress"
-								: "No Completed Stories"
-						}
-						description="Start your first romance adventure from the Browse page"
-						action={{ label: "Browse Stories", href: "/browse" }}
-					/>
-				)}
-				{/* Stories Grid */}
-				{!isLoading && !error && stories.length > 0 && (
-					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-						{stories.map((story) => (
-							<StoryCard
-								key={story.id}
-								id={story.id}
-								storyTitle={story.story_title}
-								templateTitle={story.template.title}
-								templateDescription={story.template.description}
-								coverGradient={story.template.cover_gradient}
-								createdAt={story.created_at}
-								currentScene={story.current_scene}
-								totalScenes={story.template.estimated_scenes}
-								status={activeTab}
-								onDelete={handleDeleteClick}
-								isDeleting={deletingId === story.id}
-							/>
-						))}
-					</div>
-				)}
+					)}
+				</div>
 			</PageContainer>
 		</div>
 	);

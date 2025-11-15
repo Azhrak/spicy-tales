@@ -402,8 +402,8 @@ function EditTemplatePage() {
 
 					{/* Choice Points Management */}
 					<div className="mt-8 pt-8 border-t border-slate-200">
-						<div className="mb-6">
-							<Heading level="h2" size="subsection" className="mb-2">
+						<div className="mb-6 space-y-2">
+							<Heading level="h2" size="subsection">
 								Choice Points
 							</Heading>
 							<p className="text-slate-600">
@@ -432,8 +432,8 @@ function EditTemplatePage() {
 					</div>
 
 					{/* Status Management */}
-					<div className="mt-8 pt-8 border-t border-slate-200">
-						<Heading level="h2" size="subsection" className="mb-4">
+					<div className="mt-8 pt-8 border-t border-slate-200 space-y-4">
+						<Heading level="h2" size="subsection">
 							Status Management
 						</Heading>
 						<div className="flex flex-wrap gap-3">

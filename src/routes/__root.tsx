@@ -81,20 +81,22 @@ function NotFoundComponent() {
 			</head>
 			<body>
 				<div className="min-h-screen bg-linear-to-br from-romance-50 via-white to-romance-100 flex items-center justify-center p-4">
-					<div className="text-center">
-						<Heart className="w-24 h-24 text-romance-400 mx-auto mb-6" />
-						<Heading level="h1" size="page" className="mb-4">
-							Page Not Found
-						</Heading>
-						<p className="text-lg text-slate-600 mb-8">
-							This story page doesn't exist yet.
-						</p>
-						<Link
-							to="/browse"
-							className="inline-block px-6 py-3 bg-romance-600 text-white rounded-lg font-medium hover:bg-romance-700 transition-colors"
-						>
-							Go Home
-						</Link>
+					<div className="text-center space-y-6">
+						<Heart className="w-24 h-24 text-romance-400 mx-auto" />
+						<div className="space-y-4">
+							<Heading level="h1" size="page">
+								Page Not Found
+							</Heading>
+							<p className="text-lg text-slate-600">
+								This story page doesn't exist yet.
+							</p>
+							<Link
+								to="/browse"
+								className="inline-block px-6 py-3 bg-romance-600 text-white rounded-lg font-medium hover:bg-romance-700 transition-colors"
+							>
+								Go Home
+							</Link>
+						</div>
 					</div>
 				</div>
 				<Scripts />

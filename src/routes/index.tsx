@@ -14,18 +14,18 @@ function Home() {
 			<div className="flex-1 bg-linear-to-br from-romance-50 via-white to-romance-100">
 				<div className="container mx-auto px-4 py-16">
 					{/* Hero Section */}
-					<div className="text-center max-w-4xl mx-auto mb-16">
-						<div className="flex justify-center mb-6">
+					<div className="text-center max-w-4xl mx-auto mb-16 space-y-6">
+						<div className="flex justify-center">
 							<img
 								src="/logo-512x512.png"
 								alt="Choose the Heat Logo"
 								className="w-30 h-30"
 							/>
 						</div>
-						<Heading level="h1" size="hero" className="mb-6">
+						<Heading level="h1" size="hero">
 							Your Story, Your Way
 						</Heading>
-						<p className="text-xl text-slate-600 mb-8">
+						<p className="text-xl text-slate-600">
 							Experience AI-powered romance novels that adapt to your choices.
 							Every decision shapes your perfect love story.
 						</p>
@@ -47,11 +47,11 @@ function Home() {
 
 					{/* Features */}
 					<div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-						<div className="text-center p-6">
-							<div className="flex justify-center mb-4">
+						<div className="text-center p-6 space-y-4">
+							<div className="flex justify-center">
 								<BookOpen className="w-12 h-12 text-romance-500" />
 							</div>
-							<Heading level="h3" size="subsection" className="mb-2">
+							<Heading level="h3" size="subsection">
 								Interactive Stories
 							</Heading>
 							<p className="text-slate-600">
@@ -60,11 +60,11 @@ function Home() {
 							</p>
 						</div>
 
-						<div className="text-center p-6">
-							<div className="flex justify-center mb-4">
+						<div className="text-center p-6 space-y-4">
+							<div className="flex justify-center">
 								<Sparkles className="w-12 h-12 text-romance-500" />
 							</div>
-							<Heading level="h3" size="subsection" className="mb-2">
+							<Heading level="h3" size="subsection">
 								AI-Powered
 							</Heading>
 							<p className="text-slate-600">
@@ -73,11 +73,11 @@ function Home() {
 							</p>
 						</div>
 
-						<div className="text-center p-6">
-							<div className="flex justify-center mb-4">
+						<div className="text-center p-6 space-y-4">
+							<div className="flex justify-center">
 								<Heart className="w-12 h-12 text-romance-500" />
 							</div>
-							<Heading level="h3" size="subsection" className="mb-2">
+							<Heading level="h3" size="subsection">
 								Your Preferences
 							</Heading>
 							<p className="text-slate-600">

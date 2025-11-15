@@ -66,14 +66,14 @@ function LoginPage() {
 		<div className="min-h-screen bg-linear-to-br from-romance-50 via-white to-romance-100 flex items-center justify-center px-4">
 			<div className="max-w-md w-full">
 				{/* Logo */}
-				<div className="text-center mb-8">
-					<div className="flex justify-center mb-4">
+				<div className="text-center mb-8 space-y-4">
+					<div className="flex justify-center">
 						<Heart className="w-12 h-12 text-romance-600" fill="currentColor" />
 					</div>
-					<Heading level="h1" className="mb-2">
-						Welcome Back
-					</Heading>
-					<p className="text-slate-600 mt-2">Sign in to continue your story</p>
+					<div className="space-y-2">
+						<Heading level="h1">Welcome Back</Heading>
+						<p className="text-slate-600">Sign in to continue your story</p>
+					</div>
 				</div>
 
 				{/* Already Logged In Notice */}
