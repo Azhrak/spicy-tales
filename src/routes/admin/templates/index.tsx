@@ -8,11 +8,11 @@ import {
 	Plus,
 	Trash2,
 	Upload,
-	X,
 } from "lucide-react";
 import { useState } from "react";
 import {
 	AdminLayout,
+	BulkActionsToolbar,
 	DataTable,
 	FilterBar,
 	PaginationControls,
@@ -348,74 +348,39 @@ function TemplatesListPage() {
 				/>
 
 				{/* Bulk Actions Toolbar */}
-				{selectedIds.size > 0 && (
-					<div className="bg-romance-50 border border-romance-200 rounded-lg p-4 mb-4 flex items-center justify-between">
-						<div className="flex items-center gap-4">
-							<span className="text-sm font-medium text-slate-900">
-								{selectedIds.size} template{selectedIds.size !== 1 ? "s" : ""}{" "}
-								selected
-							</span>
-							<Button
-								size="sm"
-								variant="ghost"
-								onClick={() => setSelectedIds(new Set())}
-							>
-								<X className="w-4 h-4" />
-								Clear
-							</Button>
-						</div>
-						<div className="flex gap-2">
-							<Button
-								size="sm"
-								variant="secondary"
-								onClick={() => handleBulkStatusUpdate("published")}
-								disabled={isBulkUpdating}
-								loading={isBulkUpdating}
-							>
-								<Eye className="w-4 h-4" />
-								Publish
-							</Button>
-							<Button
-								size="sm"
-								variant="secondary"
-								onClick={() => handleBulkStatusUpdate("draft")}
-								disabled={isBulkUpdating}
-								loading={isBulkUpdating}
-							>
-								<EyeOff className="w-4 h-4" />
-								Set as Draft
-							</Button>
-							<Button
-								size="sm"
-								variant="secondary"
-								onClick={() => handleBulkStatusUpdate("archived")}
-								disabled={isBulkUpdating}
-								loading={isBulkUpdating}
-							>
-								<Archive className="w-4 h-4" />
-								Archive
-							</Button>
-							{role === "admin" && (
-								<Button
-									size="sm"
-									variant="danger"
-									onClick={handleBulkDelete}
-									disabled={isBulkUpdating}
-									loading={isBulkUpdating}
-								>
-									<Trash2 className="w-4 h-4" />
-									Delete
-								</Button>
-							)}
-						</div>
-					</div>
-				)}
-
-				{bulkError && (
-					<div className="mb-4">
-						<ErrorMessage message={bulkError} />
-					</div>
-				)}
+				<BulkActionsToolbar
+					selectedCount={selectedIds.size}
+					onClearSelection={() => setSelectedIds(new Set())}
+					actions={[
+						{
+							label: "Publish",
+							icon: Eye,
+							onClick: () => handleBulkStatusUpdate("published"),
+						},
+						{
+							label: "Set as Draft",
+							icon: EyeOff,
+							onClick: () => handleBulkStatusUpdate("draft"),
+						},
+						{
+							label: "Archive",
+							icon: Archive,
+							onClick: () => handleBulkStatusUpdate("archived"),
+						},
+						{
+							label: "Delete",
+							icon: Trash2,
+							onClick: handleBulkDelete,
+							variant: "danger",
+							requiresAdmin: true,
+						},
+					]}
+					isLoading={isBulkUpdating}
+					itemLabel="template"
+					userRole={role}
+					error={bulkError}
+					accentColor="romance"
+				/>
 
 				{/* Templates Table */}
 				<div className="bg-white rounded-lg border border-slate-200 overflow-hidden">

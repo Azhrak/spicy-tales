@@ -1,5 +1,6 @@
 export { AdminLayout } from "./AdminLayout";
 export { AdminNav } from "./AdminNav";
+export { BulkActionsToolbar } from "./BulkActionsToolbar";
 export { ChoicePointForm } from "./ChoicePointForm";
 export { ConfirmDialog } from "./ConfirmDialog";
 export { DataTable } from "./DataTable";

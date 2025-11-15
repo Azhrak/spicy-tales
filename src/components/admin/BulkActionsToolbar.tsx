@@ -1,0 +1,89 @@
+import type { LucideIcon } from "lucide-react";
+import { X } from "lucide-react";
+import { Button } from "~/components/Button";
+import { ErrorMessage } from "~/components/ErrorMessage";
+
+interface BulkAction {
+	label: string;
+	icon: LucideIcon;
+	onClick: () => void;
+	variant?: "primary" | "secondary" | "danger" | "ghost";
+	requiresAdmin?: boolean;
+}
+
+interface BulkActionsToolbarProps {
+	selectedCount: number;
+	onClearSelection: () => void;
+	actions: BulkAction[];
+	isLoading?: boolean;
+	itemLabel: string;
+	userRole?: string;
+	error?: string | null;
+	accentColor?: "romance" | "purple" | "blue" | "green";
+}
+
+const accentColorClasses = {
+	romance: "bg-romance-50 border-romance-200",
+	purple: "bg-purple-50 border-purple-200",
+	blue: "bg-blue-50 border-blue-200",
+	green: "bg-green-50 border-green-200",
+};
+
+export function BulkActionsToolbar({
+	selectedCount,
+	onClearSelection,
+	actions,
+	isLoading = false,
+	itemLabel,
+	userRole,
+	error,
+	accentColor = "romance",
+}: BulkActionsToolbarProps) {
+	if (selectedCount === 0) {
+		return null;
+	}
+
+	const filteredActions = actions.filter(
+		(action) => !action.requiresAdmin || userRole === "admin",
+	);
+
+	return (
+		<>
+			<div
+				className={`${accentColorClasses[accentColor]} border rounded-lg p-4 mb-4 flex items-center justify-between`}
+			>
+				<div className="flex items-center gap-4">
+					<span className="text-sm font-medium text-slate-900">
+						{selectedCount} {itemLabel}
+						{selectedCount !== 1 ? "s" : ""} selected
+					</span>
+					<Button size="sm" variant="ghost" onClick={onClearSelection}>
+						<X className="w-4 h-4" />
+						Clear
+					</Button>
+				</div>
+				<div className="flex gap-2">
+					{filteredActions.map((action) => (
+						<Button
+							key={action.label}
+							size="sm"
+							variant={action.variant || "secondary"}
+							onClick={action.onClick}
+							disabled={isLoading}
+							loading={isLoading}
+						>
+							<action.icon className="w-4 h-4" />
+							{action.label}
+						</Button>
+					))}
+				</div>
+			</div>
+
+			{error && (
+				<div className="mb-4">
+					<ErrorMessage message={error} />
+				</div>
+			)}
+		</>
+	);
+}
