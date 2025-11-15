@@ -16,8 +16,8 @@ export function StoryProgressBar({
 	const width = Math.min((currentScene / totalScenes) * 100, 100);
 
 	return (
-		<div>
-			<div className="flex justify-between text-sm text-slate-600 mb-2">
+		<div className="space-y-2">
+			<div className="flex justify-between text-sm text-slate-600">
 				<span>
 					Scene {currentScene} of {totalScenes}
 				</span>

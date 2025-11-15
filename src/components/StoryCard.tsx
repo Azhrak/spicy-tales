@@ -44,29 +44,27 @@ export function StoryCard({
 			</Link>
 
 			{/* Content */}
-			<div className="p-6">
-				<h3 className="text-xl font-bold text-slate-900 mb-1">
-					{displayTitle}
-				</h3>
-				<p className="text-xs text-slate-500 mb-3">
-					Started{" "}
-					{new Date(createdAt).toLocaleDateString("en-US", {
-						month: "short",
-						day: "numeric",
-						year: "numeric",
-					})}
-				</p>
-				<p className="text-sm text-slate-600 mb-4 line-clamp-2">
+			<div className="p-6 space-y-3">
+				<div className="space-y-1">
+					<h3 className="text-xl font-bold text-slate-900">{displayTitle}</h3>
+					<p className="text-xs text-slate-500">
+						Started{" "}
+						{new Date(createdAt).toLocaleDateString("en-US", {
+							month: "short",
+							day: "numeric",
+							year: "numeric",
+						})}
+					</p>
+				</div>
+				<p className="text-sm text-slate-600 line-clamp-2">
 					{templateDescription}
 				</p>
 
 				{/* Progress */}
-				<div className="mb-4">
-					<StoryProgressBar
-						currentScene={currentScene}
-						totalScenes={totalScenes}
-					/>
-				</div>
+				<StoryProgressBar
+					currentScene={currentScene}
+					totalScenes={totalScenes}
+				/>
 
 				{/* Actions */}
 				<div className="flex gap-2">
