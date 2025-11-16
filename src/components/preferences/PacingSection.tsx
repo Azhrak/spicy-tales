@@ -1,4 +1,4 @@
-import { Clock } from "lucide-react";
+import { Wind } from "lucide-react";
 import { Heading } from "~/components/Heading";
 import { RadioButton } from "~/components/RadioButton";
 import {
@@ -21,7 +21,7 @@ export function PacingSection({
 			<div className="space-y-6">
 				<div className="space-y-4">
 					<div className="flex items-center">
-						<Clock className="w-6 h-6 text-romance-500 mr-2" />
+						<Wind className="w-6 h-6 text-romance-500 mr-2" />
 						<Heading level="h3" size="section">
 							Relationship Pacing
 						</Heading>

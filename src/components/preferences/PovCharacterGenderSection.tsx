@@ -1,4 +1,4 @@
-import { Camera, Eye, Film, FilmIcon, MoveIcon, Video } from "lucide-react";
+import { Eye } from "lucide-react";
 import { Heading } from "~/components/Heading";
 import { RadioButton } from "~/components/RadioButton";
 import {
