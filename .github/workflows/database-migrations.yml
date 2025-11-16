@@ -13,7 +13,7 @@ jobs:
     name: Run Database Migrations
     runs-on: ubuntu-latest
 
-    # Only run migrations on push to main (not on PRs)
+    # Only run migrations on push to main (not on PRs) and if DATABASE_URL is set
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
 
     steps:
@@ -32,10 +32,26 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Check DATABASE_URL availability
+        id: check_db_url
+        run: |
+          if [ -n "${{ secrets.DATABASE_URL }}" ]; then
+            echo "available=true" >> $GITHUB_OUTPUT
+            echo "✅ DATABASE_URL is configured"
+          else
+            echo "available=false" >> $GITHUB_OUTPUT
+            echo "⚠️ DATABASE_URL is not configured"
+          fi
+
       - name: Run database migrations
+        if: steps.check_db_url.outputs.available == 'true'
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        run: pnpm db:migrate
+        run: pnpm exec tsx src/lib/db/migrate.ts
+
+      - name: Skip migrations (no DATABASE_URL)
+        if: steps.check_db_url.outputs.available == 'false'
+        run: echo "⏭️ Skipping migrations - DATABASE_URL secret not configured"
 
       - name: Notify on failure
         if: failure()
