@@ -1,7 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { json } from "@tanstack/react-start";
 import { z } from "zod";
-import type { StoryStatus } from "~/lib/api/types";
 import { getSessionFromRequest } from "~/lib/auth/session";
 import {
 	getStoryById,
@@ -64,19 +63,13 @@ export const Route = createFileRoute("/api/stories/$id/choose")({
 					// Calculate next scene
 					const nextScene = story.current_scene + 1;
 
-					// Check if story is complete
-					const isComplete = nextScene > story.template.estimated_scenes;
-					const newStatus: StoryStatus = isComplete
-						? "completed"
-						: "in-progress";
-
-					// Update story progress
-					await updateStoryProgress(storyId, nextScene, newStatus);
+					// Update story progress (but never mark as complete automatically)
+					await updateStoryProgress(storyId, nextScene, "in-progress");
 
 					return json({
 						success: true,
-						nextScene: isComplete ? story.current_scene : nextScene,
-						completed: isComplete,
+						nextScene,
+						completed: false,
 					});
 				} catch (error) {
 					console.error("Error recording choice:", error);

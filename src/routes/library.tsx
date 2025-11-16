@@ -122,6 +122,7 @@ function LibraryPage() {
 									storyTitle={story.story_title}
 									templateTitle={story.template.title}
 									templateDescription={story.template.description}
+									baseTropes={story.template.base_tropes}
 									coverGradient={story.template.cover_gradient}
 									createdAt={story.created_at}
 									currentScene={story.current_scene}

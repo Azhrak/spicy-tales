@@ -14,7 +14,7 @@ import { FullPageLoader } from "~/components/FullPageLoader";
 import { Heading } from "~/components/Heading";
 import { useMakeChoiceMutation } from "~/hooks/useMakeChoiceMutation";
 import { useStorySceneQuery } from "~/hooks/useStorySceneQuery";
-import { api } from "~/lib/api/client";
+import { useUpdateProgressMutation } from "~/hooks/useUpdateProgressMutation";
 
 export const Route = createFileRoute("/story/$id/read")({
 	component: ReadingPage,
@@ -31,8 +31,9 @@ function ReadingPage() {
 	// Fetch scene data
 	const { data, isLoading, error } = useStorySceneQuery(id, currentSceneNumber);
 
-	// Record choice mutation
+	// Mutations
 	const choiceMutation = useMakeChoiceMutation(id);
+	const progressMutation = useUpdateProgressMutation(id);
 
 	const handleChoiceSuccess = (result: {
 		completed: boolean;
@@ -239,18 +240,10 @@ function ReadingPage() {
 						<p className="text-gray-600">Ready to continue?</p>
 						<Button
 							type="button"
-							onClick={async () => {
+							onClick={() => {
 								const nextScene = scene.number + 1;
-								// Update story progress in database
-								try {
-									await api.patch(`/api/stories/${id}/scene`, {
-										currentScene: nextScene,
-									});
-									// Navigate to next scene
-									setCurrentSceneNumber(nextScene);
-								} catch (error) {
-									console.error("Failed to update scene:", error);
-								}
+								// Just navigate to next scene, don't mark as complete
+								setCurrentSceneNumber(nextScene);
 							}}
 							variant="primary"
 							className="bg-linear-to-r from-rose-600 to-purple-600 hover:from-rose-700 hover:to-purple-700"
@@ -272,13 +265,39 @@ function ReadingPage() {
 								You've completed this story! Thank you for reading.
 							</p>
 						</div>
-						<Link
-							to="/library"
-							className="inline-flex items-center gap-2 px-6 py-3 bg-rose-600 text-white rounded-lg hover:bg-rose-700 transition-colors"
-						>
-							<Home className="w-5 h-5" />
-							Back to Library
-						</Link>
+						<div className="flex flex-col sm:flex-row gap-3 justify-center">
+							<Button
+								type="button"
+								onClick={() => {
+									progressMutation.mutate(
+										{ currentScene: scene.number + 1 },
+										{
+											onSuccess: () => {
+												// Redirect to library after marking complete
+												navigate({ to: "/library" });
+											},
+										},
+									);
+								}}
+								disabled={progressMutation.isPending}
+								variant="primary"
+								className="bg-rose-600 hover:bg-rose-700"
+							>
+								<Sparkles className="w-5 h-5" />
+								<span>
+									{progressMutation.isPending
+										? "Marking Complete..."
+										: "Mark as Completed"}
+								</span>
+							</Button>
+							<Link
+								to="/library"
+								className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white text-rose-600 rounded-lg hover:bg-rose-50 transition-colors border border-rose-200"
+							>
+								<Home className="w-5 h-5" />
+								Back to Library
+							</Link>
+						</div>
 					</div>
 				)}
 				{/* Navigation */}

@@ -3,30 +3,30 @@ import { api } from "~/lib/api/client";
 import { storySceneQueryKey } from "./useStorySceneQuery";
 import { userStoriesQueryKey } from "./useUserStoriesQuery";
 
-interface ChoiceData {
-	choicePointId: string;
-	selectedOption: number;
+interface UpdateProgressData {
+	currentScene: number;
 }
 
-interface ChoiceResult {
+interface UpdateProgressResult {
+	success: boolean;
+	currentScene: number;
 	completed: boolean;
-	nextScene?: number;
 }
 
-export const makeChoiceMutationKey = (storyId: string) =>
-	["makeChoice", storyId] as const;
+export const updateProgressMutationKey = (storyId: string) =>
+	["updateProgress", storyId] as const;
 
 /**
- * Custom hook to record a user's choice in a story
+ * Custom hook to update story progress
  * Automatically invalidates related queries on success
  */
-export function useMakeChoiceMutation(storyId: string) {
+export function useUpdateProgressMutation(storyId: string) {
 	const queryClient = useQueryClient();
 
 	return useMutation({
-		mutationKey: makeChoiceMutationKey(storyId),
-		mutationFn: (data: ChoiceData) =>
-			api.post<ChoiceResult>(`/api/stories/${storyId}/choose`, data),
+		mutationKey: updateProgressMutationKey(storyId),
+		mutationFn: (data: UpdateProgressData) =>
+			api.patch<UpdateProgressResult>(`/api/stories/${storyId}/scene`, data),
 		onSuccess: (result) => {
 			// Invalidate all queries for this story to get fresh data
 			queryClient.invalidateQueries({

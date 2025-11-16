@@ -3,12 +3,14 @@ import { BookOpen, Info, Trash2 } from "lucide-react";
 import { Button } from "~/components/Button";
 import { Heading } from "~/components/Heading";
 import { StoryProgressBar } from "~/components/StoryProgressBar";
+import { TROPE_LABELS } from "~/lib/types/preferences";
 
 interface StoryCardProps {
 	id: string;
 	storyTitle: string | null;
 	templateTitle: string;
 	templateDescription: string;
+	baseTropes: string[];
 	coverGradient: string;
 	createdAt: string;
 	currentScene: number;
@@ -23,6 +25,7 @@ export function StoryCard({
 	storyTitle,
 	templateTitle,
 	templateDescription,
+	baseTropes,
 	coverGradient,
 	createdAt,
 	currentScene,
@@ -63,11 +66,29 @@ export function StoryCard({
 					{templateDescription}
 				</p>
 
-				{/* Progress */}
-				<StoryProgressBar
-					currentScene={currentScene}
-					totalScenes={totalScenes}
-				/>
+				{/* Tropes */}
+				<div className="flex flex-wrap gap-2">
+					{baseTropes.slice(0, 3).map((trope) => (
+						<span
+							key={trope}
+							className="px-2 py-1 bg-romance-50 border border-romance-200 rounded-full text-xs text-romance-700 font-medium"
+						>
+							{TROPE_LABELS[trope as keyof typeof TROPE_LABELS] || trope}
+						</span>
+					))}
+				</div>
+
+				{/* Progress or Scene Count */}
+				{status === "in-progress" ? (
+					<StoryProgressBar
+						currentScene={currentScene}
+						totalScenes={totalScenes}
+					/>
+				) : (
+					<div className="text-sm text-slate-600 py-2">
+						{totalScenes} scenes
+					</div>
+				)}
 
 				{/* Actions */}
 				<div className="flex gap-2 mt-auto">

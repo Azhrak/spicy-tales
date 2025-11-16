@@ -66,8 +66,11 @@ export const Route = createFileRoute("/api/stories/$id/scene")({
 						return json({ error: "Forbidden" }, { status: 403 });
 					}
 
-					// Determine which scene to fetch (query param or current scene)
-					const sceneNumber = parseResult.data.number ?? story.current_scene;
+					// Determine which scene to fetch
+					// If no query param, use scene 1 for completed stories, otherwise current_scene
+					const defaultScene =
+						story.status === "completed" ? 1 : story.current_scene;
+					const sceneNumber = parseResult.data.number ?? defaultScene;
 
 					// Check if scene number is valid
 					if (sceneNumber < 1) {
@@ -222,14 +225,17 @@ export const Route = createFileRoute("/api/stories/$id/scene")({
 						return json({ error: "Forbidden" }, { status: 403 });
 					}
 
-					// Check if story is complete
+					// Only mark as complete if user is explicitly moving beyond the last scene
+					// (via the "Mark as Completed" button)
 					const isComplete = currentScene > story.template.estimated_scenes;
 					const newStatus: StoryStatus = isComplete
 						? "completed"
 						: "in-progress";
 
 					// Update story progress
-					await updateStoryProgress(storyId, currentScene, newStatus);
+					// Reset to scene 1 when completing so "Read Again" starts from the beginning
+					const sceneToSave = isComplete ? 1 : currentScene;
+					await updateStoryProgress(storyId, sceneToSave, newStatus);
 
 					return json({
 						success: true,
