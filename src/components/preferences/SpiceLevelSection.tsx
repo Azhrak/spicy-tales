@@ -1,4 +1,5 @@
 import { Flame } from "lucide-react";
+import { Heading } from "~/components/Heading";
 import { SPICE_LABELS, type SpiceLevel } from "~/lib/types/preferences";
 
 interface SpiceLevelSectionProps {
@@ -15,7 +16,9 @@ export function SpiceLevelSection({
 			<div className="space-y-6">
 				<div className="flex items-center">
 					<Flame className="w-6 h-6 text-romance-500 mr-2" />
-					<h2 className="text-2xl font-bold text-slate-900">Spice Level</h2>
+					<Heading level="h3" size="section">
+						Spice Level
+					</Heading>
 				</div>
 				<p className="text-slate-600">
 					Set your preferred heat level for intimate scenes

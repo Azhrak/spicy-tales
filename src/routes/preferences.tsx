@@ -8,6 +8,7 @@ import { PageBackground } from "~/components/PageBackground";
 import {
 	GenresSection,
 	PacingSection,
+	PovCharacterGenderSection,
 	SceneLengthSection,
 	SpiceLevelSection,
 	TropesSection,
@@ -18,6 +19,7 @@ import { ApiError } from "~/lib/api/client";
 import type {
 	Genre,
 	PacingOption,
+	PovCharacterGender,
 	SceneLengthOption,
 	SpiceLevel,
 	Trope,
@@ -43,6 +45,7 @@ function PreferencesPage() {
 		spiceLevel: 3,
 		pacing: "slow-burn",
 		sceneLength: "medium",
+		povCharacterGender: "female",
 	});
 	const [error, setError] = useState<string | null>(null);
 	const [success, setSuccess] = useState(false);
@@ -93,6 +96,13 @@ function PreferencesPage() {
 
 	const handleSceneLengthChange = (sceneLength: SceneLengthOption) => {
 		setPreferences((prev) => ({ ...prev, sceneLength }));
+		setSuccess(false);
+	};
+
+	const handlePovCharacterGenderChange = (
+		povCharacterGender: PovCharacterGender,
+	) => {
+		setPreferences((prev) => ({ ...prev, povCharacterGender }));
 		setSuccess(false);
 	};
 
@@ -196,6 +206,11 @@ function PreferencesPage() {
 							<SceneLengthSection
 								selectedLength={preferences.sceneLength || "medium"}
 								onSelect={handleSceneLengthChange}
+							/>
+
+							<PovCharacterGenderSection
+								selectedGender={preferences.povCharacterGender || "female"}
+								onSelect={handlePovCharacterGenderChange}
 							/>
 
 							{/* Save Button */}

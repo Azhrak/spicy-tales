@@ -1,3 +1,5 @@
+import { Clock } from "lucide-react";
+import { Heading } from "~/components/Heading";
 import { RadioButton } from "~/components/RadioButton";
 import {
 	PACING_LABELS,
@@ -18,9 +20,12 @@ export function PacingSection({
 		<div className="bg-white rounded-2xl shadow-lg p-6">
 			<div className="space-y-6">
 				<div className="space-y-4">
-					<h3 className="text-xl font-bold text-slate-900">
-						Relationship Pacing
-					</h3>
+					<div className="flex items-center">
+						<Clock className="w-6 h-6 text-romance-500 mr-2" />
+						<Heading level="h3" size="section">
+							Relationship Pacing
+						</Heading>
+					</div>
 					<p className="text-slate-600">
 						How quickly should relationships develop in your stories?
 					</p>

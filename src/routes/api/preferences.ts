@@ -5,6 +5,7 @@ import { db } from "~/lib/db";
 import {
 	GENRES,
 	PACING_OPTIONS,
+	POV_CHARACTER_GENDER_OPTIONS,
 	TROPES,
 	type UserPreferences,
 } from "~/lib/types/preferences";
@@ -22,8 +23,14 @@ export const Route = createFileRoute("/api/preferences")({
 
 					// Parse request body
 					const body = await request.json();
-					const { genres, tropes, spiceLevel, pacing, sceneLength } =
-						body as UserPreferences;
+					const {
+						genres,
+						tropes,
+						spiceLevel,
+						pacing,
+						sceneLength,
+						povCharacterGender,
+					} = body as UserPreferences;
 
 					// Validate inputs
 					if (!Array.isArray(genres) || genres.length === 0) {
@@ -66,7 +73,18 @@ export const Route = createFileRoute("/api/preferences")({
 						return json({ error: "Invalid pacing selection" }, { status: 400 });
 					}
 
-					// Save preferences to database (sceneLength is optional, defaults to "medium")
+					// Validate POV character gender (optional)
+					if (
+						povCharacterGender &&
+						!POV_CHARACTER_GENDER_OPTIONS.includes(povCharacterGender)
+					) {
+						return json(
+							{ error: "Invalid POV character gender selection" },
+							{ status: 400 },
+						);
+					}
+
+					// Save preferences to database (sceneLength and povCharacterGender are optional)
 					await db
 						.updateTable("users")
 						.set({
@@ -76,6 +94,7 @@ export const Route = createFileRoute("/api/preferences")({
 								spiceLevel,
 								pacing,
 								sceneLength: sceneLength || "medium",
+								povCharacterGender: povCharacterGender || "female",
 							}),
 							updated_at: new Date(),
 						})
@@ -90,6 +109,7 @@ export const Route = createFileRoute("/api/preferences")({
 							spiceLevel,
 							pacing,
 							sceneLength: sceneLength || "medium",
+							povCharacterGender: povCharacterGender || "female",
 						},
 					});
 				} catch (error) {

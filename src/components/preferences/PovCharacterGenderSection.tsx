@@ -1,0 +1,52 @@
+import { Camera, Eye, Film, FilmIcon, MoveIcon, Video } from "lucide-react";
+import { Heading } from "~/components/Heading";
+import { RadioButton } from "~/components/RadioButton";
+import {
+	POV_CHARACTER_GENDER_LABELS,
+	POV_CHARACTER_GENDER_OPTIONS,
+	type PovCharacterGender,
+} from "~/lib/types/preferences";
+
+interface PovCharacterGenderSectionProps {
+	selectedGender: PovCharacterGender;
+	onSelect: (gender: PovCharacterGender) => void;
+}
+
+export function PovCharacterGenderSection({
+	selectedGender,
+	onSelect,
+}: PovCharacterGenderSectionProps) {
+	return (
+		<div className="bg-white rounded-2xl shadow-lg p-6">
+			<div className="space-y-6">
+				<div className="space-y-4">
+					<div className="flex items-center">
+						<Eye className="w-6 h-6 text-romance-500 mr-2" />
+						<Heading level="h3" size="section">
+							POV Character Gender
+						</Heading>
+					</div>
+					<p className="text-slate-600">
+						What gender identity should the main protagonist have?
+					</p>
+				</div>
+				<div className="space-y-3">
+					{POV_CHARACTER_GENDER_OPTIONS.map((gender) => (
+						<RadioButton
+							key={gender}
+							selected={selectedGender === gender}
+							onClick={() => onSelect(gender)}
+						>
+							<div className="font-semibold text-slate-900">
+								{POV_CHARACTER_GENDER_LABELS[gender].label}
+							</div>
+							<p className="text-sm text-slate-600">
+								{POV_CHARACTER_GENDER_LABELS[gender].description}
+							</p>
+						</RadioButton>
+					))}
+				</div>
+			</div>
+		</div>
+	);
+}

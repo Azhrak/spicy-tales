@@ -1,4 +1,5 @@
 import { BookOpen } from "lucide-react";
+import { Heading } from "~/components/Heading";
 import { GENRE_LABELS, GENRES, type Genre } from "~/lib/types/preferences";
 
 interface GenresSectionProps {
@@ -15,7 +16,9 @@ export function GenresSection({
 			<div className="space-y-6">
 				<div className="flex items-center">
 					<BookOpen className="w-6 h-6 text-romance-500 mr-2" />
-					<h2 className="text-2xl font-bold text-slate-900">Genres</h2>
+					<Heading level="h3" size="section">
+						Genres
+					</Heading>
 				</div>
 				<p className="text-slate-600">Select your favorite romance genres</p>
 				<div className="grid grid-cols-2 md:grid-cols-3 gap-4">

@@ -1,3 +1,5 @@
+import { Ruler } from "lucide-react";
+import { Heading } from "~/components/Heading";
 import {
 	SCENE_LENGTH_LABELS,
 	SCENE_LENGTH_OPTIONS,
@@ -17,7 +19,13 @@ export function SceneLengthSection({
 		<div className="bg-white rounded-2xl shadow-lg p-6">
 			<div className="space-y-6">
 				<div className="space-y-4">
-					<h3 className="text-xl font-bold text-slate-900">Scene Length</h3>
+					<div className="flex items-center">
+						<Ruler className="w-6 h-6 text-romance-500 mr-2" />
+						<Heading level="h3" size="section">
+							Scene Length
+						</Heading>
+					</div>
+
 					<p className="text-slate-600">Choose your preferred scene length</p>
 				</div>
 				<div className="space-y-3">

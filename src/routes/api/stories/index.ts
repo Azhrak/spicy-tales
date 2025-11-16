@@ -6,6 +6,7 @@ import { createUserStory } from "~/lib/db/queries/stories";
 import {
 	GENRES,
 	PACING_OPTIONS,
+	POV_CHARACTER_GENDER_OPTIONS,
 	SCENE_LENGTH_OPTIONS,
 	type SpiceLevel,
 	TROPES,
@@ -21,6 +22,7 @@ const createStorySchema = z.object({
 			spiceLevel: z.number().int().min(1).max(5) as z.ZodType<SpiceLevel>,
 			pacing: z.enum(PACING_OPTIONS),
 			sceneLength: z.enum(SCENE_LENGTH_OPTIONS).optional(),
+			povCharacterGender: z.enum(POV_CHARACTER_GENDER_OPTIONS).optional(),
 		})
 		.optional(),
 });

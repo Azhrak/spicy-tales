@@ -1,4 +1,5 @@
 import { Heart } from "lucide-react";
+import { Heading } from "~/components/Heading";
 import { TROPE_LABELS, TROPES, type Trope } from "~/lib/types/preferences";
 
 interface TropesSectionProps {
@@ -15,7 +16,9 @@ export function TropesSection({
 			<div className="space-y-6">
 				<div className="flex items-center">
 					<Heart className="w-6 h-6 text-romance-500 mr-2" />
-					<h2 className="text-2xl font-bold text-slate-900">Tropes</h2>
+					<Heading level="h3" size="section">
+						Tropes
+					</Heading>
 				</div>
 				<p className="text-slate-600">Choose your favorite romance tropes</p>
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">

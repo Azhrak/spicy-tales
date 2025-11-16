@@ -7,8 +7,67 @@ export interface StoryPreferences {
 	spiceLevel: 1 | 2 | 3 | 4 | 5;
 	pacing: "slow-burn" | "fast-paced";
 	sceneLength?: "short" | "medium" | "long" | number; // preset or custom word count
+	povCharacterGender?:
+		| "male"
+		| "female"
+		| "non-binary"
+		| "genderqueer"
+		| "trans-man"
+		| "trans-woman"
+		| "agender"
+		| "genderfluid";
 	protagonistTraits?: string[];
 	settingPreferences?: string[];
+}
+
+/**
+ * Generate appropriate pronoun and gender guidance based on POV character gender
+ */
+function getGenderGuidance(gender: string): string {
+	const genderMap: Record<string, { pronouns: string; guidance: string }> = {
+		male: {
+			pronouns: "he/him/his",
+			guidance:
+				"The protagonist is a man. Use he/him/his pronouns and reflect his male identity naturally through his perspective and experiences.",
+		},
+		female: {
+			pronouns: "she/her/hers",
+			guidance:
+				"The protagonist is a woman. Use she/her/hers pronouns and reflect her female identity naturally through her perspective and experiences.",
+		},
+		"non-binary": {
+			pronouns: "they/them/theirs",
+			guidance:
+				"The protagonist is non-binary. Use they/them/theirs pronouns and reflect their non-binary identity authentically through their perspective and experiences.",
+		},
+		genderqueer: {
+			pronouns: "they/them/theirs (or other chosen pronouns)",
+			guidance:
+				"The protagonist is genderqueer. Use they/them pronouns (or other appropriate pronouns) and authentically represent their genderqueer identity through their lived experience and self-perception.",
+		},
+		"trans-man": {
+			pronouns: "he/him/his",
+			guidance:
+				"The protagonist is a trans man. Use he/him/his pronouns. He is a man whose gender identity may inform his experiences and perspective in nuanced ways.",
+		},
+		"trans-woman": {
+			pronouns: "she/her/hers",
+			guidance:
+				"The protagonist is a trans woman. Use she/her/hers pronouns. She is a woman whose gender identity may inform her experiences and perspective in nuanced ways.",
+		},
+		agender: {
+			pronouns: "they/them/theirs (or other chosen pronouns)",
+			guidance:
+				"The protagonist is agender. Use they/them pronouns (or other appropriate pronouns) and respect their lack of gender identity, reflecting this naturally in the narrative.",
+		},
+		genderfluid: {
+			pronouns: "they/them/theirs (or pronouns matching current identity)",
+			guidance:
+				"The protagonist is genderfluid. Their gender identity may shift; use pronouns that honor their fluidity and reflect this aspect of their identity authentically.",
+		},
+	};
+
+	return genderMap[gender]?.guidance || "";
 }
 
 /**
@@ -23,6 +82,7 @@ export function buildSystemPrompt(preferences: StoryPreferences): string {
 		protagonistTraits,
 		settingPreferences,
 		sceneLength,
+		povCharacterGender,
 	} = preferences;
 
 	const spiceDescription: Record<StoryPreferences["spiceLevel"], string> = {
@@ -57,6 +117,11 @@ export function buildSystemPrompt(preferences: StoryPreferences): string {
 		? `Setting flavor anchors: ${settingPreferences.join(", ")}. Surface via sensory/environmental texture (sound, light, seasonal or spatial details).`
 		: "(Use a grounded, sensorially rich setting appropriate to genre blend.)";
 
+	// POV character gender guidance
+	const genderGuidance = povCharacterGender
+		? getGenderGuidance(povCharacterGender)
+		: "Protagonist gender identity is flexible; establish it naturally through context, pronouns, and character self-perception.";
+
 	// Scene length guidance
 	const lengthGuidance = getSceneLengthGuidance(sceneLength);
 
@@ -82,6 +147,7 @@ ROMANCE & TENSION:
 CHARACTER & SETTING:
 ${traitLine}
 ${settingLine}
+${genderGuidance}
 
 CONTINUITY & ECONOMY:
 - CHARACTER TRACKING: When introducing a character for the first time, establish their key traits, appearance, and mannerisms. In subsequent appearances, reference established details and show character evolution rather than restating descriptions.

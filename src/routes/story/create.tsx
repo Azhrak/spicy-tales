@@ -21,6 +21,9 @@ import {
 	PACING_LABELS,
 	PACING_OPTIONS,
 	type PacingOption,
+	POV_CHARACTER_GENDER_LABELS,
+	POV_CHARACTER_GENDER_OPTIONS,
+	type PovCharacterGender,
 	SCENE_LENGTH_LABELS,
 	SCENE_LENGTH_OPTIONS,
 	type SceneLengthOption,
@@ -44,6 +47,8 @@ function StoryCreatePage() {
 	const [sceneLength, setSceneLength] = useState<SceneLengthOption | null>(
 		null,
 	);
+	const [povCharacterGender, setPovCharacterGender] =
+		useState<PovCharacterGender | null>(null);
 	const [storyTitle, setStoryTitle] = useState("");
 	const [isCreating, setIsCreating] = useState(false);
 
@@ -107,11 +112,13 @@ function StoryCreatePage() {
 		userPreferences &&
 		spiceLevel === null &&
 		pacing === null &&
-		sceneLength === null
+		sceneLength === null &&
+		povCharacterGender === null
 	) {
 		setSpiceLevel(userPreferences.spiceLevel);
 		setPacing(userPreferences.pacing);
 		setSceneLength(userPreferences.sceneLength || "medium");
+		setPovCharacterGender(userPreferences.povCharacterGender || "female");
 	}
 
 	// Create story mutation
@@ -129,6 +136,10 @@ function StoryCreatePage() {
 					spiceLevel: spiceLevel ?? userPreferences?.spiceLevel ?? 3,
 					pacing: pacing ?? userPreferences?.pacing ?? "slow-burn",
 					sceneLength: sceneLength ?? userPreferences?.sceneLength ?? "medium",
+					povCharacterGender:
+						povCharacterGender ??
+						userPreferences?.povCharacterGender ??
+						"female",
 				},
 			});
 			// Navigate to library after successful creation
@@ -250,6 +261,22 @@ function StoryCreatePage() {
 										columns={3}
 									/>
 								</div>
+
+								{/* POV Character Gender */}
+								<div>
+									<RadioButtonGroup
+										label="POV Character Gender"
+										value={povCharacterGender}
+										options={POV_CHARACTER_GENDER_OPTIONS.map((option) => ({
+											value: option,
+											label: POV_CHARACTER_GENDER_LABELS[option].label,
+											description:
+												POV_CHARACTER_GENDER_LABELS[option].description,
+										}))}
+										onChange={setPovCharacterGender}
+										columns={2}
+									/>
+								</div>
 							</div>{" "}
 							{/* Error Display */}
 							{createStory.error && (
@@ -272,7 +299,12 @@ function StoryCreatePage() {
 								</Button>
 								<Button
 									onClick={handleCreateStory}
-									disabled={!spiceLevel || !pacing || !sceneLength}
+									disabled={
+										!spiceLevel ||
+										!pacing ||
+										!sceneLength ||
+										!povCharacterGender
+									}
 									loading={isCreating}
 									className="flex-1"
 								>

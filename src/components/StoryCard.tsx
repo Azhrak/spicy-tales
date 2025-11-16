@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { BookOpen, Info, Trash2 } from "lucide-react";
 import { Button } from "~/components/Button";
+import { Heading } from "~/components/Heading";
 import { StoryProgressBar } from "~/components/StoryProgressBar";
 
 interface StoryCardProps {
@@ -46,7 +47,9 @@ export function StoryCard({
 			{/* Content */}
 			<div className="p-6 space-y-3 flex flex-col flex-1">
 				<div className="space-y-1">
-					<h3 className="text-xl font-bold text-slate-900">{displayTitle}</h3>
+					<Heading level="h3" size="section">
+						{displayTitle}
+					</Heading>
 					<p className="text-xs text-slate-500">
 						Started{" "}
 						{new Date(createdAt).toLocaleDateString("en-US", {

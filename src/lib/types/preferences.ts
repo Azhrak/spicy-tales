@@ -27,10 +27,22 @@ export const PACING_OPTIONS = ["slow-burn", "fast-paced"] as const;
 
 export const SCENE_LENGTH_OPTIONS = ["short", "medium", "long"] as const;
 
+export const POV_CHARACTER_GENDER_OPTIONS = [
+	"male",
+	"female",
+	"non-binary",
+	"genderqueer",
+	"trans-man",
+	"trans-woman",
+	"agender",
+	"genderfluid",
+] as const;
+
 export type Genre = (typeof GENRES)[number];
 export type Trope = (typeof TROPES)[number];
 export type PacingOption = (typeof PACING_OPTIONS)[number];
 export type SceneLengthOption = (typeof SCENE_LENGTH_OPTIONS)[number];
+export type PovCharacterGender = (typeof POV_CHARACTER_GENDER_OPTIONS)[number];
 export type SpiceLevel = 1 | 2 | 3 | 4 | 5;
 
 export interface UserPreferences {
@@ -39,6 +51,7 @@ export interface UserPreferences {
 	spiceLevel: SpiceLevel;
 	pacing: PacingOption;
 	sceneLength?: SceneLengthOption; // Optional with default "medium"
+	povCharacterGender?: PovCharacterGender; // Optional with default "female"
 }
 
 export const GENRE_LABELS: Record<Genre, string> = {
@@ -105,5 +118,43 @@ export const SCENE_LENGTH_LABELS: Record<
 		label: "Long",
 		description: "Detailed, immersive scenes",
 		wordCount: "~1100-1500 words",
+	},
+};
+
+export const POV_CHARACTER_GENDER_LABELS: Record<
+	PovCharacterGender,
+	{ label: string; description: string }
+> = {
+	male: {
+		label: "Male",
+		description: "Male protagonist perspective",
+	},
+	female: {
+		label: "Female",
+		description: "Female protagonist perspective",
+	},
+	"non-binary": {
+		label: "Non-binary",
+		description: "Non-binary protagonist perspective",
+	},
+	genderqueer: {
+		label: "Genderqueer",
+		description: "Genderqueer protagonist perspective",
+	},
+	"trans-man": {
+		label: "Trans Man",
+		description: "Trans man protagonist perspective",
+	},
+	"trans-woman": {
+		label: "Trans Woman",
+		description: "Trans woman protagonist perspective",
+	},
+	agender: {
+		label: "Agender",
+		description: "Agender protagonist perspective",
+	},
+	genderfluid: {
+		label: "Genderfluid",
+		description: "Genderfluid protagonist perspective",
 	},
 };
