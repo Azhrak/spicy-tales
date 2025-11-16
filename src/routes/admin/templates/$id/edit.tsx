@@ -1,19 +1,12 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import {
-	Archive,
-	ArchiveRestore,
-	ArrowLeft,
-	Eye,
-	EyeOff,
-	Save,
-	Trash2,
-} from "lucide-react";
+import { ArrowLeft, Save, Trash2 } from "lucide-react";
 import { useState } from "react";
 import {
 	AdminLayout,
 	ChoicePointForm,
 	ConfirmDialog,
 	StatusBadge,
+	TemplateStatusManager,
 } from "~/components/admin";
 import type { ChoicePoint } from "~/components/admin/ChoicePointForm";
 import { Button } from "~/components/Button";
@@ -29,18 +22,15 @@ import { useUpdateTemplateMutation } from "~/hooks/useUpdateTemplateMutation";
 import { useUpdateTemplateStatusMutation } from "~/hooks/useUpdateTemplateStatusMutation";
 import type { TemplateStatus } from "~/lib/api/types";
 import { GRADIENT_OPTIONS } from "~/lib/constants/gradients";
+import {
+	type TemplateFormData,
+	validateChoicePoints,
+	validateTemplateForm,
+} from "~/lib/validation/templates";
 
 export const Route = createFileRoute("/admin/templates/$id/edit")({
 	component: EditTemplatePage,
 });
-
-interface TemplateFormData {
-	title: string;
-	description: string;
-	base_tropes: string;
-	estimated_scenes: number;
-	cover_gradient: string;
-}
 
 function EditTemplatePage() {
 	const navigate = useNavigate();
@@ -50,10 +40,6 @@ function EditTemplatePage() {
 	const [choicePoints, setChoicePoints] = useState<ChoicePoint[]>([]);
 	const [formError, setFormError] = useState<string | null>(null);
 	const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-	const [showStatusDialog, setShowStatusDialog] = useState(false);
-	const [pendingStatus, setPendingStatus] = useState<TemplateStatus | null>(
-		null,
-	);
 
 	// Fetch current user to get role
 	const { data: userData, isLoading: userLoading } = useCurrentUserQuery();
@@ -98,25 +84,10 @@ function EditTemplatePage() {
 		setFormError(null);
 
 		// Validate choice points
-		if (choicePoints.length > 0) {
-			for (const cp of choicePoints) {
-				if (!cp.prompt_text.trim()) {
-					setFormError("All choice points must have a prompt text");
-					return;
-				}
-				if (cp.options.length < 2 || cp.options.length > 4) {
-					setFormError("Each choice point must have 2-4 options");
-					return;
-				}
-				for (const opt of cp.options) {
-					if (!opt.text.trim() || !opt.tone.trim() || !opt.impact.trim()) {
-						setFormError(
-							"All option fields (text, tone, impact) must be filled",
-						);
-						return;
-					}
-				}
-			}
+		const validationResult = validateChoicePoints(choicePoints);
+		if (!validationResult.valid) {
+			setFormError(validationResult.error || "Invalid choice points");
+			return;
 		}
 
 		updateChoicePointsMutation.mutate(
@@ -135,13 +106,13 @@ function EditTemplatePage() {
 	// Update status mutation
 	const statusMutation = useUpdateTemplateStatusMutation(id);
 
-	const handleStatusSuccess = () => {
-		setShowStatusDialog(false);
-		setPendingStatus(null);
-	};
-
-	const handleStatusError = (error: Error) => {
-		setFormError(error.message);
+	const handleStatusChange = (status: TemplateStatus) => {
+		setFormError(null);
+		statusMutation.mutate(status, {
+			onError: (error: Error) => {
+				setFormError(error.message);
+			},
+		});
 	};
 
 	// Delete template mutation
@@ -186,20 +157,9 @@ function EditTemplatePage() {
 		setFormError(null);
 
 		// Validation
-		if (!formData.title.trim()) {
-			setFormError("Title is required");
-			return;
-		}
-		if (!formData.description.trim()) {
-			setFormError("Description is required");
-			return;
-		}
-		if (!formData.base_tropes.trim()) {
-			setFormError("At least one trope is required");
-			return;
-		}
-		if (formData.estimated_scenes < 1 || formData.estimated_scenes > 100) {
-			setFormError("Estimated scenes must be between 1 and 100");
+		const validationResult = validateTemplateForm(formData);
+		if (!validationResult.valid) {
+			setFormError(validationResult.error || "Invalid form data");
 			return;
 		}
 
@@ -207,35 +167,6 @@ function EditTemplatePage() {
 			onSuccess: handleUpdateSuccess,
 			onError: handleUpdateError,
 		});
-	};
-
-	const handleStatusChange = (status: TemplateStatus) => {
-		setPendingStatus(status);
-		setShowStatusDialog(true);
-	};
-
-	const confirmStatusChange = () => {
-		if (pendingStatus) {
-			statusMutation.mutate(pendingStatus, {
-				onSuccess: handleStatusSuccess,
-				onError: handleStatusError,
-			});
-		}
-	};
-
-	const getStatusDialogMessage = () => {
-		if (!pendingStatus) return "";
-
-		switch (pendingStatus) {
-			case "draft":
-				return "This will unpublish the template and hide it from public view.";
-			case "published":
-				return "This will make the template visible to all users.";
-			case "archived":
-				return "This will archive the template and hide it from public view. Existing user stories will remain accessible.";
-			default:
-				return "";
-		}
 	};
 
 	return (
@@ -408,48 +339,11 @@ function EditTemplatePage() {
 						<Heading level="h2" size="subsection">
 							Status Management
 						</Heading>
-						<div className="flex flex-wrap gap-3">
-							{template.status !== "draft" && (
-								<button
-									type="button"
-									onClick={() => handleStatusChange("draft")}
-									className="flex items-center gap-2 px-4 py-2 bg-yellow-100 text-yellow-700 rounded-lg hover:bg-yellow-200 transition-colors"
-								>
-									<EyeOff className="w-4 h-4" />
-									Set as Draft
-								</button>
-							)}
-							{template.status !== "published" && (
-								<button
-									type="button"
-									onClick={() => handleStatusChange("published")}
-									className="flex items-center gap-2 px-4 py-2 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition-colors"
-								>
-									<Eye className="w-4 h-4" />
-									Publish
-								</button>
-							)}
-							{template.status !== "archived" && (
-								<button
-									type="button"
-									onClick={() => handleStatusChange("archived")}
-									className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
-								>
-									<Archive className="w-4 h-4" />
-									Archive
-								</button>
-							)}
-							{template.status === "archived" && (
-								<button
-									type="button"
-									onClick={() => handleStatusChange("published")}
-									className="flex items-center gap-2 px-4 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors"
-								>
-									<ArchiveRestore className="w-4 h-4" />
-									Unarchive
-								</button>
-							)}
-						</div>
+						<TemplateStatusManager
+							currentStatus={template.status}
+							onStatusChange={handleStatusChange}
+							isLoading={statusMutation.isPending}
+						/>
 					</div>
 
 					{/* Danger Zone (Admin Only) */}
@@ -477,20 +371,6 @@ function EditTemplatePage() {
 					)}
 				</div>
 			</div>
-
-			{/* Status Confirmation Dialog */}
-			<ConfirmDialog
-				isOpen={showStatusDialog}
-				onClose={() => {
-					setShowStatusDialog(false);
-					setPendingStatus(null);
-				}}
-				onConfirm={confirmStatusChange}
-				title={`Change status to ${pendingStatus}?`}
-				message={getStatusDialogMessage()}
-				confirmText="Change Status"
-				loading={statusMutation.isPending}
-			/>
 
 			{/* Delete Confirmation Dialog */}
 			<ConfirmDialog

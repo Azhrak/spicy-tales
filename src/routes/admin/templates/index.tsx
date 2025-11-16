@@ -28,6 +28,7 @@ import {
 	useAdminTemplatesStatsQuery,
 } from "~/hooks/useAdminTemplatesQuery";
 import { useCurrentUserQuery } from "~/hooks/useCurrentUserQuery";
+import { useTableSorting } from "~/hooks/useTableSorting";
 import type { TemplateStatus } from "~/lib/db/types";
 
 // Search params schema
@@ -81,9 +82,15 @@ function TemplatesListPage() {
 	// Get state from URL params
 	const currentPage = search.page || 1;
 	const statusFilter = search.status || "all";
-	const sortField = search.sortBy || "updated";
-	const sortDirection = search.sortOrder || "desc";
 	const itemsPerPage = 10;
+
+	// Use table sorting hook
+	const { sortField, sortOrder, handleSort } = useTableSorting({
+		defaultField: "updated" as SortField,
+		defaultOrder: "desc",
+		currentSearch: search,
+		route: "/admin/templates",
+	});
 
 	// Fetch current user to get role
 	const { data: userData, isLoading: userLoading } = useCurrentUserQuery();
@@ -103,7 +110,7 @@ function TemplatesListPage() {
 		limit: itemsPerPage,
 		status: statusFilter,
 		sortBy: sortFieldMap[sortField],
-		sortOrder: sortDirection,
+		sortOrder: sortOrder,
 		enabled: !!userData,
 	});
 
@@ -136,21 +143,6 @@ function TemplatesListPage() {
 
 	const { role } = userData;
 	const { templates, pagination } = templatesData;
-
-	// Sorting function (triggers server-side sorting via React Query)
-	const handleSort = (field: SortField) => {
-		const newSortOrder =
-			sortField === field && sortDirection === "asc" ? "desc" : "asc";
-
-		navigate({
-			to: "/admin/templates",
-			search: {
-				...search,
-				sortBy: field,
-				sortOrder: newSortOrder,
-			},
-		});
-	};
 
 	// Reset to page 1 when filters change
 	const handleFilterChange = (filter: StatusFilter) => {

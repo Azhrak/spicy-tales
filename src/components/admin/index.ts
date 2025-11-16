@@ -10,3 +10,4 @@ export { PaginationControls } from "./PaginationControls";
 export { RoleBadge } from "./RoleBadge";
 export { StatCard } from "./StatCard";
 export { StatusBadge } from "./StatusBadge";
+export { TemplateStatusManager } from "./TemplateStatusManager";
