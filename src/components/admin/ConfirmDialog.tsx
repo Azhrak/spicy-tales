@@ -30,33 +30,37 @@ export function ConfirmDialog({
 			{/* Backdrop */}
 			<button
 				type="button"
-				className="fixed inset-0 bg-black bg-opacity-50 transition-opacity"
+				className="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 transition-opacity"
 				onClick={onClose}
 				onKeyDown={(e) => e.key === "Escape" && onClose()}
 				aria-label="Close dialog"
 			/>
 			{/* Dialog */}
 			<div className="flex min-h-full items-center justify-center p-4">
-				<div className="relative bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+				<div className="relative bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full p-6">
 					{/* Close button */}
 					<Button
 						onClick={onClose}
 						variant="ghost"
 						size="sm"
-						className="absolute top-4 right-4 text-slate-400 hover:text-slate-600"
+						className="absolute top-4 right-4 text-slate-400 dark:text-gray-400 hover:text-slate-600 dark:hover:text-gray-200"
 						aria-label="Close"
 					>
 						<X className="w-5 h-5" />
 					</Button>
 					<div className="space-y-4">
 						{/* Icon */}
-						<div className="flex items-center justify-center w-12 h-12 rounded-full bg-red-100">
-							<AlertTriangle className="w-6 h-6 text-red-600" />
+						<div className="flex items-center justify-center w-12 h-12 rounded-full bg-red-100 dark:bg-red-900/30">
+							<AlertTriangle className="w-6 h-6 text-red-600 dark:text-red-400" />
 						</div>
 						<div className="space-y-2">
 							{/* Content */}
-							<h3 className="text-lg font-semibold text-slate-900">{title}</h3>
-							<div className="text-sm text-slate-600">{message}</div>
+							<h3 className="text-lg font-semibold text-slate-900 dark:text-gray-100">
+								{title}
+							</h3>
+							<div className="text-sm text-slate-600 dark:text-gray-300">
+								{message}
+							</div>
 						</div>
 						{/* Actions */}
 						<div className="flex gap-3 justify-end">
