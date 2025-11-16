@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { BookOpen, Clock, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { EmptyState } from "~/components/EmptyState";
@@ -15,19 +15,25 @@ import { useDeleteStoryMutation } from "~/hooks/useDeleteStoryMutation";
 import { useUserStoriesQuery } from "~/hooks/useUserStoriesQuery";
 
 export const Route = createFileRoute("/library")({
+	validateSearch: (search: Record<string, unknown>) => {
+		return {
+			tab: (search.tab as string) === "completed" ? "completed" : "in-progress",
+		};
+	},
 	component: LibraryPage,
 });
 
 function LibraryPage() {
-	const [activeTab, setActiveTab] = useState<"in-progress" | "completed">(
-		"in-progress",
-	);
+	const navigate = useNavigate({ from: "/library" });
+	const { tab: activeTab } = Route.useSearch();
 	const [deletingId, setDeletingId] = useState<string | null>(null);
 
 	// Fetch current user profile
 	const { data: profileData } = useCurrentUserQuery();
 
-	const { data, isLoading, error } = useUserStoriesQuery(activeTab);
+	const { data, isLoading, error } = useUserStoriesQuery(
+		activeTab as "in-progress" | "completed",
+	);
 
 	const deleteStory = useDeleteStoryMutation();
 
@@ -54,10 +60,10 @@ function LibraryPage() {
 	const stories = data?.stories || [];
 
 	return (
-		<PageBackground>
+		<PageBackground className="flex flex-col min-h-screen">
 			<Header currentPath="/library" userRole={profileData?.role} />
 
-			<PageContainer maxWidth="2xl">
+			<PageContainer maxWidth="2xl" className="flex-1">
 				<div className="space-y-8">
 					<Heading level="h1" size="page">
 						My Library
@@ -66,7 +72,7 @@ function LibraryPage() {
 					<div className="flex gap-4">
 						<button
 							type="button"
-							onClick={() => setActiveTab("in-progress")}
+							onClick={() => navigate({ search: { tab: "in-progress" } })}
 							className={`px-6 py-3 rounded-lg font-semibold transition-colors ${
 								activeTab === "in-progress"
 									? "bg-romance-600 text-white"
@@ -80,7 +86,7 @@ function LibraryPage() {
 						</button>
 						<button
 							type="button"
-							onClick={() => setActiveTab("completed")}
+							onClick={() => navigate({ search: { tab: "completed" } })}
 							className={`px-6 py-3 rounded-lg font-semibold transition-colors ${
 								activeTab === "completed"
 									? "bg-romance-600 text-white"
@@ -127,7 +133,7 @@ function LibraryPage() {
 									createdAt={story.created_at}
 									currentScene={story.current_scene}
 									totalScenes={story.template.estimated_scenes}
-									status={activeTab}
+									status={activeTab as "in-progress" | "completed"}
 									onDelete={handleDeleteClick}
 									isDeleting={deletingId === story.id}
 								/>
