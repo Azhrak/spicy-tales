@@ -1,6 +1,7 @@
 import { Lock } from "lucide-react";
 import { Button } from "~/components/Button";
 import { FormInput } from "~/components/FormInput";
+import { Card } from "~/components/ui";
 
 interface PasswordChangeProps {
 	currentPassword: string;
@@ -28,7 +29,7 @@ export function PasswordChange({
 	success,
 }: PasswordChangeProps) {
 	return (
-		<div className="bg-white rounded-2xl shadow-lg p-8">
+		<Card>
 			<div className="space-y-6">
 				<div className="flex items-center gap-2">
 					<Lock className="w-5 h-5 text-romance-500" />
@@ -75,6 +76,6 @@ export function PasswordChange({
 					</Button>
 				</form>
 			</div>
-		</div>
+		</Card>
 	);
 }

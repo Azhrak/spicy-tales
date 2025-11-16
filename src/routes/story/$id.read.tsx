@@ -82,7 +82,10 @@ function ReadingPage() {
 
 		if (result.completed) {
 			// Story complete - redirect to library
-			navigate({ to: "/library", search: { tab: "completed" } });
+			navigate({
+				to: "/library",
+				search: { tab: "completed", favorites: false },
+			});
 		} else if (result.nextScene !== undefined) {
 			// Move to next scene and refetch
 			navigate({ search: { scene: result.nextScene }, replace: false });
@@ -186,7 +189,7 @@ function ReadingPage() {
 					</div>
 					<Link
 						to="/library"
-						search={{ tab: "completed" }}
+						search={{ tab: "completed", favorites: false }}
 						className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white text-rose-600 rounded-lg hover:bg-rose-50 transition-colors border border-rose-200"
 					>
 						<Home className="w-5 h-5" />
@@ -212,7 +215,7 @@ function ReadingPage() {
 					<div className="flex items-center justify-between">
 						<Link
 							to="/library"
-							search={{ tab: "in-progress" }}
+							search={{ tab: "in-progress", favorites: false }}
 							className="flex items-center gap-2 text-gray-600 hover:text-rose-600 transition-colors"
 						>
 							<ChevronLeft className="w-5 h-5" />
@@ -447,7 +450,7 @@ function ReadingPage() {
 												// Redirect to library after marking complete
 												navigate({
 													to: "/library",
-													search: { tab: "completed" },
+													search: { tab: "completed", favorites: false },
 												});
 											},
 										},
@@ -466,7 +469,7 @@ function ReadingPage() {
 							</Button>
 							<Link
 								to="/library"
-								search={{ tab: "completed" }}
+								search={{ tab: "completed", favorites: false }}
 								className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white text-rose-600 rounded-lg hover:bg-rose-50 transition-colors border border-rose-200"
 							>
 								<Home className="w-5 h-5" />

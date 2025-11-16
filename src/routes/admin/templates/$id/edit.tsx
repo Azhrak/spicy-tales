@@ -28,6 +28,7 @@ import { useUpdateChoicePointsMutation } from "~/hooks/useUpdateChoicePointsMuta
 import { useUpdateTemplateMutation } from "~/hooks/useUpdateTemplateMutation";
 import { useUpdateTemplateStatusMutation } from "~/hooks/useUpdateTemplateStatusMutation";
 import type { TemplateStatus } from "~/lib/api/types";
+import { GRADIENT_OPTIONS } from "~/lib/constants/gradients";
 
 export const Route = createFileRoute("/admin/templates/$id/edit")({
 	component: EditTemplatePage,
@@ -237,34 +238,6 @@ function EditTemplatePage() {
 		}
 	};
 
-	const gradientOptions = [
-		{ value: "from-amber-400 to-orange-500", label: "Amber to Orange" },
-		{ value: "from-amber-500 to-yellow-600", label: "Amber to Yellow" },
-		{ value: "from-blue-600 to-indigo-800", label: "Blue to Indigo" },
-		{ value: "from-cyan-400 to-blue-500", label: "Cyan to Blue" },
-		{ value: "from-emerald-600 to-teal-700", label: "Emerald to Teal" },
-		{ value: "from-fuchsia-500 to-pink-600", label: "Fuchsia to Pink" },
-		{ value: "from-gray-700 to-slate-900", label: "Gray to Slate" },
-		{ value: "from-green-500 to-emerald-700", label: "Green to Emerald" },
-		{ value: "from-lime-500 to-green-600", label: "Lime to Green" },
-		{ value: "from-orange-600 to-red-700", label: "Orange to Red" },
-		{ value: "from-purple-600 to-indigo-700", label: "Purple to Indigo" },
-		{ value: "from-purple-500 to-pink-600", label: "Purple to Pink" },
-		{ value: "from-purple-600 to-pink-600", label: "Purple to Pink (Alt)" },
-		{ value: "from-red-700 to-black", label: "Red to Black" },
-		{ value: "from-red-600 to-rose-700", label: "Red to Rose" },
-		{ value: "from-rose-500 to-pink-600", label: "Rose to Pink" },
-		{ value: "from-rose-400 to-red-500", label: "Rose to Red" },
-		{ value: "from-sky-500 to-blue-600", label: "Sky to Blue" },
-		{ value: "from-slate-600 to-gray-800", label: "Slate to Gray" },
-		{ value: "from-stone-600 to-zinc-800", label: "Stone to Zinc" },
-		{ value: "from-teal-500 to-cyan-700", label: "Teal to Cyan" },
-		{ value: "from-violet-600 to-purple-800", label: "Violet to Purple" },
-		{ value: "from-yellow-600 to-amber-700", label: "Yellow to Amber" },
-		{ value: "from-yellow-600 to-orange-700", label: "Yellow to Orange" },
-		{ value: "from-zinc-700 to-neutral-900", label: "Zinc to Neutral" },
-	];
-
 	return (
 		<AdminLayout currentPath="/admin/templates" userRole={role}>
 			<div className="space-y-6">
@@ -373,7 +346,7 @@ function EditTemplatePage() {
 								className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
 								required
 							>
-								{gradientOptions.map((option) => (
+								{GRADIENT_OPTIONS.map((option) => (
 									<option key={option.value} value={option.value}>
 										{option.label}
 									</option>

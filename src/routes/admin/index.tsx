@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Archive, Eye, FilePlus, FileText, Users } from "lucide-react";
-import { AdminLayout, NoPermissions } from "~/components/admin";
+import { AdminLayout, NoPermissions, StatCard } from "~/components/admin";
 import { ErrorMessage } from "~/components/ErrorMessage";
 import { Heading } from "~/components/Heading";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
@@ -137,30 +137,5 @@ function AdminDashboard() {
 				)}
 			</div>
 		</AdminLayout>
-	);
-}
-
-interface StatCardProps {
-	title: string;
-	value: number;
-	icon: React.ElementType;
-	color: string;
-}
-
-function StatCard({ title, value, icon: Icon, color }: StatCardProps) {
-	return (
-		<div className="bg-white rounded-lg border border-slate-200 p-6 flex flex-col gap-4">
-			<div className="flex items-center justify-between">
-				<div className={`p-3 rounded-lg ${color} bg-opacity-10`}>
-					<Icon className={`w-6 h-6 ${color.replace("bg-", "text-")}`} />
-				</div>
-			</div>
-			<div className="flex flex-col gap-1">
-				<Heading level="h3" className="text-slate-600">
-					{title}
-				</Heading>
-				<p className="text-3xl font-bold text-slate-900">{value}</p>
-			</div>
-		</div>
 	);
 }

@@ -1,5 +1,6 @@
 import { Ruler } from "lucide-react";
 import { Heading } from "~/components/Heading";
+import { Card } from "~/components/ui";
 import {
 	SCENE_LENGTH_LABELS,
 	SCENE_LENGTH_OPTIONS,
@@ -16,7 +17,7 @@ export function SceneLengthSection({
 	onSelect,
 }: SceneLengthSectionProps) {
 	return (
-		<div className="bg-white rounded-2xl shadow-lg p-6">
+		<Card padding="md">
 			<div className="space-y-6">
 				<div className="space-y-4">
 					<div className="flex items-center">
@@ -68,6 +69,6 @@ export function SceneLengthSection({
 					))}
 				</div>
 			</div>
-		</div>
+		</Card>
 	);
 }

@@ -1,6 +1,7 @@
 import { User } from "lucide-react";
 import { Button } from "~/components/Button";
 import { FormInput } from "~/components/FormInput";
+import { Card } from "~/components/ui";
 
 interface ProfileInformationProps {
 	name: string;
@@ -26,7 +27,7 @@ export function ProfileInformation({
 	success,
 }: ProfileInformationProps) {
 	return (
-		<div className="bg-white rounded-2xl shadow-lg p-8">
+		<Card>
 			<div className="space-y-6">
 				<div className="flex items-center gap-2">
 					<User className="w-5 h-5 text-romance-500" />
@@ -73,6 +74,6 @@ export function ProfileInformation({
 					</Button>
 				</form>
 			</div>
-		</div>
+		</Card>
 	);
 }

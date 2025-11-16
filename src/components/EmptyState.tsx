@@ -1,6 +1,8 @@
 import { Link } from "@tanstack/react-router";
 import type { LucideIcon } from "lucide-react";
 import type { ReactNode } from "react";
+import { Card } from "~/components/ui";
+import { cn } from "~/lib/utils";
 
 interface EmptyStateProps {
 	icon: LucideIcon;
@@ -23,9 +25,7 @@ export function EmptyState({
 	children,
 }: EmptyStateProps) {
 	return (
-		<div
-			className={`bg-white rounded-2xl shadow-lg p-12 text-center space-y-4 ${className}`}
-		>
+		<Card className={cn("text-center space-y-4", className)} padding="lg">
 			<Icon className="w-16 h-16 text-slate-300 mx-auto" />
 			<h2 className="text-2xl font-bold text-slate-900">{title}</h2>
 			<div className="space-y-6">
@@ -40,6 +40,6 @@ export function EmptyState({
 				)}
 				{children}
 			</div>
-		</div>
+		</Card>
 	);
 }

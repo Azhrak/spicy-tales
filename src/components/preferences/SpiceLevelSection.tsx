@@ -1,5 +1,6 @@
 import { Flame } from "lucide-react";
 import { Heading } from "~/components/Heading";
+import { Card } from "~/components/ui";
 import { SPICE_LABELS, type SpiceLevel } from "~/lib/types/preferences";
 
 interface SpiceLevelSectionProps {
@@ -12,7 +13,7 @@ export function SpiceLevelSection({
 	onSelect,
 }: SpiceLevelSectionProps) {
 	return (
-		<div className="bg-white rounded-2xl shadow-lg p-6">
+		<Card padding="md">
 			<div className="space-y-6">
 				<div className="flex items-center">
 					<Flame className="w-6 h-6 text-romance-500 mr-2" />
@@ -71,6 +72,6 @@ export function SpiceLevelSection({
 					))}
 				</div>
 			</div>
-		</div>
+		</Card>
 	);
 }

@@ -16,6 +16,7 @@ import {
 	DataTable,
 	FilterBar,
 	PaginationControls,
+	StatCard,
 	StatusBadge,
 } from "~/components/admin";
 import { Button } from "~/components/Button";
@@ -287,29 +288,29 @@ function TemplatesListPage() {
 
 				{/* Statistics */}
 				<div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-					<StatBox
-						label="Total Templates"
+					<StatCard
+						title="Total Templates"
 						value={stats.total}
 						icon={FileText}
-						color="blue"
+						color="bg-blue-500"
 					/>
-					<StatBox
-						label="Published"
+					<StatCard
+						title="Published"
 						value={stats.published}
 						icon={Eye}
-						color="green"
+						color="bg-green-500"
 					/>
-					<StatBox
-						label="Drafts"
+					<StatCard
+						title="Drafts"
 						value={stats.draft}
 						icon={EyeOff}
-						color="yellow"
+						color="bg-yellow-500"
 					/>
-					<StatBox
-						label="Archived"
+					<StatCard
+						title="Archived"
 						value={stats.archived}
 						icon={Archive}
-						color="gray"
+						color="bg-gray-500"
 					/>
 				</div>
 
@@ -498,35 +499,5 @@ function TemplatesListPage() {
 				/>
 			</div>
 		</AdminLayout>
-	);
-}
-
-interface StatBoxProps {
-	label: string;
-	value: number;
-	icon: React.ElementType;
-	color: "blue" | "green" | "yellow" | "gray";
-}
-
-function StatBox({ label, value, icon: Icon, color }: StatBoxProps) {
-	const colorClasses = {
-		blue: "bg-blue-50 text-blue-600",
-		green: "bg-green-50 text-green-600",
-		yellow: "bg-yellow-50 text-yellow-600",
-		gray: "bg-gray-50 text-gray-600",
-	};
-
-	return (
-		<div className="bg-white rounded-lg border border-slate-200 p-4">
-			<div className="flex items-center gap-3">
-				<div className={`p-2 rounded-lg ${colorClasses[color]}`}>
-					<Icon className="w-5 h-5" />
-				</div>
-				<div>
-					<p className="text-sm text-slate-600">{label}</p>
-					<p className="text-2xl font-bold text-slate-900">{value}</p>
-				</div>
-			</div>
-		</div>
 	);
 }

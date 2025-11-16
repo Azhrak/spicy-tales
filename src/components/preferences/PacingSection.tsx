@@ -1,6 +1,7 @@
 import { Wind } from "lucide-react";
 import { Heading } from "~/components/Heading";
 import { RadioButton } from "~/components/RadioButton";
+import { Card } from "~/components/ui";
 import {
 	PACING_LABELS,
 	PACING_OPTIONS,
@@ -17,7 +18,7 @@ export function PacingSection({
 	onSelect,
 }: PacingSectionProps) {
 	return (
-		<div className="bg-white rounded-2xl shadow-lg p-6">
+		<Card padding="md">
 			<div className="space-y-6">
 				<div className="space-y-4">
 					<div className="flex items-center">
@@ -47,6 +48,6 @@ export function PacingSection({
 					))}
 				</div>
 			</div>
-		</div>
+		</Card>
 	);
 }

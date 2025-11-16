@@ -7,6 +7,7 @@ import {
 	NoPermissions,
 	PaginationControls,
 	RoleBadge,
+	StatCard,
 } from "~/components/admin";
 import { ErrorMessage } from "~/components/ErrorMessage";
 import { Heading } from "~/components/Heading";
@@ -147,35 +148,35 @@ function UsersListPage() {
 
 				{/* Statistics */}
 				<div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-					<StatBox
-						label="Total Users"
+					<StatCard
+						title="Total Users"
 						value={stats.total}
 						icon={UsersIcon}
-						color="purple"
+						color="bg-purple-500"
 					/>
-					<StatBox
-						label="Regular Users"
+					<StatCard
+						title="Regular Users"
 						value={stats.user}
 						icon={UsersIcon}
-						color="slate"
+						color="bg-slate-500"
 					/>
-					<StatBox
-						label="Editors"
+					<StatCard
+						title="Editors"
 						value={stats.editor}
 						icon={Edit2}
-						color="blue"
+						color="bg-blue-500"
 					/>
-					<StatBox
-						label="Admins"
+					<StatCard
+						title="Admins"
 						value={stats.admin}
 						icon={Shield}
-						color="purple-dark"
+						color="bg-purple-600"
 					/>
-					<StatBox
-						label="Verified"
+					<StatCard
+						title="Verified"
 						value={stats.verified}
 						icon={UsersIcon}
-						color="green"
+						color="bg-green-500"
 					/>
 				</div>
 
@@ -274,36 +275,5 @@ function UsersListPage() {
 				/>
 			</div>
 		</AdminLayout>
-	);
-}
-
-interface StatBoxProps {
-	label: string;
-	value: number;
-	icon: React.ElementType;
-	color: "purple" | "slate" | "blue" | "purple-dark" | "green";
-}
-
-function StatBox({ label, value, icon: Icon, color }: StatBoxProps) {
-	const colorClasses = {
-		purple: "bg-purple-50 text-purple-600",
-		slate: "bg-slate-50 text-slate-600",
-		blue: "bg-blue-50 text-blue-600",
-		"purple-dark": "bg-purple-100 text-purple-700",
-		green: "bg-green-50 text-green-600",
-	};
-
-	return (
-		<div className="bg-white rounded-lg border border-slate-200 p-4">
-			<div className="flex items-center gap-3">
-				<div className={`p-2 rounded-lg ${colorClasses[color]}`}>
-					<Icon className="w-5 h-5" />
-				</div>
-				<div>
-					<p className="text-sm text-slate-600">{label}</p>
-					<p className="text-2xl font-bold text-slate-900">{value}</p>
-				</div>
-			</div>
-		</div>
 	);
 }

@@ -10,6 +10,7 @@ import { Heading } from "~/components/Heading";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
 import { useCreateTemplateMutation } from "~/hooks/useCreateTemplateMutation";
 import { useCurrentUserQuery } from "~/hooks/useCurrentUserQuery";
+import { GRADIENT_OPTIONS } from "~/lib/constants/gradients";
 
 export const Route = createFileRoute("/admin/templates/new")({
 	component: NewTemplatePage,
@@ -120,17 +121,6 @@ function NewTemplatePage() {
 		});
 	};
 
-	const gradientOptions = [
-		{ value: "from-purple-600 to-pink-600", label: "Purple to Pink" },
-		{ value: "from-blue-600 to-cyan-600", label: "Blue to Cyan" },
-		{ value: "from-green-600 to-teal-600", label: "Green to Teal" },
-		{ value: "from-red-600 to-orange-600", label: "Red to Orange" },
-		{ value: "from-indigo-600 to-purple-600", label: "Indigo to Purple" },
-		{ value: "from-pink-600 to-rose-600", label: "Pink to Rose" },
-		{ value: "from-amber-600 to-yellow-600", label: "Amber to Yellow" },
-		{ value: "from-slate-600 to-slate-800", label: "Slate Dark" },
-	];
-
 	return (
 		<AdminLayout currentPath="/admin/templates" userRole={role}>
 			<div className="space-y-6">
@@ -239,7 +229,7 @@ function NewTemplatePage() {
 								className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
 								required
 							>
-								{gradientOptions.map((option) => (
+								{GRADIENT_OPTIONS.map((option) => (
 									<option key={option.value} value={option.value}>
 										{option.label}
 									</option>

@@ -1,5 +1,6 @@
 import { Heart } from "lucide-react";
 import { Heading } from "~/components/Heading";
+import { Card } from "~/components/ui";
 import { TROPE_LABELS, TROPES, type Trope } from "~/lib/types/preferences";
 
 interface TropesSectionProps {
@@ -12,7 +13,7 @@ export function TropesSection({
 	onToggle,
 }: TropesSectionProps) {
 	return (
-		<div className="bg-white rounded-2xl shadow-lg p-6">
+		<Card padding="md">
 			<div className="space-y-6">
 				<div className="flex items-center">
 					<Heart className="w-6 h-6 text-romance-500 mr-2" />
@@ -38,6 +39,6 @@ export function TropesSection({
 					))}
 				</div>
 			</div>
-		</div>
+		</Card>
 	);
 }

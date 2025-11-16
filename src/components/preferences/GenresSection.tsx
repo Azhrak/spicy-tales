@@ -1,5 +1,6 @@
 import { BookOpen } from "lucide-react";
 import { Heading } from "~/components/Heading";
+import { Card } from "~/components/ui";
 import { GENRE_LABELS, GENRES, type Genre } from "~/lib/types/preferences";
 
 interface GenresSectionProps {
@@ -12,7 +13,7 @@ export function GenresSection({
 	onToggle,
 }: GenresSectionProps) {
 	return (
-		<div className="bg-white rounded-2xl shadow-lg p-6">
+		<Card padding="md">
 			<div className="space-y-6">
 				<div className="flex items-center">
 					<BookOpen className="w-6 h-6 text-romance-500 mr-2" />
@@ -38,6 +39,6 @@ export function GenresSection({
 					))}
 				</div>
 			</div>
-		</div>
+		</Card>
 	);
 }

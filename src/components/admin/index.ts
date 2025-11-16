@@ -8,4 +8,5 @@ export { FilterBar } from "./FilterBar";
 export { NoPermissions } from "./NoPermissions";
 export { PaginationControls } from "./PaginationControls";
 export { RoleBadge } from "./RoleBadge";
+export { StatCard } from "./StatCard";
 export { StatusBadge } from "./StatusBadge";
