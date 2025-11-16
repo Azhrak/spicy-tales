@@ -43,7 +43,7 @@ function ReadingPage() {
 
 		if (result.completed) {
 			// Story complete - redirect to library
-			navigate({ to: "/library" });
+			navigate({ to: "/library", search: { tab: "completed" } });
 		} else if (result.nextScene !== undefined) {
 			// Move to next scene and refetch
 			setCurrentSceneNumber(result.nextScene);
@@ -88,7 +88,8 @@ function ReadingPage() {
 					</div>
 					<Link
 						to="/library"
-						className="inline-flex items-center gap-2 px-6 py-3 bg-rose-600 text-white rounded-lg hover:bg-rose-700 transition-colors"
+						search={{ tab: "completed" }}
+						className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white text-rose-600 rounded-lg hover:bg-rose-50 transition-colors border border-rose-200"
 					>
 						<Home className="w-5 h-5" />
 						Back to Library
@@ -100,9 +101,10 @@ function ReadingPage() {
 
 	if (!data) return null;
 
-	const { scene, story, choicePoint } = data;
+	const { scene, story, choicePoint, previousChoice } = data;
 	const progress = (scene.number / story.estimatedScenes) * 100;
 	const isLastScene = scene.number >= story.estimatedScenes;
+	const hasAlreadyMadeChoice = previousChoice !== null;
 
 	return (
 		<div className="min-h-screen bg-linear-to-br from-rose-50 via-purple-50 to-pink-50">
@@ -112,6 +114,7 @@ function ReadingPage() {
 					<div className="flex items-center justify-between">
 						<Link
 							to="/library"
+							search={{ tab: "in-progress" }}
 							className="flex items-center gap-2 text-gray-600 hover:text-rose-600 transition-colors"
 						>
 							<ChevronLeft className="w-5 h-5" />
@@ -196,42 +199,98 @@ function ReadingPage() {
 							<p className="text-gray-600">{choicePoint.promptText}</p>
 						</div>
 
-						<div className="space-y-3">
-							{choicePoint.options.map((option, index) => (
-								<button
-									key={option.text}
-									type="button"
-									onClick={() => setSelectedOption(index)}
-									disabled={choiceMutation.isPending}
-									className={`w-full text-left p-4 rounded-lg border-2 transition-all ${
-										selectedOption === index
-											? "border-rose-500 bg-rose-50"
-											: "border-gray-200 hover:border-rose-300 bg-white"
-									} ${choiceMutation.isPending ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
-								>
-									<div className="flex items-start justify-between">
-										<span className="font-medium text-gray-800">
-											{option.text}
-										</span>
-										<span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded ml-3">
-											{option.tone}
-										</span>
-									</div>
-								</button>
-							))}
-						</div>
+						{hasAlreadyMadeChoice ? (
+							// Display previous choice in read-only mode
+							<>
+								<div className="space-y-3">
+									{choicePoint.options.map((option, index) => (
+										<div
+											key={option.text}
+											className={`w-full text-left p-4 rounded-lg border-2 ${
+												previousChoice === index
+													? "border-rose-500 bg-rose-50"
+													: "border-gray-200 bg-gray-50"
+											}`}
+										>
+											<div className="flex items-start justify-between">
+												<span
+													className={`font-medium ${
+														previousChoice === index
+															? "text-gray-800"
+															: "text-gray-400"
+													}`}
+												>
+													{option.text}
+												</span>
+												<div className="flex items-center gap-2 ml-3">
+													{previousChoice === index && (
+														<span className="text-xs text-rose-600 bg-rose-100 px-2 py-1 rounded font-medium">
+															Your Choice
+														</span>
+													)}
+													<span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+														{option.tone}
+													</span>
+												</div>
+											</div>
+										</div>
+									))}
+								</div>
 
-						<Button
-							type="button"
-							onClick={handleMakeChoice}
-							disabled={selectedOption === null}
-							loading={choiceMutation.isPending}
-							variant="primary"
-							className="w-full bg-linear-to-r from-rose-600 to-purple-600 hover:from-rose-700 hover:to-purple-700"
-						>
-							<span>Continue Story</span>
-							<ChevronRight className="w-5 h-5" />
-						</Button>
+								<Button
+									type="button"
+									onClick={() => {
+										const nextScene = scene.number + 1;
+										setCurrentSceneNumber(nextScene);
+									}}
+									variant="primary"
+									className="w-full bg-linear-to-r from-rose-600 to-purple-600 hover:from-rose-700 hover:to-purple-700"
+								>
+									<span>Continue Story</span>
+									<ChevronRight className="w-5 h-5" />
+								</Button>
+							</>
+						) : (
+							// Make a new choice
+							<>
+								<div className="space-y-3">
+									{choicePoint.options.map((option, index) => (
+										<button
+											key={option.text}
+											type="button"
+											onClick={() => setSelectedOption(index)}
+											disabled={choiceMutation.isPending}
+											className={`w-full text-left p-4 rounded-lg border-2 transition-all ${
+												selectedOption === index
+													? "border-rose-500 bg-rose-50"
+													: "border-gray-200 hover:border-rose-300 bg-white"
+											} ${choiceMutation.isPending ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
+										>
+											<div className="flex items-start justify-between">
+												<span className="font-medium text-gray-800">
+													{option.text}
+												</span>
+												<span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded ml-3">
+													{option.tone}
+												</span>
+											</div>
+										</button>
+									))}
+								</div>
+
+								<Button
+									type="button"
+									onClick={handleMakeChoice}
+									disabled={selectedOption === null}
+									loading={choiceMutation.isPending}
+									variant="primary"
+									className="w-full bg-linear-to-r from-rose-600 to-purple-600 hover:from-rose-700 hover:to-purple-700"
+								>
+									<span>Continue Story</span>
+									<ChevronRight className="w-5 h-5" />
+								</Button>
+							</>
+						)}
 					</div>
 				)}{" "}
 				{/* No Choice Point - Continue to Next Scene */}
@@ -274,7 +333,10 @@ function ReadingPage() {
 										{
 											onSuccess: () => {
 												// Redirect to library after marking complete
-												navigate({ to: "/library" });
+												navigate({
+													to: "/library",
+													search: { tab: "completed" },
+												});
 											},
 										},
 									);
@@ -292,6 +354,7 @@ function ReadingPage() {
 							</Button>
 							<Link
 								to="/library"
+								search={{ tab: "completed" }}
 								className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white text-rose-600 rounded-lg hover:bg-rose-50 transition-colors border border-rose-200"
 							>
 								<Home className="w-5 h-5" />

@@ -23,6 +23,7 @@ interface SceneData {
 			tone: string;
 		}>;
 	} | null;
+	previousChoice: number | null;
 }
 
 export const storySceneQueryKey = (

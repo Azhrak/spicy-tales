@@ -147,6 +147,21 @@ export const Route = createFileRoute("/api/stories/$id/scene")({
 						sceneNumber,
 					);
 
+					// Check if user has already made a choice at this scene (for re-reading)
+					let previousChoice: number | null = null;
+					if (choicePoint) {
+						const existingChoice = await db
+							.selectFrom("choices")
+							.select("selected_option")
+							.where("story_id", "=", storyId)
+							.where("choice_point_id", "=", choicePoint.id)
+							.executeTakeFirst();
+
+						if (existingChoice) {
+							previousChoice = existingChoice.selected_option;
+						}
+					}
+
 					// Return scene data
 					return json({
 						scene: {
@@ -172,6 +187,7 @@ export const Route = createFileRoute("/api/stories/$id/scene")({
 									}>,
 								}
 							: null,
+						previousChoice,
 					});
 				} catch (error) {
 					console.error("Error fetching scene:", error);
