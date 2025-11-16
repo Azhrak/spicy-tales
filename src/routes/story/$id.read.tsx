@@ -332,7 +332,7 @@ function ReadingPage() {
 													className={`font-medium ${
 														previousChoice === index
 															? "text-gray-800 dark:text-gray-200"
-															: "text-gray-400 dark:text-gray-500"
+															: "text-gray-400 dark:text-gray-400"
 													}`}
 												>
 													{option.text}
@@ -343,7 +343,7 @@ function ReadingPage() {
 															Your Choice
 														</span>
 													)}
-													<span className="text-xs text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-600 px-2 py-1 rounded">
+													<span className="text-xs text-gray-500 dark:text-gray-300 bg-gray-100 dark:bg-gray-600 px-2 py-1 rounded">
 														{option.tone}
 													</span>
 												</div>
