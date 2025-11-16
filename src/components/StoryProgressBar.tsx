@@ -17,13 +17,13 @@ export function StoryProgressBar({
 
 	return (
 		<div className="space-y-2">
-			<div className="flex justify-between text-sm text-slate-600">
+			<div className="flex justify-between text-sm text-slate-600 dark:text-gray-300">
 				<span>
 					Scene {currentScene} of {totalScenes}
 				</span>
 				{showPercentage && <span>{percentage}%</span>}
 			</div>
-			<div className="w-full bg-slate-200 rounded-full h-2">
+			<div className="w-full bg-slate-200 dark:bg-gray-700 rounded-full h-2">
 				<div
 					className="bg-romance-600 h-2 rounded-full transition-all"
 					style={{ width: `${width}%` }}

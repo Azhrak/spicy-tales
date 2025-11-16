@@ -11,6 +11,9 @@ import { Heart } from "lucide-react";
 import { useState } from "react";
 import { Heading } from "~/components/Heading";
 import { PageBackground } from "~/components/PageBackground";
+import { ThemeProvider } from "~/components/ThemeProvider";
+
+import { getThemeServerFn } from "~/lib/theme";
 import globalStyles from "~/styles/globals.css?url";
 
 export const Route = createRootRoute({
@@ -41,6 +44,7 @@ export const Route = createRootRoute({
 			},
 		],
 	}),
+	loader: () => getThemeServerFn(),
 	component: RootComponent,
 	notFoundComponent: NotFoundComponent,
 });
@@ -58,25 +62,31 @@ function RootComponent() {
 			}),
 	);
 
+	const theme = Route.useLoaderData();
+
 	return (
-		<html lang="en">
+		<html className={theme} lang="en" suppressHydrationWarning>
 			<head>
 				<HeadContent />
 			</head>
 			<body>
-				<QueryClientProvider client={queryClient}>
-					<Outlet />
-					<ReactQueryDevtools initialIsOpen={false} />
-					<Scripts />
-				</QueryClientProvider>
+				<ThemeProvider theme={theme}>
+					<QueryClientProvider client={queryClient}>
+						<Outlet />
+						<ReactQueryDevtools initialIsOpen={false} />
+						<Scripts />
+					</QueryClientProvider>
+				</ThemeProvider>
 			</body>
 		</html>
 	);
 }
 
 function NotFoundComponent() {
+	const theme = Route.useLoaderData();
+
 	return (
-		<html lang="en">
+		<html className={theme} lang="en" suppressHydrationWarning>
 			<head>
 				<HeadContent />
 			</head>
@@ -88,7 +98,7 @@ function NotFoundComponent() {
 							<Heading level="h1" size="page">
 								Page Not Found
 							</Heading>
-							<p className="text-lg text-slate-600">
+							<p className="text-lg text-slate-600 dark:text-slate-300">
 								This story page doesn't exist yet.
 							</p>
 							<Link

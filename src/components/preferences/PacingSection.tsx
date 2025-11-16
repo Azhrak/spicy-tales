@@ -27,7 +27,7 @@ export function PacingSection({
 							Relationship Pacing
 						</Heading>
 					</div>
-					<p className="text-slate-600">
+					<p className="text-slate-600 dark:text-gray-300">
 						How quickly should relationships develop in your stories?
 					</p>
 				</div>
@@ -38,10 +38,10 @@ export function PacingSection({
 							selected={selectedPacing === pacing}
 							onClick={() => onSelect(pacing)}
 						>
-							<div className="font-semibold text-slate-900">
+							<div className="font-semibold text-slate-900 dark:text-gray-100">
 								{PACING_LABELS[pacing].label}
 							</div>
-							<p className="text-sm text-slate-600">
+							<p className="text-sm text-slate-600 dark:text-gray-300">
 								{PACING_LABELS[pacing].description}
 							</p>
 						</RadioButton>

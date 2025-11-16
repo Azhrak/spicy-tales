@@ -176,21 +176,25 @@ function ReadingPage() {
 
 	if (error) {
 		return (
-			<div className="min-h-screen bg-linear-to-br from-rose-50 via-purple-50 to-pink-50 flex items-center justify-center">
+			<div className="min-h-screen bg-linear-to-br from-rose-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-900 flex items-center justify-center">
 				<div className="max-w-md mx-auto text-center p-8 space-y-4">
 					<div className="text-red-500 text-6xl">⚠️</div>
 					<div className="space-y-2">
-						<Heading level="h1" size="section" className="text-gray-800">
+						<Heading
+							level="h1"
+							size="section"
+							className="text-gray-800 dark:text-gray-100"
+						>
 							Oops! Something went wrong
 						</Heading>
-						<p className="text-gray-600">
+						<p className="text-gray-600 dark:text-gray-300">
 							{error instanceof Error ? error.message : "Failed to load scene"}
 						</p>
 					</div>
 					<Link
 						to="/library"
 						search={{ tab: "completed", favorites: false }}
-						className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white text-rose-600 rounded-lg hover:bg-rose-50 transition-colors border border-rose-200"
+						className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white dark:bg-gray-800 text-rose-600 dark:text-rose-400 rounded-lg hover:bg-rose-50 dark:hover:bg-gray-700 transition-colors border border-rose-200 dark:border-gray-700"
 					>
 						<Home className="w-5 h-5" />
 						Back to Library
@@ -208,9 +212,9 @@ function ReadingPage() {
 	const hasAlreadyMadeChoice = previousChoice !== null;
 
 	return (
-		<div className="min-h-screen bg-linear-to-br from-rose-50 via-purple-50 to-pink-50">
+		<div className="min-h-screen bg-linear-to-br from-rose-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-900">
 			{/* Header */}
-			<header className="bg-white/80 backdrop-blur-sm border-b border-rose-200 sticky top-0 z-10">
+			<header className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-b border-rose-200 dark:border-gray-700 sticky top-0 z-10">
 				<div className="max-w-4xl mx-auto px-4 py-4 space-y-3">
 					<div className="flex items-center justify-between">
 						<Link
@@ -222,7 +226,7 @@ function ReadingPage() {
 							Back to Library
 						</Link>
 						<div className="flex items-center gap-4">
-							<div className="flex items-center gap-2 text-sm text-gray-600">
+							<div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
 								<BookOpen className="w-4 h-4" />
 								Scene {scene.number} of {story.estimatedScenes}
 							</div>
@@ -239,18 +243,22 @@ function ReadingPage() {
 					</div>
 					{/* Title */}
 					<div className="space-y-3">
-						<Heading level="h1" size="section" className="text-gray-800">
+						<Heading
+							level="h1"
+							size="section"
+							className="text-gray-800 dark:text-gray-100"
+						>
 							{story.title}
 						</Heading>
 						{/* Progress Bar */}
 						<div>
-							<div className="relative h-2 bg-gray-200 rounded-full overflow-hidden">
+							<div className="relative h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
 								<div
 									className="absolute inset-y-0 left-0 bg-linear-to-r from-rose-500 to-purple-600 transition-all duration-500"
 									style={{ width: `${progress}%` }}
 								/>
 							</div>
-							<p className="text-xs text-gray-500 mt-1 text-right">
+							<p className="text-xs text-gray-500 dark:text-gray-400 mt-1 text-right">
 								{Math.round(progress)}% complete
 							</p>
 						</div>
@@ -261,12 +269,12 @@ function ReadingPage() {
 			{/* Main Content */}
 			<main className="max-w-2xl mx-auto px-4 py-8 space-y-6">
 				{/* Scene Content */}
-				<div className="bg-white rounded-xl shadow-lg p-4 sm:p-8">
+				<div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 sm:p-8">
 					<div className="prose prose-lg max-w-none space-y-4">
 						{scene.content.split("\n\n").map((paragraph) => (
 							<p
 								key={paragraph}
-								className="text-gray-800 leading-relaxed font-garamond"
+								className="text-gray-800 dark:text-gray-200 leading-relaxed font-garamond"
 							>
 								{paragraph}
 							</p>
@@ -274,13 +282,13 @@ function ReadingPage() {
 					</div>
 
 					{/* Reading stats */}
-					<div className="mt-8 pt-6 border-t border-gray-200 flex items-center justify-between text-sm text-gray-500">
+					<div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
 						<div className="flex items-center gap-4">
 							<span>{scene.wordCount} words</span>
 							<span>~{Math.ceil(scene.wordCount / 200)} min read</span>
 						</div>
 						{!scene.cached && (
-							<div className="flex items-center gap-2 text-purple-600">
+							<div className="flex items-center gap-2 text-purple-600 dark:text-purple-400">
 								<Sparkles className="w-4 h-4" />
 								<span>Freshly generated</span>
 							</div>
@@ -289,15 +297,21 @@ function ReadingPage() {
 				</div>
 				{/* Choice Point */}
 				{choicePoint && !isLastScene && (
-					<div className="bg-white rounded-xl shadow-lg p-4 sm:p-8 space-y-6">
+					<div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 sm:p-8 space-y-6">
 						<div className="space-y-4">
 							<div className="flex items-center gap-2">
 								<Flame className="w-5 h-5 text-rose-500" />
-								<Heading level="h2" size="subsection" className="text-gray-800">
+								<Heading
+									level="h2"
+									size="subsection"
+									className="text-gray-800 dark:text-gray-100"
+								>
 									What happens next?
 								</Heading>
 							</div>
-							<p className="text-gray-600">{choicePoint.promptText}</p>
+							<p className="text-gray-600 dark:text-gray-300">
+								{choicePoint.promptText}
+							</p>
 						</div>
 
 						{hasAlreadyMadeChoice ? (
@@ -309,39 +323,39 @@ function ReadingPage() {
 											key={option.text}
 											className={`w-full text-left p-4 rounded-lg border-2 ${
 												previousChoice === index
-													? "border-rose-500 bg-rose-50"
-													: "border-gray-200 bg-gray-50"
+													? "border-rose-500 bg-rose-50 dark:bg-rose-900/20 dark:border-rose-400"
+													: "border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700"
 											}`}
 										>
 											<div className="flex items-start justify-between">
 												<span
 													className={`font-medium ${
 														previousChoice === index
-															? "text-gray-800"
-															: "text-gray-400"
+															? "text-gray-800 dark:text-gray-200"
+															: "text-gray-400 dark:text-gray-500"
 													}`}
 												>
 													{option.text}
 												</span>
 												<div className="flex items-center gap-2 ml-3">
 													{previousChoice === index && (
-														<span className="text-xs text-rose-600 bg-rose-100 px-2 py-1 rounded font-medium">
+														<span className="text-xs text-rose-600 dark:text-rose-400 bg-rose-100 dark:bg-rose-900/30 px-2 py-1 rounded font-medium">
 															Your Choice
 														</span>
 													)}
-													<span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+													<span className="text-xs text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-600 px-2 py-1 rounded">
 														{option.tone}
 													</span>
 												</div>
 											</div>
 											{/* Branch button for other choices */}
 											{previousChoice !== index && (
-												<div className="mt-3 pt-3 border-t border-gray-200">
+												<div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-600">
 													<button
 														type="button"
 														onClick={() => handleBranchChoice(index)}
 														disabled={branchMutation.isPending}
-														className="flex items-center gap-2 text-sm text-purple-600 hover:text-purple-700 font-medium transition-colors disabled:opacity-50"
+														className="flex items-center gap-2 text-sm text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 font-medium transition-colors disabled:opacity-50"
 													>
 														<GitBranch className="w-4 h-4" />
 														<span>Try this choice instead</span>
@@ -377,15 +391,15 @@ function ReadingPage() {
 											disabled={choiceMutation.isPending}
 											className={`w-full text-left p-4 rounded-lg border-2 transition-all ${
 												selectedOption === index
-													? "border-rose-500 bg-rose-50"
-													: "border-gray-200 hover:border-rose-300 bg-white"
+													? "border-rose-500 bg-rose-50 dark:bg-rose-900/20 dark:border-rose-400"
+													: "border-gray-200 dark:border-gray-600 hover:border-rose-300 dark:hover:border-rose-400 bg-white dark:bg-gray-700"
 											} ${choiceMutation.isPending ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
 										>
 											<div className="flex items-start justify-between">
-												<span className="font-medium text-gray-800">
+												<span className="font-medium text-gray-800 dark:text-gray-200">
 													{option.text}
 												</span>
-												<span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded ml-3">
+												<span className="text-xs text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-600 px-2 py-1 rounded ml-3">
 													{option.tone}
 												</span>
 											</div>
@@ -410,8 +424,10 @@ function ReadingPage() {
 				)}{" "}
 				{/* No Choice Point - Continue to Next Scene */}
 				{!choicePoint && !isLastScene && (
-					<div className="bg-white rounded-xl shadow-lg p-8 text-center space-y-6">
-						<p className="text-gray-600">Ready to continue?</p>
+					<div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 text-center space-y-6">
+						<p className="text-gray-600 dark:text-gray-300">
+							Ready to continue?
+						</p>
 						<Button
 							type="button"
 							onClick={() => {
@@ -429,13 +445,17 @@ function ReadingPage() {
 				)}
 				{/* Story Complete */}
 				{isLastScene && (
-					<div className="bg-linear-to-br from-purple-100 to-rose-100 rounded-xl shadow-lg p-8 text-center space-y-4">
+					<div className="bg-linear-to-br from-purple-100 to-rose-100 dark:from-purple-900/30 dark:to-rose-900/30 rounded-xl shadow-lg p-8 text-center space-y-4">
 						<Sparkles className="w-16 h-16 text-rose-500 mx-auto" />
 						<div className="space-y-2">
-							<Heading level="h2" size="section" className="text-gray-800">
+							<Heading
+								level="h2"
+								size="section"
+								className="text-gray-800 dark:text-gray-100"
+							>
 								The End
 							</Heading>
-							<p className="text-gray-600">
+							<p className="text-gray-600 dark:text-gray-300">
 								You've completed this story! Thank you for reading.
 							</p>
 						</div>
@@ -470,7 +490,7 @@ function ReadingPage() {
 							<Link
 								to="/library"
 								search={{ tab: "completed", favorites: false }}
-								className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white text-rose-600 rounded-lg hover:bg-rose-50 transition-colors border border-rose-200"
+								className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white dark:bg-gray-700 text-rose-600 dark:text-rose-400 rounded-lg hover:bg-rose-50 dark:hover:bg-gray-600 transition-colors border border-rose-200 dark:border-gray-600"
 							>
 								<Home className="w-5 h-5" />
 								Back to Library
@@ -486,7 +506,7 @@ function ReadingPage() {
 						disabled={scene.number === 1}
 						variant="ghost"
 						size="sm"
-						className="text-gray-600 hover:text-rose-600"
+						className="text-gray-600 dark:text-gray-300 hover:text-rose-600 dark:hover:text-rose-400"
 					>
 						<ChevronLeft className="w-5 h-5" />
 						Previous Scene
@@ -501,7 +521,7 @@ function ReadingPage() {
 						}
 						variant="ghost"
 						size="sm"
-						className="text-gray-600 hover:text-rose-600"
+						className="text-gray-600 dark:text-gray-300 hover:text-rose-600 dark:hover:text-rose-400"
 						title={
 							choicePoint !== null && !hasAlreadyMadeChoice
 								? "Make a choice to unlock the next scene"

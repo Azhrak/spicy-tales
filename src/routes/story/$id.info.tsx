@@ -159,14 +159,14 @@ function StoryInfoPage() {
 					<Link
 						to="/library"
 						search={{ tab: "in-progress", favorites: false }}
-						className="inline-flex items-center gap-2 text-romance-600 hover:text-romance-700 font-medium transition-colors"
+						className="inline-flex items-center gap-2 text-romance-600 dark:text-romance-400 hover:text-romance-700 dark:hover:text-romance-300 font-medium transition-colors"
 					>
 						<ArrowLeft className="w-5 h-5" />
 						Back to Library
 					</Link>
 
 					{/* Story Header */}
-					<div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+					<div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden">
 						{/* Cover */}
 						<div
 							className={`h-64 bg-linear-to-br ${story.template.cover_gradient} flex items-center justify-center relative`}
@@ -177,7 +177,7 @@ function StoryInfoPage() {
 								type="button"
 								onClick={handleToggleFavorite}
 								disabled={toggleFavoriteMutation.isPending}
-								className="absolute top-6 right-6 p-3 bg-white/90 hover:bg-white rounded-full transition-colors disabled:opacity-50 cursor-pointer"
+								className="absolute top-6 right-6 p-3 bg-white/90 dark:bg-gray-800/90 hover:bg-white dark:hover:bg-gray-800 rounded-full transition-colors disabled:opacity-50 cursor-pointer"
 								title={
 									story.favorited_at
 										? "Remove from favorites"
@@ -188,7 +188,7 @@ function StoryInfoPage() {
 									className={`w-6 h-6 transition-colors ${
 										story.favorited_at
 											? "fill-red-500 text-red-500"
-											: "text-slate-600 hover:text-red-500"
+											: "text-slate-600 dark:text-gray-300 hover:text-red-500"
 									}`}
 								/>
 							</button>
@@ -208,7 +208,7 @@ function StoryInfoPage() {
 											variant="ghost"
 											size="sm"
 											onClick={handleStartEdit}
-											className="text-slate-600 hover:text-slate-900"
+											className="text-slate-600 dark:text-gray-300 hover:text-slate-900 dark:hover:text-gray-100"
 											title="Edit title"
 										>
 											<Pencil className="w-5 h-5" />
@@ -249,10 +249,12 @@ function StoryInfoPage() {
 										</div>
 									</div>
 								)}
-								<p className="text-slate-600">{story.template.description}</p>
+								<p className="text-slate-600 dark:text-gray-300">
+									{story.template.description}
+								</p>
 							</div>
 
-							<div className="flex items-center gap-6 text-sm text-slate-500">
+							<div className="flex items-center gap-6 text-sm text-slate-500 dark:text-gray-400">
 								<div className="flex items-center gap-2">
 									<Calendar className="w-4 h-4" />
 									<span>
@@ -273,10 +275,10 @@ function StoryInfoPage() {
 							{/* Progress */}
 							<div className="space-y-2">
 								<div className="flex justify-between items-center">
-									<span className="text-sm font-medium text-slate-700">
+									<span className="text-sm font-medium text-slate-700 dark:text-gray-300">
 										Reading Progress
 									</span>
-									<span className="text-sm text-slate-600">
+									<span className="text-sm text-slate-600 dark:text-gray-400">
 										Scene {story.current_scene} of{" "}
 										{story.template.estimated_scenes}
 									</span>
@@ -293,7 +295,7 @@ function StoryInfoPage() {
 									to="/story/$id/read"
 									params={{ id: story.id }}
 									search={{ scene: undefined }}
-									className="inline-flex items-center justify-center px-6 py-3 bg-romance-600 text-white rounded-lg font-medium hover:bg-romance-700 transition-colors"
+									className="inline-flex items-center justify-center px-6 py-3 bg-romance-600 dark:bg-romance-700 text-white rounded-lg font-medium hover:bg-romance-700 dark:hover:bg-romance-800 transition-colors"
 								>
 									{story.status === "completed"
 										? "Read Again"
@@ -313,7 +315,7 @@ function StoryInfoPage() {
 
 					{/* Story Preferences */}
 					{preferences && (
-						<div className="bg-white rounded-2xl shadow-lg p-8 space-y-6">
+						<div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 space-y-6">
 							<Heading level="h2" size="section">
 								Story Settings
 							</Heading>
@@ -330,14 +332,14 @@ function StoryInfoPage() {
 										</div>
 										<div className="pl-7 space-y-1">
 											<div className="flex items-center gap-2">
-												<span className="text-2xl font-bold text-romance-600">
+												<span className="text-2xl font-bold text-romance-600 dark:text-romance-400">
 													{preferences.spiceLevel}
 												</span>
-												<span className="text-lg font-medium text-slate-700">
+												<span className="text-lg font-medium text-slate-700 dark:text-gray-300">
 													{spiceInfo.label}
 												</span>
 											</div>
-											<p className="text-sm text-slate-600">
+											<p className="text-sm text-slate-600 dark:text-gray-400">
 												{spiceInfo.description}
 											</p>
 										</div>
@@ -354,10 +356,10 @@ function StoryInfoPage() {
 											</Heading>
 										</div>
 										<div className="pl-7 space-y-1">
-											<p className="font-medium text-slate-700">
+											<p className="font-medium text-slate-700 dark:text-gray-300">
 												{pacingInfo.label}
 											</p>
-											<p className="text-sm text-slate-600">
+											<p className="text-sm text-slate-600 dark:text-gray-400">
 												{pacingInfo.description}
 											</p>
 										</div>
@@ -373,10 +375,10 @@ function StoryInfoPage() {
 										</Heading>
 									</div>
 									<div className="pl-7 space-y-1">
-										<p className="font-medium text-slate-700">
+										<p className="font-medium text-slate-700 dark:text-gray-300">
 											{sceneLengthInfo.label}
 										</p>
-										<p className="text-sm text-slate-600">
+										<p className="text-sm text-slate-600 dark:text-gray-400">
 											{sceneLengthInfo.description} ({sceneLengthInfo.wordCount}
 											)
 										</p>
@@ -397,7 +399,7 @@ function StoryInfoPage() {
 												{preferences.genres.map((genre) => (
 													<span
 														key={genre}
-														className="px-3 py-1 bg-romance-50 border border-romance-200 rounded-full text-sm text-romance-700 font-medium"
+														className="px-3 py-1 bg-romance-50 dark:bg-romance-500/20 border border-romance-200 dark:border-romance-500/30 rounded-full text-sm text-romance-700 dark:text-pink-200 font-medium"
 													>
 														{GENRE_LABELS[genre]}
 													</span>
@@ -421,7 +423,7 @@ function StoryInfoPage() {
 												{preferences.tropes.map((trope) => (
 													<span
 														key={trope}
-														className="px-3 py-1 bg-pink-50 border border-pink-200 rounded-full text-sm text-pink-700 font-medium"
+														className="px-3 py-1 bg-pink-50 dark:bg-pink-500/20 border border-pink-200 dark:border-pink-500/30 rounded-full text-sm text-pink-700 dark:text-pink-200 font-medium"
 													>
 														{TROPE_LABELS[trope]}
 													</span>
@@ -445,7 +447,7 @@ function StoryInfoPage() {
 				message={
 					<>
 						<p>Are you sure you want to remove this story?</p>
-						<p className="mt-2 font-medium">
+						<p className="mt-2 font-medium dark:text-gray-200">
 							This will permanently delete all your progress and choices.
 						</p>
 					</>

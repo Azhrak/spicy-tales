@@ -98,11 +98,11 @@ export function ChoicePointItem({
 	};
 
 	return (
-		<div className="bg-slate-50 border border-slate-200 rounded-lg p-6">
+		<div className="bg-slate-50 dark:bg-gray-800 border border-slate-200 dark:border-gray-700 rounded-lg p-6">
 			<div className="space-y-4">
 				{/* Choice Point Header */}
 				<div className="flex items-center justify-between">
-					<h4 className="text-md font-semibold text-slate-900">
+					<h4 className="text-md font-semibold text-slate-900 dark:text-gray-100">
 						Choice Point {choicePointIndex + 1}
 					</h4>
 					<Button
@@ -120,7 +120,7 @@ export function ChoicePointItem({
 				<div className="space-y-2">
 					<label
 						htmlFor={`scene-number-${choicePointIndex}`}
-						className="block text-sm font-medium text-slate-900"
+						className="block text-sm font-medium text-slate-900 dark:text-gray-100"
 					>
 						After Scene Number *
 					</label>
@@ -132,7 +132,7 @@ export function ChoicePointItem({
 								scene_number: Number.parseInt(e.target.value, 10),
 							})
 						}
-						className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+						className="w-full px-4 py-2 border border-slate-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-100"
 						required
 					>
 						{getAvailableSceneNumbers().map((num) => (
@@ -157,7 +157,7 @@ export function ChoicePointItem({
 				{/* Options */}
 				<div className="space-y-4">
 					<div className="flex items-center justify-between">
-						<p className="block text-sm font-medium text-slate-900">
+						<p className="block text-sm font-medium text-slate-900 dark:text-gray-100">
 							Options (2-4 required)
 						</p>
 						<Button

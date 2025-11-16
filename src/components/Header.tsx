@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { LogOut, Menu, Shield, User, X } from "lucide-react";
 import { useState } from "react";
+import { ThemeToggle } from "~/components/ThemeToggle";
 import { api } from "~/lib/api/client";
 import type { UserRole } from "~/lib/db/types";
 
@@ -25,7 +26,7 @@ export function Header({ currentPath = "", userRole }: HeaderProps) {
 	const isActive = (path: string) => currentPath === path;
 
 	return (
-		<header className="bg-white shadow-sm">
+		<header className="bg-white dark:bg-slate-950 shadow-sm dark:shadow-black/30 border-b border-transparent dark:border-slate-800 transition-colors">
 			<div className="container mx-auto px-4 py-4">
 				<div className="flex items-center justify-between">
 					{/* Logo */}
@@ -35,7 +36,7 @@ export function Header({ currentPath = "", userRole }: HeaderProps) {
 							alt="Choose the Heat Logo"
 							className="w-8 h-8"
 						/>
-						<span className="text-xl font-bold text-slate-900">
+						<span className="text-xl font-bold text-slate-900 dark:text-white">
 							Choose the Heat
 						</span>
 					</Link>
@@ -44,16 +45,20 @@ export function Header({ currentPath = "", userRole }: HeaderProps) {
 					<nav className="hidden md:flex items-center gap-4">
 						<Link
 							to="/browse"
-							className={`text-slate-700 hover:text-romance-600 font-medium transition-colors ${
-								isActive("/browse") ? "text-romance-600" : ""
+							className={`text-slate-700 dark:text-slate-200 hover:text-romance-600 dark:hover:text-romance-300 font-medium transition-colors ${
+								isActive("/browse")
+									? "text-romance-600 dark:text-romance-300"
+									: ""
 							}`}
 						>
 							Browse
 						</Link>
 						<Link
 							to="/library"
-							className={`text-slate-700 hover:text-romance-600 font-medium transition-colors ${
-								isActive("/library") ? "text-romance-600" : ""
+							className={`text-slate-700 dark:text-slate-200 hover:text-romance-600 dark:hover:text-romance-300 font-medium transition-colors ${
+								isActive("/library")
+									? "text-romance-600 dark:text-romance-300"
+									: ""
 							}`}
 						>
 							My Library
@@ -61,9 +66,9 @@ export function Header({ currentPath = "", userRole }: HeaderProps) {
 						{isEditorOrAdmin && (
 							<Link
 								to="/admin"
-								className={`flex items-center gap-2 text-slate-700 hover:text-romance-600 font-medium transition-colors ${
+								className={`flex items-center gap-2 text-slate-700 dark:text-slate-200 hover:text-romance-600 dark:hover:text-romance-300 font-medium transition-colors ${
 									isActive("/admin") || currentPath.startsWith("/admin")
-										? "text-romance-600"
+										? "text-romance-600 dark:text-romance-300"
 										: ""
 								}`}
 							>
@@ -73,16 +78,19 @@ export function Header({ currentPath = "", userRole }: HeaderProps) {
 						)}
 						<Link
 							to="/profile"
-							className={`flex items-center gap-2 text-slate-700 hover:text-romance-600 font-medium transition-colors ${
-								isActive("/profile") ? "text-romance-600" : ""
+							className={`flex items-center gap-2 text-slate-700 dark:text-slate-200 hover:text-romance-600 dark:hover:text-romance-300 font-medium transition-colors ${
+								isActive("/profile")
+									? "text-romance-600 dark:text-romance-300"
+									: ""
 							}`}
 						>
 							<User className="w-4 h-4" />
 							Profile
 						</Link>
+						<ThemeToggle />
 						<button
 							onClick={handleLogout}
-							className="flex items-center gap-2 px-4 py-2 text-slate-700 hover:text-romance-600 font-medium transition-colors cursor-pointer"
+							className="flex items-center gap-2 px-4 py-2 text-slate-700 dark:text-slate-200 hover:text-romance-600 dark:hover:text-romance-300 font-medium transition-colors cursor-pointer"
 							type="button"
 						>
 							<LogOut className="w-4 h-4" />
@@ -93,7 +101,7 @@ export function Header({ currentPath = "", userRole }: HeaderProps) {
 					{/* Mobile Menu Button */}
 					<button
 						onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-						className="md:hidden p-2 text-slate-700 hover:text-romance-600 transition-colors"
+						className="md:hidden p-2 text-slate-700 dark:text-slate-200 hover:text-romance-600 dark:hover:text-romance-300 transition-colors"
 						type="button"
 						aria-label="Toggle menu"
 					>
@@ -107,13 +115,15 @@ export function Header({ currentPath = "", userRole }: HeaderProps) {
 
 				{/* Mobile Navigation */}
 				{mobileMenuOpen && (
-					<nav className="md:hidden mt-4 pb-4 border-t border-slate-200 pt-4">
+					<nav className="md:hidden mt-4 pb-4 border-t border-slate-200 dark:border-slate-800 pt-4">
 						<div className="flex flex-col gap-3">
 							<Link
 								to="/browse"
 								onClick={() => setMobileMenuOpen(false)}
-								className={`px-4 py-2 rounded-lg text-slate-700 hover:bg-romance-50 hover:text-romance-600 font-medium transition-colors ${
-									isActive("/browse") ? "bg-romance-50 text-romance-600" : ""
+								className={`px-4 py-2 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-romance-50 dark:hover:bg-slate-700 hover:text-romance-600 dark:hover:text-romance-400 font-medium transition-colors ${
+									isActive("/browse")
+										? "bg-romance-50 dark:bg-slate-700 text-romance-600 dark:text-romance-400"
+										: ""
 								}`}
 							>
 								Browse
@@ -121,8 +131,10 @@ export function Header({ currentPath = "", userRole }: HeaderProps) {
 							<Link
 								to="/library"
 								onClick={() => setMobileMenuOpen(false)}
-								className={`px-4 py-2 rounded-lg text-slate-700 hover:bg-romance-50 hover:text-romance-600 font-medium transition-colors ${
-									isActive("/library") ? "bg-romance-50 text-romance-600" : ""
+								className={`px-4 py-2 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-romance-50 dark:hover:bg-slate-700 hover:text-romance-600 dark:hover:text-romance-400 font-medium transition-colors ${
+									isActive("/library")
+										? "bg-romance-50 dark:bg-slate-700 text-romance-600 dark:text-romance-400"
+										: ""
 								}`}
 							>
 								My Library
@@ -131,9 +143,9 @@ export function Header({ currentPath = "", userRole }: HeaderProps) {
 								<Link
 									to="/admin"
 									onClick={() => setMobileMenuOpen(false)}
-									className={`flex items-center gap-2 px-4 py-2 rounded-lg text-slate-700 hover:bg-romance-50 hover:text-romance-600 font-medium transition-colors ${
+									className={`flex items-center gap-2 px-4 py-2 rounded-lg text-slate-700 dark:text-slate-200 hover:bg-romance-50 dark:hover:bg-slate-800 hover:text-romance-600 dark:hover:text-romance-300 font-medium transition-colors ${
 										isActive("/admin") || currentPath.startsWith("/admin")
-											? "bg-romance-50 text-romance-600"
+											? "bg-romance-50 dark:bg-slate-800 text-romance-600 dark:text-romance-300"
 											: ""
 									}`}
 								>
@@ -144,19 +156,24 @@ export function Header({ currentPath = "", userRole }: HeaderProps) {
 							<Link
 								to="/profile"
 								onClick={() => setMobileMenuOpen(false)}
-								className={`flex items-center gap-2 px-4 py-2 rounded-lg text-slate-700 hover:bg-romance-50 hover:text-romance-600 font-medium transition-colors ${
-									isActive("/profile") ? "bg-romance-50 text-romance-600" : ""
+								className={`flex items-center gap-2 px-4 py-2 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-romance-50 dark:hover:bg-slate-700 hover:text-romance-600 dark:hover:text-romance-400 font-medium transition-colors ${
+									isActive("/profile")
+										? "bg-romance-50 dark:bg-slate-700 text-romance-600 dark:text-romance-400"
+										: ""
 								}`}
 							>
 								<User className="w-4 h-4" />
 								Profile
 							</Link>
+							<div className="px-4 py-2">
+								<ThemeToggle className="w-full justify-start" />
+							</div>
 							<button
 								onClick={() => {
 									setMobileMenuOpen(false);
 									handleLogout();
 								}}
-								className="flex items-center gap-2 px-4 py-2 rounded-lg text-slate-700 hover:bg-romance-50 hover:text-romance-600 font-medium transition-colors text-left"
+								className="flex items-center gap-2 px-4 py-2 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-romance-50 dark:hover:bg-slate-700 hover:text-romance-600 dark:hover:text-romance-400 font-medium transition-colors text-left"
 								type="button"
 							>
 								<LogOut className="w-4 h-4" />

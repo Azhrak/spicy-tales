@@ -165,22 +165,19 @@ function PreferencesPage() {
 								</div>
 							</div>
 						</div>
-
 						{/* Success Message */}
 						{success && (
-							<div className="p-4 bg-green-50 border border-green-200 rounded-lg flex items-center gap-3 text-green-700">
+							<div className="p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700 rounded-lg flex items-center gap-3 text-green-700 dark:text-green-300">
 								<CheckCircle2 className="w-5 h-5" />
 								<span>Your preferences have been saved successfully!</span>
 							</div>
 						)}
-
 						{/* Error Message */}
 						{error && (
-							<div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
+							<div className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-700 rounded-lg text-red-700 dark:text-red-300">
 								{error}
 							</div>
-						)}
-
+						)}{" "}
 						{/* Form */}
 						<form onSubmit={handleSubmit} className="space-y-8">
 							<GenresSection
@@ -217,7 +214,7 @@ function PreferencesPage() {
 							<div className="flex justify-end gap-4">
 								<Link
 									to="/profile"
-									className="px-6 py-3 border-2 border-slate-300 text-slate-700 rounded-lg font-semibold hover:bg-slate-50 transition-colors"
+									className="px-6 py-3 border-2 border-slate-300 dark:border-gray-600 text-slate-700 dark:text-gray-200 rounded-lg font-semibold hover:bg-slate-50 dark:hover:bg-gray-700 transition-colors"
 								>
 									Cancel
 								</Link>

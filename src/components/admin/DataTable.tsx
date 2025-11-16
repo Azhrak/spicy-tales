@@ -65,8 +65,8 @@ export function DataTable<T extends { id: string }>({
 
 	if (data.length === 0) {
 		return (
-			<div className="bg-white rounded-lg border border-slate-200 p-12 text-center">
-				<p className="text-slate-500">{emptyMessage}</p>
+			<div className="bg-white dark:bg-gray-800 rounded-lg border border-slate-200 dark:border-gray-700 p-12 text-center">
+				<p className="text-slate-500 dark:text-gray-400">{emptyMessage}</p>
 			</div>
 		);
 	}
@@ -74,14 +74,14 @@ export function DataTable<T extends { id: string }>({
 	return (
 		<div
 			className={cn(
-				"bg-white rounded-lg border border-slate-200 overflow-hidden",
+				"bg-white dark:bg-gray-800 rounded-lg border border-slate-200 dark:border-gray-700 overflow-hidden",
 				className,
 			)}
 		>
 			<div className="overflow-x-auto">
 				<table className="w-full">
 					<thead>
-						<tr className="border-b border-slate-200 bg-slate-50">
+						<tr className="border-b border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-900">
 							{selectable && (
 								<th className="px-6 py-3 w-12">
 									<input
@@ -110,14 +110,15 @@ export function DataTable<T extends { id: string }>({
 							))}
 						</tr>
 					</thead>
-					<tbody className="divide-y divide-slate-200">
+					<tbody className="divide-y divide-slate-200 dark:divide-gray-700">
 						{data.map((row) => (
 							<tr
 								key={row.id}
 								onClick={() => onRowClick?.(row)}
 								className={cn(
-									"hover:bg-slate-50 transition-colors",
-									selectedIds.has(row.id) && "bg-romance-50",
+									"hover:bg-slate-50 dark:hover:bg-gray-700 transition-colors",
+									selectedIds.has(row.id) &&
+										"bg-romance-50 dark:bg-romance-500/20",
 									onRowClick && "cursor-pointer",
 								)}
 							>
@@ -145,7 +146,7 @@ export function DataTable<T extends { id: string }>({
 									<td
 										key={column.key ?? `column-${index}`}
 										className={cn(
-											"px-6 py-4 text-sm text-slate-900",
+											"px-6 py-4 text-sm text-slate-900 dark:text-gray-100",
 											column.className,
 										)}
 									>

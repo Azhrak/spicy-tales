@@ -26,17 +26,17 @@ export function ChoicePointOption({
 	onRemove,
 }: ChoicePointOptionProps) {
 	return (
-		<div className="bg-white border border-slate-200 rounded-lg p-4">
+		<div className="bg-white dark:bg-gray-700 border border-slate-200 dark:border-gray-600 rounded-lg p-4">
 			<div className="space-y-3">
 				<div className="flex items-center justify-between">
-					<span className="text-sm font-medium text-slate-700">
+					<span className="text-sm font-medium text-slate-700 dark:text-gray-300">
 						Option {optionIndex + 1}
 					</span>
 					{canRemove && (
 						<button
 							type="button"
 							onClick={onRemove}
-							className="text-red-600 hover:text-red-700"
+							className="text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300"
 							aria-label="Remove option"
 						>
 							<X className="w-4 h-4" />

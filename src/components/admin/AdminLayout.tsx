@@ -14,7 +14,7 @@ export function AdminLayout({
 	userRole,
 }: AdminLayoutProps) {
 	return (
-		<div className="flex min-h-screen bg-slate-50">
+		<div className="flex min-h-screen bg-slate-50 dark:bg-gray-900">
 			{/* Sidebar Navigation */}
 			<AdminNav currentPath={currentPath} userRole={userRole} />
 

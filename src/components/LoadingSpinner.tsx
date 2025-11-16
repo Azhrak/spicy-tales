@@ -24,7 +24,11 @@ export function LoadingSpinner({
 			<Loader2
 				className={`${sizeClasses[size]} text-romance-600 animate-spin`}
 			/>
-			{message && <p className="mt-4 text-slate-600 text-lg">{message}</p>}
+			{message && (
+				<p className="mt-4 text-slate-600 dark:text-slate-300 text-lg">
+					{message}
+				</p>
+			)}
 		</div>
 	);
 }

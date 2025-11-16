@@ -27,7 +27,7 @@ export function PovCharacterGenderSection({
 							POV Character Gender
 						</Heading>
 					</div>
-					<p className="text-slate-600">
+					<p className="text-slate-600 dark:text-gray-300">
 						What gender identity should the main protagonist have?
 					</p>
 				</div>
@@ -38,10 +38,10 @@ export function PovCharacterGenderSection({
 							selected={selectedGender === gender}
 							onClick={() => onSelect(gender)}
 						>
-							<div className="font-semibold text-slate-900">
+							<div className="font-semibold text-slate-900 dark:text-gray-100">
 								{POV_CHARACTER_GENDER_LABELS[gender].label}
 							</div>
-							<p className="text-sm text-slate-600">
+							<p className="text-sm text-slate-600 dark:text-gray-300">
 								{POV_CHARACTER_GENDER_LABELS[gender].description}
 							</p>
 						</RadioButton>

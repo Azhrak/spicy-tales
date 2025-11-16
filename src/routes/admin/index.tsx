@@ -65,7 +65,7 @@ function AdminDashboard() {
 			<div className="space-y-8">
 				<div className="flex flex-col gap-2">
 					<Heading level="h1">Dashboard</Heading>
-					<p className="text-slate-600">
+					<p className="text-slate-600 dark:text-gray-300">
 						Welcome to the admin panel. Here's an overview of your site.
 					</p>
 				</div>

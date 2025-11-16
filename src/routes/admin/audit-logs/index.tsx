@@ -105,7 +105,7 @@ function AuditLogsPage() {
 			<div className="space-y-6">
 				<div className="flex flex-col gap-2">
 					<Heading level="h1">Audit Logs</Heading>
-					<p className="text-slate-600">
+					<p className="text-slate-600 dark:text-gray-300">
 						View all administrative actions and changes. Logs are retained for
 						90 days.
 					</p>
@@ -140,12 +140,12 @@ function AuditLogsPage() {
 				</div>
 
 				{/* Filters */}
-				<div className="bg-white rounded-lg border border-slate-200 p-4">
+				<div className="bg-white dark:bg-gray-800 rounded-lg border border-slate-200 dark:border-gray-700 p-4">
 					<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 						<div className="space-y-2">
 							<label
 								htmlFor="search"
-								className="block text-sm font-medium text-slate-900"
+								className="block text-sm font-medium text-slate-900 dark:text-gray-100"
 							>
 								<Search className="w-4 h-4 inline mr-1" />
 								Search
@@ -164,7 +164,7 @@ function AuditLogsPage() {
 						<div className="space-y-2">
 							<label
 								htmlFor="entityType"
-								className="block text-sm font-medium text-slate-900"
+								className="block text-sm font-medium text-slate-900 dark:text-gray-100"
 							>
 								Entity Type
 							</label>
@@ -177,7 +177,7 @@ function AuditLogsPage() {
 										entityType: e.target.value as AuditEntityType | "all",
 									})
 								}
-								className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+								className="w-full px-3 py-2 border border-slate-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-100"
 							>
 								<option value="all">All Types</option>
 								<option value="template">Templates</option>
@@ -190,7 +190,7 @@ function AuditLogsPage() {
 								onClick={() =>
 									setFilters({ entityType: "all", userId: "", search: "" })
 								}
-								className="px-4 py-2 text-slate-600 hover:text-slate-900 transition-colors"
+								className="px-4 py-2 text-slate-600 dark:text-gray-300 hover:text-slate-900 dark:hover:text-gray-100 transition-colors"
 							>
 								Clear Filters
 							</button>
@@ -199,55 +199,55 @@ function AuditLogsPage() {
 				</div>
 
 				{/* Audit Logs Table */}
-				<div className="bg-white rounded-lg border border-slate-200 overflow-hidden">
+				<div className="bg-white dark:bg-gray-800 rounded-lg border border-slate-200 dark:border-gray-700 overflow-hidden">
 					{logs.length === 0 ? (
-						<div className="p-8 text-center text-slate-600">
+						<div className="p-8 text-center text-slate-600 dark:text-gray-400">
 							No audit logs found matching your filters.
 						</div>
 					) : (
 						<div className="overflow-x-auto">
 							<table className="w-full">
-								<thead className="bg-slate-50 border-b border-slate-200">
+								<thead className="bg-slate-50 dark:bg-gray-900 border-b border-slate-200 dark:border-gray-700">
 									<tr>
-										<th className="px-6 py-3 text-left text-xs font-medium text-slate-600 uppercase tracking-wider">
+										<th className="px-6 py-3 text-left text-xs font-medium text-slate-600 dark:text-gray-400 uppercase tracking-wider">
 											Timestamp
 										</th>
-										<th className="px-6 py-3 text-left text-xs font-medium text-slate-600 uppercase tracking-wider">
+										<th className="px-6 py-3 text-left text-xs font-medium text-slate-600 dark:text-gray-400 uppercase tracking-wider">
 											User
 										</th>
-										<th className="px-6 py-3 text-left text-xs font-medium text-slate-600 uppercase tracking-wider">
+										<th className="px-6 py-3 text-left text-xs font-medium text-slate-600 dark:text-gray-400 uppercase tracking-wider">
 											Action
 										</th>
-										<th className="px-6 py-3 text-left text-xs font-medium text-slate-600 uppercase tracking-wider">
+										<th className="px-6 py-3 text-left text-xs font-medium text-slate-600 dark:text-gray-400 uppercase tracking-wider">
 											Entity Type
 										</th>
-										<th className="px-6 py-3 text-left text-xs font-medium text-slate-600 uppercase tracking-wider">
+										<th className="px-6 py-3 text-left text-xs font-medium text-slate-600 dark:text-gray-400 uppercase tracking-wider">
 											Entity ID
 										</th>
-										<th className="px-6 py-3 text-left text-xs font-medium text-slate-600 uppercase tracking-wider">
+										<th className="px-6 py-3 text-left text-xs font-medium text-slate-600 dark:text-gray-400 uppercase tracking-wider">
 											Changes
 										</th>
 									</tr>
 								</thead>
-								<tbody className="divide-y divide-slate-200">
+								<tbody className="divide-y divide-slate-200 dark:divide-gray-700">
 									{logs.map((log) => (
 										<tr
 											key={log.id}
-											className="hover:bg-slate-50 transition-colors"
+											className="hover:bg-slate-50 dark:hover:bg-gray-700 transition-colors"
 										>
-											<td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">
+											<td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-gray-400">
 												{new Date(log.createdAt).toLocaleString()}
 											</td>
 											<td className="px-6 py-4 whitespace-nowrap text-sm">
-												<div className="text-slate-900 font-medium">
+												<div className="text-slate-900 dark:text-gray-100 font-medium">
 													{log.userName || "Unknown"}
 												</div>
-												<div className="text-slate-500 text-xs">
+												<div className="text-slate-500 dark:text-gray-400 text-xs">
 													{log.userEmail || log.userId}
 												</div>
 											</td>
 											<td className="px-6 py-4 whitespace-nowrap">
-												<span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+												<span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300">
 													{log.action}
 												</span>
 											</td>
@@ -255,30 +255,32 @@ function AuditLogsPage() {
 												<span
 													className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
 														log.entityType === "template"
-															? "bg-purple-100 text-purple-800"
-															: "bg-green-100 text-green-800"
+															? "bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300"
+															: "bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300"
 													}`}
 												>
 													{log.entityType}
 												</span>
 											</td>
-											<td className="px-6 py-4 whitespace-nowrap text-sm font-mono text-slate-600">
+											<td className="px-6 py-4 whitespace-nowrap text-sm font-mono text-slate-600 dark:text-gray-400">
 												{log.entityId
 													? `${log.entityId.substring(0, 8)}...`
 													: "N/A"}
 											</td>
-											<td className="px-6 py-4 text-sm text-slate-600">
+											<td className="px-6 py-4 text-sm text-slate-600 dark:text-gray-400">
 												{log.changes ? (
 													<details className="cursor-pointer">
-														<summary className="text-indigo-600 hover:text-indigo-800">
+														<summary className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300">
 															View Changes
 														</summary>
-														<pre className="mt-2 p-2 bg-slate-50 rounded text-xs overflow-auto max-w-md">
+														<pre className="mt-2 p-2 bg-slate-50 dark:bg-gray-900 rounded text-xs overflow-auto max-w-md">
 															{JSON.stringify(log.changes, null, 2)}
 														</pre>
 													</details>
 												) : (
-													<span className="text-slate-400">No changes</span>
+													<span className="text-slate-400 dark:text-gray-500">
+														No changes
+													</span>
 												)}
 											</td>
 										</tr>
@@ -290,12 +292,12 @@ function AuditLogsPage() {
 				</div>
 
 				{/* Info Box */}
-				<div className="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
-					<p className="text-sm text-blue-800">
+				<div className="mt-6 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-lg p-4">
+					<p className="text-sm text-blue-800 dark:text-blue-200">
 						<strong>Retention Policy:</strong> Audit logs are automatically
 						deleted after 90 days. Use the cleanup script to manually remove
 						older logs:{" "}
-						<code className="bg-blue-100 px-2 py-1 rounded">
+						<code className="bg-blue-100 dark:bg-blue-900/50 px-2 py-1 rounded">
 							pnpm cleanup:audit-logs [days]
 						</code>
 					</p>
@@ -321,14 +323,16 @@ function StatBox({ label, value, icon: Icon, color }: StatBoxProps) {
 	};
 
 	return (
-		<div className="bg-white rounded-lg border border-slate-200 p-4">
+		<div className="bg-white dark:bg-gray-800 rounded-lg border border-slate-200 dark:border-gray-700 p-4">
 			<div className="flex items-center gap-3">
 				<div className={`p-2 rounded-lg ${colorClasses[color]}`}>
 					<Icon className="w-5 h-5" />
 				</div>
 				<div>
-					<p className="text-sm text-slate-600">{label}</p>
-					<p className="text-2xl font-bold text-slate-900">{value}</p>
+					<p className="text-sm text-slate-600 dark:text-gray-400">{label}</p>
+					<p className="text-2xl font-bold text-slate-900 dark:text-gray-100">
+						{value}
+					</p>
 				</div>
 			</div>
 		</div>

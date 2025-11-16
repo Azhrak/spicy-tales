@@ -25,19 +25,19 @@ export function DataDownload() {
 			<div className="space-y-6">
 				<div className="flex items-center gap-2">
 					<Download className="w-5 h-5 text-romance-500" />
-					<h2 className="text-2xl font-bold text-slate-900">
+					<h2 className="text-2xl font-bold text-slate-900 dark:text-gray-100">
 						Download Your Data
 					</h2>
 				</div>
 
 				<div className="space-y-4">
-					<p className="text-slate-700">
+					<p className="text-slate-700 dark:text-gray-300">
 						Download all your personal data in JSON format. This includes your
 						profile information, story metadata, templates used, and choices
 						made.
 					</p>
 
-					<div className="text-sm text-slate-600 bg-slate-50 p-4 rounded-lg">
+					<div className="text-sm text-slate-600 dark:text-gray-400 bg-slate-50 dark:bg-gray-700/50 p-4 rounded-lg">
 						<div className="space-y-2">
 							<p className="font-semibold">What's included:</p>
 							<ul className="list-disc list-inside space-y-1">
@@ -55,7 +55,7 @@ export function DataDownload() {
 					</div>
 
 					{success && (
-						<div className="p-3 bg-green-50 border border-green-200 rounded-lg text-green-700 text-sm">
+						<div className="p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg text-green-700 dark:text-green-400 text-sm">
 							{success}
 						</div>
 					)}

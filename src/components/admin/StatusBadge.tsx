@@ -9,15 +9,18 @@ interface StatusBadgeProps {
 const statusConfig = {
 	draft: {
 		label: "Draft",
-		className: "bg-yellow-100 text-yellow-800 border-yellow-300",
+		className:
+			"bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300 border-yellow-300 dark:border-yellow-700",
 	},
 	published: {
 		label: "Published",
-		className: "bg-green-100 text-green-800 border-green-300",
+		className:
+			"bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 border-green-300 dark:border-green-700",
 	},
 	archived: {
 		label: "Archived",
-		className: "bg-gray-100 text-gray-800 border-gray-300",
+		className:
+			"bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300 border-gray-300 dark:border-gray-600",
 	},
 };
 

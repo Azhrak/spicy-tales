@@ -40,9 +40,11 @@ export function FilterBar<T extends string = string>({
 	onChange,
 }: FilterBarProps<T>) {
 	return (
-		<div className="bg-white rounded-lg border border-slate-200 p-4">
+		<div className="bg-white dark:bg-gray-800 rounded-lg border border-slate-200 dark:border-gray-700 p-4">
 			<div className="flex items-center gap-3">
-				<span className="text-sm font-medium text-slate-700">{label}</span>
+				<span className="text-sm font-medium text-slate-700 dark:text-gray-300">
+					{label}
+				</span>
 				<div className="flex gap-2">
 					{filters.map((filter) => (
 						<Button

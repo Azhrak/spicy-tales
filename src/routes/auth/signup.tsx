@@ -101,7 +101,7 @@ function SignupPage() {
 						</div>
 						<div className="space-y-2">
 							<Heading level="h1">Create Account</Heading>
-							<p className="text-slate-600">
+							<p className="text-slate-600 dark:text-gray-300">
 								Start your personalized romance journey
 							</p>
 						</div>
@@ -162,11 +162,11 @@ function SignupPage() {
 						</form>
 					</div>
 					{/* Sign In Link */}
-					<p className="text-center text-sm text-slate-600">
+					<p className="text-center text-sm text-slate-600 dark:text-gray-300">
 						Already have an account?{" "}
 						<Link
 							to="/auth/login"
-							className="text-romance-600 font-medium hover:text-romance-700"
+							className="text-romance-600 dark:text-romance-400 font-medium hover:text-romance-700 dark:hover:text-romance-300"
 						>
 							Sign in
 						</Link>

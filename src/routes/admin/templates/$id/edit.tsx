@@ -183,7 +183,7 @@ function EditTemplatePage() {
 					<div className="flex items-start justify-between">
 						<div className="flex flex-col gap-2">
 							<Heading level="h1">Edit Template</Heading>
-							<p className="text-slate-600">
+							<p className="text-slate-600 dark:text-gray-300">
 								Update template details and manage its status.
 							</p>
 						</div>
@@ -195,7 +195,7 @@ function EditTemplatePage() {
 					<form onSubmit={handleSubmit} className="space-y-6">
 						{/* Error Message */}
 						{formError && (
-							<div className="bg-red-50 border border-red-200 rounded-lg p-4">
+							<div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-700 rounded-lg p-4">
 								<ErrorMessage message={formError} />
 							</div>
 						)}
@@ -215,7 +215,7 @@ function EditTemplatePage() {
 						<div className="space-y-2">
 							<label
 								htmlFor="description"
-								className="block text-sm font-medium text-slate-900"
+								className="block text-sm font-medium text-slate-900 dark:text-gray-100"
 							>
 								Description *
 							</label>
@@ -226,7 +226,7 @@ function EditTemplatePage() {
 									setFormData({ ...formData, description: e.target.value })
 								}
 								rows={4}
-								className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+								className="w-full px-4 py-2 border border-slate-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-100"
 								required
 							/>
 						</div>
@@ -264,7 +264,7 @@ function EditTemplatePage() {
 						<div className="space-y-2">
 							<label
 								htmlFor="gradient"
-								className="block text-sm font-medium text-slate-900"
+								className="block text-sm font-medium text-slate-900 dark:text-gray-100"
 							>
 								Cover Gradient *
 							</label>
@@ -274,7 +274,7 @@ function EditTemplatePage() {
 								onChange={(e) =>
 									setFormData({ ...formData, cover_gradient: e.target.value })
 								}
-								className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+								className="w-full px-4 py-2 border border-slate-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-100"
 								required
 							>
 								{GRADIENT_OPTIONS.map((option) => (
@@ -291,7 +291,7 @@ function EditTemplatePage() {
 						</div>
 
 						{/* Save Template Changes Button */}
-						<div className="pt-4 border-t border-slate-200">
+						<div className="pt-4 border-t border-slate-200 dark:border-gray-700">
 							<Button
 								type="submit"
 								loading={updateMutation.isPending}
@@ -304,12 +304,12 @@ function EditTemplatePage() {
 					</form>
 
 					{/* Choice Points Management */}
-					<div className="mt-8 pt-8 border-t border-slate-200 space-y-6">
+					<div className="mt-8 pt-8 border-t border-slate-200 dark:border-gray-700 space-y-6">
 						<div className="space-y-2">
 							<Heading level="h2" size="subsection">
 								Choice Points
 							</Heading>
-							<p className="text-slate-600">
+							<p className="text-slate-600 dark:text-gray-300">
 								Manage choice points that appear throughout the story. Changes
 								are saved separately from template details.
 							</p>
@@ -335,7 +335,7 @@ function EditTemplatePage() {
 					</div>
 
 					{/* Status Management */}
-					<div className="mt-8 pt-8 border-t border-slate-200 space-y-4">
+					<div className="mt-8 pt-8 border-t border-slate-200 dark:border-gray-700 space-y-4">
 						<Heading level="h2" size="subsection">
 							Status Management
 						</Heading>
@@ -348,12 +348,12 @@ function EditTemplatePage() {
 
 					{/* Danger Zone (Admin Only) */}
 					{role === "admin" && (
-						<div className="mt-8 pt-8 border-t border-red-200 space-y-4">
+						<div className="mt-8 pt-8 border-t border-red-200 dark:border-red-700 space-y-4">
 							<Heading level="h2" size="subsection" variant="danger">
 								Danger Zone
 							</Heading>
-							<div className="bg-red-50 border border-red-200 rounded-lg p-4 space-y-4">
-								<p className="text-sm text-red-800">
+							<div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-700 rounded-lg p-4 space-y-4">
+								<p className="text-sm text-red-800 dark:text-red-300">
 									Deleting a template is permanent and will remove all
 									associated choice points. User stories will remain but may
 									have orphaned data.

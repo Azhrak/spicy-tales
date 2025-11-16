@@ -70,7 +70,11 @@ function BrowsePage() {
 					</div>{" "}
 					{/* Trope Filters */}
 					<div className="space-y-3">
-						<Heading level="h2" size="label" className="text-slate-700">
+						<Heading
+							level="h2"
+							size="label"
+							className="text-slate-700 dark:text-gray-300"
+						>
 							Filter by Tropes:
 						</Heading>
 						<div className="flex flex-wrap gap-2">
@@ -82,7 +86,7 @@ function BrowsePage() {
 									className={`px-4 py-2 rounded-lg font-medium transition-colors ${
 										selectedTropes.includes(trope)
 											? "bg-romance-600 text-white"
-											: "bg-white border border-slate-300 text-slate-700 hover:bg-slate-50"
+											: "bg-white dark:bg-gray-700 border border-slate-300 dark:border-gray-600 text-slate-700 dark:text-gray-300 hover:bg-slate-50 dark:hover:bg-gray-600"
 									}`}
 								>
 									{TROPE_LABELS[trope]}
@@ -94,7 +98,7 @@ function BrowsePage() {
 								onClick={() => setSelectedTropes([])}
 								variant="ghost"
 								size="sm"
-								className="text-romance-600 hover:text-romance-700"
+								className="text-romance-600 dark:text-romance-400 hover:text-romance-700 dark:hover:text-romance-300"
 							>
 								Clear filters
 							</Button>

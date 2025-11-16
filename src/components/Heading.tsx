@@ -37,7 +37,7 @@ const sizeStyles = {
 };
 
 const variantStyles = {
-	default: "text-slate-900",
+	default: "text-slate-900 dark:text-slate-100",
 	danger: "text-red-900",
 };
 

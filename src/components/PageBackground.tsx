@@ -28,7 +28,7 @@ export function PageBackground({
 	className = "",
 }: PageBackgroundProps) {
 	const baseClasses =
-		"min-h-screen bg-linear-to-br from-romance-50 via-white to-romance-100";
+		"min-h-screen bg-linear-to-br from-romance-50 via-white to-romance-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 transition-colors";
 	const combinedClasses = className
 		? `${baseClasses} ${className}`
 		: baseClasses;

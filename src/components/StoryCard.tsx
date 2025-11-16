@@ -50,7 +50,7 @@ export function StoryCard({
 	const isBranch = !!branchedFromStoryId;
 
 	return (
-		<div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow h-full flex flex-col">
+		<div className="bg-white dark:bg-gray-900 rounded-xl shadow-lg dark:shadow-black/20 overflow-hidden hover:shadow-xl dark:hover:shadow-black/30 transition-shadow h-full flex flex-col">
 			{/* Cover */}
 			<Link to="/story/$id/read" params={{ id }} search={{ scene: undefined }}>
 				<div
@@ -66,7 +66,7 @@ export function StoryCard({
 							onToggleFavorite(id, !isFavorite);
 						}}
 						disabled={isTogglingFavorite}
-						className="absolute top-3 right-3 p-2 bg-white/90 hover:bg-white rounded-full transition-colors disabled:opacity-50 cursor-pointer"
+						className="absolute top-3 right-3 p-2 bg-white/90 dark:bg-slate-800/90 hover:bg-white dark:hover:bg-slate-800 rounded-full transition-colors disabled:opacity-50 cursor-pointer"
 						title={isFavorite ? "Remove from favorites" : "Add to favorites"}
 					>
 						<Heart
@@ -86,7 +86,7 @@ export function StoryCard({
 					<Heading level="h3" size="section">
 						{displayTitle}
 					</Heading>
-					<p className="text-xs text-slate-500">
+					<p className="text-xs text-slate-500 dark:text-slate-400">
 						Started{" "}
 						{new Date(createdAt).toLocaleDateString("en-US", {
 							month: "short",
@@ -98,13 +98,13 @@ export function StoryCard({
 
 				{/* Branch indicator */}
 				{isBranch && (
-					<div className="flex items-center gap-2 p-2 bg-purple-50 border border-purple-200 rounded-lg">
-						<GitBranch className="w-4 h-4 text-purple-600 shrink-0" />
+					<div className="flex items-center gap-2 p-2 bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-lg">
+						<GitBranch className="w-4 h-4 text-purple-600 dark:text-purple-400 shrink-0" />
 						<div className="flex-1 min-w-0">
-							<p className="text-xs text-purple-900 font-medium">
+							<p className="text-xs text-purple-900 dark:text-purple-200 font-medium">
 								Branched Story
 							</p>
-							<p className="text-xs text-purple-700 truncate">
+							<p className="text-xs text-purple-700 dark:text-purple-300 truncate">
 								From{" "}
 								{branchedFromStoryId && (
 									<Link
@@ -122,7 +122,7 @@ export function StoryCard({
 					</div>
 				)}
 
-				<p className="text-sm text-slate-600 line-clamp-2">
+				<p className="text-sm text-slate-600 dark:text-slate-300 line-clamp-2">
 					{templateDescription}
 				</p>
 
@@ -131,7 +131,7 @@ export function StoryCard({
 					{baseTropes.slice(0, 3).map((trope) => (
 						<span
 							key={trope}
-							className="px-2 py-1 bg-romance-50 border border-romance-200 rounded-full text-xs text-romance-700 font-medium"
+							className="px-2 py-1 bg-romance-50 dark:bg-romance-500/20 border border-romance-200 dark:border-romance-500/30 rounded-full text-xs text-romance-700 dark:text-pink-200 font-medium"
 						>
 							{TROPE_LABELS[trope as keyof typeof TROPE_LABELS] || trope}
 						</span>
@@ -163,7 +163,7 @@ export function StoryCard({
 					<Link
 						to="/story/$id/info"
 						params={{ id }}
-						className="px-3 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-colors flex items-center justify-center"
+						className="px-3 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors flex items-center justify-center"
 						title="Story info"
 					>
 						<Info className="w-5 h-5" />

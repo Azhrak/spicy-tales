@@ -16,7 +16,9 @@ export function FullPageLoader({
 		<PageBackground className="flex items-center justify-center">
 			<div className="text-center space-y-4">
 				<Loader2 className="w-12 h-12 text-romance-600 animate-spin mx-auto" />
-				<div className="text-lg text-slate-600">{message}</div>
+				<div className="text-lg text-slate-600 dark:text-slate-300">
+					{message}
+				</div>
 			</div>
 		</PageBackground>
 	);

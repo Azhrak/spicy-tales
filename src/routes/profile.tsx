@@ -154,7 +154,7 @@ function ProfilePage() {
 			<PageContainer maxWidth="md">
 				<div className="space-y-8">
 					<div className="flex items-center gap-3">
-						<User className="w-8 h-8 text-romance-600" />
+						<User className="w-8 h-8 text-romance-600 dark:text-romance-400" />
 						<Heading level="h1" size="page">
 							Profile Settings
 						</Heading>

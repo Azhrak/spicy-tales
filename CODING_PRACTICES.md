@@ -161,6 +161,7 @@ import { Card } from '@/components/Card';
 ```
 
 **Why avoid barrels?**
+
 - Bundle size: Imports entire barrel file, not tree-shakeable
 - Slow builds: Bundler must parse all re-exports
 - Circular dependencies: Easy to create import cycles

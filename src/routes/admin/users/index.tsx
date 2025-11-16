@@ -141,7 +141,7 @@ function UsersListPage() {
 			<div className="space-y-6">
 				<div className="flex flex-col gap-2">
 					<Heading level="h1">User Management</Heading>
-					<p className="text-slate-600">
+					<p className="text-slate-600 dark:text-gray-300">
 						Manage user accounts, roles, and permissions. Admin access only.
 					</p>
 				</div>
@@ -214,7 +214,7 @@ function UsersListPage() {
 				/>
 
 				{/* Users Table */}
-				<div className="bg-white rounded-lg border border-slate-200 overflow-hidden">
+				<div className="bg-white dark:bg-gray-800 rounded-lg border border-slate-200 dark:border-gray-700 overflow-hidden">
 					<DataTable
 						data={users}
 						columns={[
@@ -227,7 +227,7 @@ function UsersListPage() {
 							{
 								header: "Email",
 								accessor: (u) => u.email,
-								className: "text-slate-600",
+								className: "text-slate-600 dark:text-gray-400",
 								key: "email",
 							},
 							{
@@ -241,8 +241,8 @@ function UsersListPage() {
 									<span
 										className={
 											u.email_verified
-												? "text-green-600 font-medium"
-												: "text-slate-400"
+												? "text-green-600 dark:text-green-400 font-medium"
+												: "text-slate-400 dark:text-gray-500"
 										}
 									>
 										{u.email_verified ? "Yes" : "No"}
@@ -253,7 +253,7 @@ function UsersListPage() {
 							{
 								header: "Joined",
 								accessor: (u) => new Date(u.created_at).toLocaleDateString(),
-								className: "text-slate-600 text-sm",
+								className: "text-slate-600 dark:text-gray-400 text-sm",
 								key: "joined",
 							},
 						]}

@@ -52,12 +52,12 @@ export function AdminNav({ currentPath, userRole }: AdminNavProps) {
 	const visibleItems = navItems.filter((item) => item.roles.includes(userRole));
 
 	return (
-		<nav className="w-64 bg-white border-r border-slate-200 min-h-screen p-6">
+		<nav className="w-64 bg-white dark:bg-gray-800 border-r border-slate-200 dark:border-gray-700 min-h-screen p-6">
 			<div className="space-y-8">
 				{/* Back to site link */}
 				<Link
 					to="/browse"
-					className="flex items-center gap-2 text-slate-600 hover:text-romance-600 transition-colors"
+					className="flex items-center gap-2 text-slate-600 dark:text-gray-300 hover:text-romance-600 dark:hover:text-romance-400 transition-colors"
 				>
 					<ArrowLeft className="w-4 h-4" />
 					<span className="text-sm font-medium">Back to Site</span>
@@ -65,7 +65,9 @@ export function AdminNav({ currentPath, userRole }: AdminNavProps) {
 
 				<div className="space-y-6">
 					{/* Navigation title */}
-					<h2 className="text-lg font-bold text-slate-900">Admin Panel</h2>
+					<h2 className="text-lg font-bold text-slate-900 dark:text-gray-100">
+						Admin Panel
+					</h2>
 
 					{/* Navigation items */}
 					<ul className="space-y-2">
@@ -80,8 +82,8 @@ export function AdminNav({ currentPath, userRole }: AdminNavProps) {
 										className={cn(
 											"flex items-center gap-3 px-4 py-2.5 rounded-lg font-medium transition-colors",
 											active
-												? "bg-romance-50 text-romance-700"
-												: "text-slate-700 hover:bg-slate-50",
+												? "bg-romance-50 dark:bg-romance-900/20 text-romance-700 dark:text-romance-700"
+												: "text-slate-700 dark:text-gray-300 hover:bg-slate-50 dark:hover:bg-gray-700/50",
 										)}
 									>
 										<Icon className="w-5 h-5" />

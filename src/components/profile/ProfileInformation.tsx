@@ -31,7 +31,7 @@ export function ProfileInformation({
 			<div className="space-y-6">
 				<div className="flex items-center gap-2">
 					<User className="w-5 h-5 text-romance-500" />
-					<h2 className="text-2xl font-bold text-slate-900">
+					<h2 className="text-2xl font-bold text-slate-900 dark:text-gray-100">
 						Profile Information
 					</h2>
 				</div>
@@ -52,19 +52,19 @@ export function ProfileInformation({
 						required
 					/>
 					{createdAt && (
-						<div className="text-sm text-slate-600">
+						<div className="text-sm text-slate-600 dark:text-gray-400">
 							Account created: {new Date(createdAt).toLocaleDateString()}
 						</div>
 					)}
 
 					{error && (
-						<div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+						<div className="p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg text-red-700 dark:text-red-400 text-sm">
 							{error}
 						</div>
 					)}
 
 					{success && (
-						<div className="p-3 bg-green-50 border border-green-200 rounded-lg text-green-700 text-sm">
+						<div className="p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg text-green-700 dark:text-green-400 text-sm">
 							{success}
 						</div>
 					)}

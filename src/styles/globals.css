@@ -3,6 +3,8 @@
 
 @source "../../src";
 
+@variant dark (&:is(.dark *));
+
 @theme {
   /* Import slate colors */
   --color-slate-50: #f8fafc;
@@ -28,6 +30,31 @@
   --color-romance-700: #be185d;
   --color-romance-800: #9d174d;
   --color-romance-900: #831843;
+
+  /* Dark mode romance color overrides */
+  --color-romance-dark-50: #2d0a1f;
+  --color-romance-dark-100: #3d0e2a;
+  --color-romance-dark-200: #5a1640;
+  --color-romance-dark-300: #7a1f56;
+  --color-romance-dark-400: #9d2870;
+  --color-romance-dark-500: #c13389;
+  --color-romance-dark-600: #d6429d;
+  --color-romance-dark-700: #e056af;
+  --color-romance-dark-800: #e87fc4;
+  --color-romance-dark-900: #f0aad8;
+}
+
+.dark {
+  --color-romance-50: var(--color-romance-dark-50);
+  --color-romance-100: var(--color-romance-dark-100);
+  --color-romance-200: var(--color-romance-dark-200);
+  --color-romance-300: var(--color-romance-dark-300);
+  --color-romance-400: var(--color-romance-dark-400);
+  --color-romance-500: var(--color-romance-dark-500);
+  --color-romance-600: var(--color-romance-dark-600);
+  --color-romance-700: var(--color-romance-dark-700);
+  --color-romance-800: var(--color-romance-dark-800);
+  --color-romance-900: var(--color-romance-dark-900);
 }
 
 body {
@@ -35,10 +62,19 @@ body {
   color: var(--color-slate-900);
 }
 
+.dark body {
+  background-color: var(--color-slate-950);
+  color: var(--color-slate-100);
+}
+
 .prose-romance {
   font-size: 1.125rem;
   line-height: 1.75;
   color: var(--color-slate-800);
+}
+
+.dark .prose-romance {
+  color: var(--color-slate-200);
 }
 
 .prose-romance p {

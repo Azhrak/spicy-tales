@@ -61,7 +61,7 @@ function TemplateDetailPage() {
 					{!isLoading && !error && template && (
 						<>
 							{/* Hero Section */}
-							<div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+							<div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden">
 								<div
 									className={`h-64 bg-linear-to-br ${template.cover_gradient} flex items-center justify-center`}
 								>
@@ -75,19 +75,23 @@ function TemplateDetailPage() {
 									<Heading level="h1" size="page">
 										{template.title}
 									</Heading>
-									<p className="text-lg text-slate-700 leading-relaxed">
+									<p className="text-lg text-slate-700 dark:text-gray-300 leading-relaxed">
 										{template.description}
 									</p>{" "}
 									{/* Tropes */}
 									<div className="space-y-3">
-										<Heading level="h3" size="label" className="text-slate-700">
+										<Heading
+											level="h3"
+											size="label"
+											className="text-slate-700 dark:text-gray-300"
+										>
 											Tropes:
 										</Heading>
 										<div className="flex flex-wrap gap-2">
 											{template.base_tropes.map((trope) => (
 												<span
 													key={trope}
-													className="px-4 py-2 bg-romance-50 border border-romance-200 rounded-full text-romance-700 font-medium"
+													className="px-4 py-2 bg-romance-50 dark:bg-romance-500/20 border border-romance-200 dark:border-romance-500/30 rounded-full text-romance-700 dark:text-pink-200 font-medium"
 												>
 													{TROPE_LABELS[trope as keyof typeof TROPE_LABELS] ||
 														trope}
@@ -96,7 +100,7 @@ function TemplateDetailPage() {
 										</div>
 									</div>
 									{/* Stats */}
-									<div className="flex items-center gap-6 text-slate-600">
+									<div className="flex items-center gap-6 text-slate-600 dark:text-gray-400">
 										<div className="flex items-center gap-2">
 											<Sparkles className="w-5 h-5 text-romance-600" />
 											<span className="font-medium">
@@ -123,12 +127,12 @@ function TemplateDetailPage() {
 							</div>
 
 							{/* Choice Points Preview */}
-							<div className="bg-white rounded-2xl shadow-xl p-4 sm:p-8 space-y-6">
+							<div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-4 sm:p-8 space-y-6">
 								<div className="space-y-2">
 									<Heading level="h2" size="section">
 										Key Decision Points
 									</Heading>
-									<p className="text-slate-600">
+									<p className="text-slate-600 dark:text-gray-400">
 										Throughout your story, you'll make choices that shape the
 										narrative. Here's a preview of some key moments:
 									</p>
@@ -137,11 +141,11 @@ function TemplateDetailPage() {
 									{template.choicePoints.map((choice) => (
 										<div
 											key={choice.id}
-											className="border border-slate-200 rounded-lg p-3 sm:p-6 hover:border-romance-300 transition-colors"
+											className="border border-slate-200 dark:border-gray-700 rounded-lg p-3 sm:p-6 hover:border-romance-300 dark:hover:border-romance-600 transition-colors"
 										>
 											<div className="flex items-start gap-2 sm:gap-4">
-												<div className="shrink-0 w-8 h-8 sm:w-10 sm:h-10 bg-romance-100 rounded-full flex items-center justify-center">
-													<span className="text-sm sm:text-base text-romance-700 font-bold">
+												<div className="shrink-0 w-8 h-8 sm:w-10 sm:h-10 bg-romance-50 dark:bg-romance-500/20 border border-romance-200 dark:border-romance-500/30 rounded-full flex items-center justify-center">
+													<span className="text-sm sm:text-base text-romance-700 dark:text-pink-200 font-bold">
 														{choice.scene_number}
 													</span>
 												</div>
@@ -153,15 +157,15 @@ function TemplateDetailPage() {
 														{choice.options.map((option) => (
 															<div
 																key={option.id}
-																className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 p-2 sm:p-3 bg-slate-50 rounded-lg"
+																className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 p-2 sm:p-3 bg-slate-50 dark:bg-gray-700/50 rounded-lg"
 															>
 																<div className="flex items-center gap-2 flex-1 min-w-0">
 																	<div className="w-2 h-2 shrink-0 bg-romance-500 rounded-full"></div>
-																	<span className="text-sm sm:text-base text-slate-700 wrap-break-word">
+																	<span className="text-sm sm:text-base text-slate-700 dark:text-gray-300 wrap-break-word">
 																		{option.text}
 																	</span>
 																</div>
-																<span className="text-xs text-slate-500 bg-white px-2 py-1 rounded self-start sm:self-auto sm:ml-auto shrink-0">
+																<span className="text-xs text-slate-500 dark:text-gray-400 bg-white dark:bg-gray-600 px-2 py-1 rounded self-start sm:self-auto sm:ml-auto shrink-0">
 																	{option.tone}
 																</span>
 															</div>
@@ -182,7 +186,7 @@ function TemplateDetailPage() {
 										<Heart className="w-5 h-5" fill="currentColor" />
 										Start Your Story
 									</Link>
-									<p className="text-slate-500 text-sm mt-3">
+									<p className="text-slate-500 dark:text-gray-400 text-sm mt-3">
 										Your choices will create a unique story experience
 									</p>
 								</div>

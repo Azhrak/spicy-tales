@@ -33,7 +33,9 @@ export function PasswordChange({
 			<div className="space-y-6">
 				<div className="flex items-center gap-2">
 					<Lock className="w-5 h-5 text-romance-500" />
-					<h2 className="text-2xl font-bold text-slate-900">Change Password</h2>
+					<h2 className="text-2xl font-bold text-slate-900 dark:text-gray-100">
+						Change Password
+					</h2>
 				</div>
 
 				<form onSubmit={onSubmit} className="space-y-4">
@@ -60,13 +62,13 @@ export function PasswordChange({
 						required
 					/>
 					{error && (
-						<div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+						<div className="p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg text-red-700 dark:text-red-400 text-sm">
 							{error}
 						</div>
 					)}
 
 					{success && (
-						<div className="p-3 bg-green-50 border border-green-200 rounded-lg text-green-700 text-sm">
+						<div className="p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg text-green-700 dark:text-green-400 text-sm">
 							{success}
 						</div>
 					)}

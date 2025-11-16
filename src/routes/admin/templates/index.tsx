@@ -254,7 +254,7 @@ function TemplatesListPage() {
 				<div className="flex items-center justify-between">
 					<div className="flex flex-col gap-2">
 						<Heading level="h1">Template Management</Heading>
-						<p className="text-slate-600">
+						<p className="text-slate-600 dark:text-gray-300">
 							Manage novel templates, including drafts and archived content.
 						</p>
 					</div>
@@ -375,7 +375,7 @@ function TemplatesListPage() {
 				/>
 
 				{/* Templates Table */}
-				<div className="bg-white rounded-lg border border-slate-200 overflow-hidden">
+				<div className="bg-white dark:bg-gray-800 rounded-lg border border-slate-200 dark:border-gray-700 overflow-hidden">
 					<DataTable
 						data={templates}
 						selectable={true}
@@ -392,7 +392,7 @@ function TemplatesListPage() {
 										variant="ghost"
 										size="sm"
 										onClick={() => handleSort("title")}
-										className="p-0 h-auto font-normal hover:text-slate-900"
+										className="p-0 h-auto font-normal hover:text-slate-900 dark:hover:text-gray-100"
 									>
 										Title
 										<ArrowUpDown className="w-3 h-3" />
@@ -409,7 +409,7 @@ function TemplatesListPage() {
 										variant="ghost"
 										size="sm"
 										onClick={() => handleSort("status")}
-										className="p-0 h-auto font-normal hover:text-slate-900"
+										className="p-0 h-auto font-normal hover:text-slate-900 dark:hover:text-gray-100"
 									>
 										Status
 										<ArrowUpDown className="w-3 h-3" />
@@ -421,7 +421,7 @@ function TemplatesListPage() {
 							{
 								header: "Tropes",
 								accessor: (t) => t.base_tropes.join(", "),
-								className: "text-slate-600 text-sm",
+								className: "text-slate-600 dark:text-gray-400 text-sm",
 								key: "tropes",
 							},
 							{
@@ -431,7 +431,7 @@ function TemplatesListPage() {
 										variant="ghost"
 										size="sm"
 										onClick={() => handleSort("scenes")}
-										className="p-0 h-auto font-normal hover:text-slate-900"
+										className="p-0 h-auto font-normal hover:text-slate-900 dark:hover:text-gray-100"
 									>
 										Scenes
 										<ArrowUpDown className="w-3 h-3" />
@@ -448,7 +448,7 @@ function TemplatesListPage() {
 										variant="ghost"
 										size="sm"
 										onClick={() => handleSort("created")}
-										className="p-0 h-auto font-normal hover:text-slate-900"
+										className="p-0 h-auto font-normal hover:text-slate-900 dark:hover:text-gray-100"
 									>
 										Created
 										<ArrowUpDown className="w-3 h-3" />
@@ -465,7 +465,7 @@ function TemplatesListPage() {
 										variant="ghost"
 										size="sm"
 										onClick={() => handleSort("updated")}
-										className="p-0 h-auto font-normal hover:text-slate-900"
+										className="p-0 h-auto font-normal hover:text-slate-900 dark:hover:text-gray-100"
 									>
 										Updated
 										<ArrowUpDown className="w-3 h-3" />

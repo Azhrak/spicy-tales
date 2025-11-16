@@ -14,12 +14,12 @@ export function PreferencesDisplay({ preferences }: PreferencesDisplayProps) {
 				<div className="space-y-4">
 					<div className="flex items-center gap-2">
 						<Settings className="w-5 h-5 text-romance-500" />
-						<h2 className="text-2xl font-bold text-slate-900">
+						<h2 className="text-2xl font-bold text-slate-900 dark:text-gray-100">
 							Reading Preferences
 						</h2>
 					</div>
 
-					<p className="text-slate-600">
+					<p className="text-slate-600 dark:text-gray-400">
 						Set up your reading preferences to get personalized story
 						recommendations
 					</p>
@@ -48,20 +48,22 @@ export function PreferencesDisplay({ preferences }: PreferencesDisplayProps) {
 			<div className="space-y-6">
 				<div className="flex items-center gap-2">
 					<Settings className="w-5 h-5 text-romance-500" />
-					<h2 className="text-2xl font-bold text-slate-900">
+					<h2 className="text-2xl font-bold text-slate-900 dark:text-gray-100">
 						Reading Preferences
 					</h2>
 				</div>
 
 				<div className="space-y-4">
 					<div className="space-y-2">
-						<h3 className="font-semibold text-slate-700">Favorite Genres</h3>
+						<h3 className="font-semibold text-slate-700 dark:text-gray-300">
+							Favorite Genres
+						</h3>
 						<div className="flex flex-wrap gap-2">
 							{(prefs.genres || []).length > 0 ? (
 								(prefs.genres || []).map((genre: string) => (
 									<span
 										key={genre}
-										className="px-3 py-1 bg-romance-100 text-romance-700 rounded-full text-sm"
+										className="px-3 py-1 bg-romance-100 dark:bg-romance-500/20 text-romance-700 dark:text-pink-200 rounded-full text-sm"
 									>
 										{genre
 											.split("-")
@@ -78,13 +80,15 @@ export function PreferencesDisplay({ preferences }: PreferencesDisplayProps) {
 					</div>
 
 					<div className="space-y-2">
-						<h3 className="font-semibold text-slate-700">Favorite Tropes</h3>
+						<h3 className="font-semibold text-slate-700 dark:text-gray-300">
+							Favorite Tropes
+						</h3>
 						<div className="flex flex-wrap gap-2">
 							{(prefs.tropes || []).length > 0 ? (
 								(prefs.tropes || []).map((trope: string) => (
 									<span
 										key={trope}
-										className="px-3 py-1 bg-romance-100 text-romance-700 rounded-full text-sm"
+										className="px-3 py-1 bg-romance-100 dark:bg-romance-500/20 text-romance-700 dark:text-pink-200 rounded-full text-sm"
 									>
 										{trope
 											.split("-")
@@ -96,15 +100,19 @@ export function PreferencesDisplay({ preferences }: PreferencesDisplayProps) {
 									</span>
 								))
 							) : (
-								<span className="text-slate-500">None set</span>
+								<span className="text-slate-500 dark:text-gray-400">
+									None set
+								</span>
 							)}
 						</div>
 					</div>
 
 					<div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
 						<div className="space-y-1">
-							<h3 className="font-semibold text-slate-700">Spice Level</h3>
-							<p className="text-slate-600">
+							<h3 className="font-semibold text-slate-700 dark:text-gray-300">
+								Spice Level
+							</h3>
+							<p className="text-slate-600 dark:text-gray-400">
 								{(() => {
 									const level = prefs.spiceLevel || 3;
 									return `Level ${level} ${"🔥".repeat(level)}`;
@@ -113,8 +121,10 @@ export function PreferencesDisplay({ preferences }: PreferencesDisplayProps) {
 						</div>
 
 						<div className="space-y-1">
-							<h3 className="font-semibold text-slate-700">Pacing</h3>
-							<p className="text-slate-600">
+							<h3 className="font-semibold text-slate-700 dark:text-gray-300">
+								Pacing
+							</h3>
+							<p className="text-slate-600 dark:text-gray-400">
 								{(prefs.pacing || "slow-burn")
 									.split("-")
 									.map(
@@ -126,8 +136,10 @@ export function PreferencesDisplay({ preferences }: PreferencesDisplayProps) {
 						</div>
 
 						<div className="space-y-1">
-							<h3 className="font-semibold text-slate-700">Scene Length</h3>
-							<p className="text-slate-600">
+							<h3 className="font-semibold text-slate-700 dark:text-gray-300">
+								Scene Length
+							</h3>
+							<p className="text-slate-600 dark:text-gray-400">
 								{(() => {
 									const length = prefs.sceneLength || "medium";
 									return length.charAt(0).toUpperCase() + length.slice(1);
@@ -139,7 +151,7 @@ export function PreferencesDisplay({ preferences }: PreferencesDisplayProps) {
 
 				<Link
 					to="/preferences"
-					className="inline-flex items-center px-6 py-3 border-2 border-romance-600 text-romance-600 rounded-lg font-semibold hover:bg-romance-50 transition-colors"
+					className="inline-flex items-center px-6 py-3 border-2 border-romance-600 dark:border-romance-500 text-romance-600 dark:text-romance-400 rounded-lg font-semibold hover:bg-romance-50 dark:hover:bg-romance-900/20 transition-colors"
 				>
 					Update Preferences
 				</Link>

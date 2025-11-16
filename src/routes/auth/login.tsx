@@ -79,7 +79,9 @@ function LoginPage() {
 					</div>
 					<div className="space-y-2">
 						<Heading level="h1">Welcome Back</Heading>
-						<p className="text-slate-600">Sign in to continue your story</p>
+						<p className="text-slate-600 dark:text-gray-300">
+							Sign in to continue your story
+						</p>
 					</div>
 				</div>
 
@@ -126,11 +128,11 @@ function LoginPage() {
 				</div>
 
 				{/* Sign Up Link */}
-				<p className="text-center text-sm text-slate-600">
+				<p className="text-center text-sm text-slate-600 dark:text-gray-300">
 					Don't have an account?{" "}
 					<Link
 						to="/auth/signup"
-						className="text-romance-600 font-medium hover:text-romance-700"
+						className="text-romance-600 dark:text-romance-400 font-medium hover:text-romance-700 dark:hover:text-romance-300"
 					>
 						Sign up
 					</Link>

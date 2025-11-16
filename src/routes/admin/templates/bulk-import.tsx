@@ -206,12 +206,12 @@ function BulkImportPage() {
 			<div className="p-6 max-w-6xl space-y-6">
 				<div className="flex flex-col gap-2">
 					<Heading level="h1">Bulk Import Templates</Heading>
-					<p className="text-gray-600">
+					<p className="text-gray-600 dark:text-gray-300">
 						Import multiple story templates with choice points using JSON format
 					</p>
 				</div>
 
-				<div className="bg-white rounded-lg shadow p-6 flex flex-col gap-4">
+				<div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 flex flex-col gap-4">
 					<div className="flex items-center justify-between">
 						<Heading level="h2">JSON Template</Heading>
 						<div className="space-x-2">
@@ -228,83 +228,107 @@ function BulkImportPage() {
 					</div>
 
 					{showTemplate && (
-						<div className="bg-gray-50 rounded border border-gray-200 p-4 overflow-auto">
-							<pre className="text-sm text-gray-800">
+						<div className="bg-gray-50 dark:bg-gray-900 rounded border border-gray-200 dark:border-gray-700 p-4 overflow-auto">
+							<pre className="text-sm text-gray-800 dark:text-gray-200">
 								{JSON.stringify(EXAMPLE_JSON, null, 2)}
 							</pre>
 						</div>
 					)}
 
-					<div className="mt-4 text-sm text-gray-600 space-y-2">
+					<div className="mt-4 text-sm text-gray-600 dark:text-gray-300 space-y-2">
 						<p className="font-medium">Template Structure:</p>
 						<ul className="list-disc list-inside space-y-1 ml-2">
 							<li>
-								<code className="bg-gray-100 px-1 rounded">title</code>:
-								Template name (1-255 characters)
+								<code className="bg-gray-100 dark:bg-gray-700 px-1 rounded">
+									title
+								</code>
+								: Template name (1-255 characters)
 							</li>
 							<li>
-								<code className="bg-gray-100 px-1 rounded">description</code>:
-								Story description
+								<code className="bg-gray-100 dark:bg-gray-700 px-1 rounded">
+									description
+								</code>
+								: Story description
 							</li>
 							<li>
-								<code className="bg-gray-100 px-1 rounded">base_tropes</code>:
-								Array of trope strings
+								<code className="bg-gray-100 dark:bg-gray-700 px-1 rounded">
+									base_tropes
+								</code>
+								: Array of trope strings
 							</li>
 							<li>
-								<code className="bg-gray-100 px-1 rounded">
+								<code className="bg-gray-100 dark:bg-gray-700 px-1 rounded">
 									estimated_scenes
 								</code>
 								: Number between 1-100
 							</li>
 							<li>
-								<code className="bg-gray-100 px-1 rounded">cover_gradient</code>
+								<code className="bg-gray-100 dark:bg-gray-700 px-1 rounded">
+									cover_gradient
+								</code>
 								: Tailwind gradient class (e.g., "from-blue-600 to-indigo-800")
 							</li>
 							<li>
-								<code className="bg-gray-100 px-1 rounded">choice_points</code>:
-								Array of choice points (optional)
+								<code className="bg-gray-100 dark:bg-gray-700 px-1 rounded">
+									choice_points
+								</code>
+								: Array of choice points (optional)
 							</li>
 						</ul>
 
 						<p className="font-medium">Choice Point Structure:</p>
 						<ul className="list-disc list-inside space-y-1 ml-2">
 							<li>
-								<code className="bg-gray-100 px-1 rounded">scene_number</code>:
-								Scene number (must be within estimated_scenes)
+								<code className="bg-gray-100 dark:bg-gray-700 px-1 rounded">
+									scene_number
+								</code>
+								: Scene number (must be within estimated_scenes)
 							</li>
 							<li>
-								<code className="bg-gray-100 px-1 rounded">prompt_text</code>:
-								The question/prompt for the reader
+								<code className="bg-gray-100 dark:bg-gray-700 px-1 rounded">
+									prompt_text
+								</code>
+								: The question/prompt for the reader
 							</li>
 							<li>
-								<code className="bg-gray-100 px-1 rounded">options</code>: Array
-								of 2-4 options
+								<code className="bg-gray-100 dark:bg-gray-700 px-1 rounded">
+									options
+								</code>
+								: Array of 2-4 options
 							</li>
 						</ul>
 
 						<p className="font-medium">Option Structure:</p>
 						<ul className="list-disc list-inside space-y-1 ml-2">
 							<li>
-								<code className="bg-gray-100 px-1 rounded">id</code>: Unique
-								identifier for the option
+								<code className="bg-gray-100 dark:bg-gray-700 px-1 rounded">
+									id
+								</code>
+								: Unique identifier for the option
 							</li>
 							<li>
-								<code className="bg-gray-100 px-1 rounded">text</code>: Option
-								text
+								<code className="bg-gray-100 dark:bg-gray-700 px-1 rounded">
+									text
+								</code>
+								: Option text
 							</li>
 							<li>
-								<code className="bg-gray-100 px-1 rounded">tone</code>:
-								Emotional tone (e.g., "skeptical", "brave")
+								<code className="bg-gray-100 dark:bg-gray-700 px-1 rounded">
+									tone
+								</code>
+								: Emotional tone (e.g., "skeptical", "brave")
 							</li>
 							<li>
-								<code className="bg-gray-100 px-1 rounded">impact</code>: Story
-								impact (e.g., "rational", "bold")
+								<code className="bg-gray-100 dark:bg-gray-700 px-1 rounded">
+									impact
+								</code>
+								: Story impact (e.g., "rational", "bold")
 							</li>
 						</ul>
 					</div>
 				</div>
 
-				<div className="bg-white rounded-lg shadow p-6 flex flex-col gap-4">
+				<div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 flex flex-col gap-4">
 					<Heading level="h2">Import Templates</Heading>
 
 					<FormTextarea
@@ -323,7 +347,7 @@ function BulkImportPage() {
 					)}
 
 					{success && (
-						<div className="mt-4 bg-green-50 border border-green-200 rounded p-4 text-green-800">
+						<div className="mt-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700 rounded p-4 text-green-800 dark:text-green-300">
 							{success}
 						</div>
 					)}

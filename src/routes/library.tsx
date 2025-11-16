@@ -16,7 +16,12 @@ import { useToggleFavoriteMutation } from "~/hooks/useToggleFavoriteMutation";
 import { useUserStoriesQuery } from "~/hooks/useUserStoriesQuery";
 
 export const Route = createFileRoute("/library")({
-	validateSearch: (search: Record<string, unknown>) => {
+	validateSearch: (
+		search: Record<string, unknown>,
+	): {
+		tab?: "in-progress" | "completed";
+		favorites?: boolean;
+	} => {
 		return {
 			tab: (search.tab as string) === "completed" ? "completed" : "in-progress",
 			favorites: !!(search.favorites === "true" || search.favorites === true),
@@ -107,7 +112,7 @@ function LibraryPage() {
 								className={`px-6 py-3 rounded-lg font-semibold transition-colors ${
 									activeTab === "in-progress"
 										? "bg-romance-600 text-white"
-										: "bg-white text-slate-700 hover:bg-slate-50"
+										: "bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700"
 								}`}
 							>
 								<div className="flex items-center gap-2">
@@ -125,7 +130,7 @@ function LibraryPage() {
 								className={`px-6 py-3 rounded-lg font-semibold transition-colors ${
 									activeTab === "completed"
 										? "bg-romance-600 text-white"
-										: "bg-white text-slate-700 hover:bg-slate-50"
+										: "bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700"
 								}`}
 							>
 								<div className="flex items-center gap-2">
@@ -147,9 +152,9 @@ function LibraryPage() {
 								}
 								className="w-5 h-5 rounded border-slate-300 text-red-600 focus:ring-red-500 focus:ring-offset-0 cursor-pointer"
 							/>
-							<span className="flex items-center gap-2 text-slate-700 font-medium">
+							<span className="flex items-center gap-2 text-slate-700 dark:text-gray-300 font-medium">
 								<Heart
-									className={`w-4 h-4 ${showFavorites ? "fill-red-600 text-red-600" : "text-slate-400"}`}
+									className={`w-4 h-4 ${showFavorites ? "fill-red-600 text-red-600" : "text-slate-400 dark:text-gray-500"}`}
 								/>
 								Show favorites only
 							</span>

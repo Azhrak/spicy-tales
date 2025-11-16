@@ -22,7 +22,7 @@ export function Card({ children, className, padding = "lg" }: CardProps) {
 	return (
 		<div
 			className={cn(
-				"bg-white rounded-2xl shadow-lg",
+				"bg-white dark:bg-gray-800 rounded-2xl shadow-lg",
 				paddingClasses[padding],
 				className,
 			)}
