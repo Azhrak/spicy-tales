@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import {
 	ArrowLeft,
 	BookOpen,
@@ -10,9 +10,11 @@ import {
 	Pencil,
 	Sparkles,
 	Timer,
+	Trash2,
 	X,
 } from "lucide-react";
 import { useState } from "react";
+import { ConfirmDialog } from "~/components/admin/ConfirmDialog";
 import { Button } from "~/components/Button";
 import { ErrorMessage } from "~/components/ErrorMessage";
 import { FormInput } from "~/components/FormInput";
@@ -23,6 +25,7 @@ import { PageBackground } from "~/components/PageBackground";
 import { PageContainer } from "~/components/PageContainer";
 import { StoryProgressBar } from "~/components/StoryProgressBar";
 import { useCurrentUserQuery } from "~/hooks/useCurrentUserQuery";
+import { useDeleteStoryMutation } from "~/hooks/useDeleteStoryMutation";
 import { useStoryQuery } from "~/hooks/useStoryQuery";
 import { useUpdateStoryTitleMutation } from "~/hooks/useUpdateStoryTitleMutation";
 import type { UserPreferences } from "~/lib/types/preferences";
@@ -40,13 +43,16 @@ export const Route = createFileRoute("/story/$id/info")({
 
 function StoryInfoPage() {
 	const { id } = Route.useParams();
+	const navigate = useNavigate();
 	const { data: profileData } = useCurrentUserQuery();
 	const { data, isLoading, error } = useStoryQuery(id);
 	const updateTitleMutation = useUpdateStoryTitleMutation();
+	const deleteStoryMutation = useDeleteStoryMutation();
 
 	const [isEditingTitle, setIsEditingTitle] = useState(false);
 	const [editedTitle, setEditedTitle] = useState("");
 	const [titleError, setTitleError] = useState("");
+	const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
 	const handleStartEdit = () => {
 		if (data?.story) {
@@ -87,6 +93,18 @@ function StoryInfoPage() {
 			setTitleError(
 				error instanceof Error ? error.message : "Failed to update title",
 			);
+		}
+	};
+
+	const handleDeleteStory = async () => {
+		try {
+			await deleteStoryMutation.mutateAsync(id);
+			// Navigate back to library after successful deletion
+			navigate({ to: "/library", search: { tab: "in-progress" } });
+		} catch (error) {
+			// Error is handled by the mutation
+			console.error("Failed to delete story:", error);
+			setShowDeleteDialog(false);
 		}
 	};
 
@@ -240,16 +258,26 @@ function StoryInfoPage() {
 							</div>
 
 							{/* Action Button */}
-							<Link
-								to="/story/$id/read"
-								params={{ id: story.id }}
-								search={{ scene: undefined }}
-								className="inline-flex items-center justify-center px-6 py-3 bg-romance-600 text-white rounded-lg font-medium hover:bg-romance-700 transition-colors"
-							>
-								{story.status === "completed"
-									? "Read Again"
-									: "Continue Reading"}
-							</Link>
+							<div className="flex gap-3 justify-between">
+								<Link
+									to="/story/$id/read"
+									params={{ id: story.id }}
+									search={{ scene: undefined }}
+									className="inline-flex items-center justify-center px-6 py-3 bg-romance-600 text-white rounded-lg font-medium hover:bg-romance-700 transition-colors"
+								>
+									{story.status === "completed"
+										? "Read Again"
+										: "Continue Reading"}
+								</Link>
+								<Button
+									variant="danger"
+									onClick={() => setShowDeleteDialog(true)}
+									className="flex items-center gap-2"
+									title="Remove story"
+								>
+									<Trash2 className="w-5 h-5" />
+								</Button>
+							</div>
 						</div>
 					</div>
 
@@ -377,6 +405,25 @@ function StoryInfoPage() {
 					)}
 				</div>
 			</PageContainer>
+
+			{/* Delete Confirmation Dialog */}
+			<ConfirmDialog
+				isOpen={showDeleteDialog}
+				onClose={() => setShowDeleteDialog(false)}
+				onConfirm={handleDeleteStory}
+				title="Remove Story"
+				message={
+					<>
+						<p>Are you sure you want to remove this story?</p>
+						<p className="mt-2 font-medium">
+							This will permanently delete all your progress and choices.
+						</p>
+					</>
+				}
+				confirmText="Remove Story"
+				confirmVariant="danger"
+				loading={deleteStoryMutation.isPending}
+			/>
 		</PageBackground>
 	);
 }
