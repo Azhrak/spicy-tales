@@ -3,7 +3,10 @@ import { ArrowLeft } from "lucide-react";
 import { Footer } from "~/components/Footer";
 import { Heading } from "~/components/Heading";
 import { PageBackground } from "~/components/PageBackground";
-import { SESSION_COOKIE_NAME, SESSION_EXPIRY_DAYS } from "~/lib/auth/session";
+import {
+	SESSION_COOKIE_NAME,
+	SESSION_EXPIRY_DAYS,
+} from "~/lib/auth/session-constants";
 
 export const Route = createFileRoute("/cookies")({
 	component: CookiePolicy,

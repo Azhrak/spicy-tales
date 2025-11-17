@@ -1,10 +1,9 @@
 import { randomBytes } from "node:crypto";
 import { db } from "~/lib/db";
 import type { UserPreferences } from "../types/preferences";
+import { SESSION_COOKIE_NAME, SESSION_EXPIRY_DAYS } from "./session-constants";
 
-// NOTE: if you change these, update the privacy and cookies pages accordingly
-export const SESSION_COOKIE_NAME = "session_id";
-export const SESSION_EXPIRY_DAYS = 30;
+export { SESSION_COOKIE_NAME, SESSION_EXPIRY_DAYS };
 
 /**
  * Session data structure
