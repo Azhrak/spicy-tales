@@ -64,16 +64,6 @@ export function ChoicePointForm({
 
 	return (
 		<div className="space-y-6">
-			<div>
-				<h3 className="text-lg font-semibold text-slate-900 dark:text-gray-100">
-					Choice Points
-				</h3>
-				<p className="text-sm text-slate-600 dark:text-gray-400 mt-1">
-					Add choice points in chronological order. Maximum {maxChoicePoints}{" "}
-					choice points (one after each scene, except the last).
-				</p>
-			</div>
-
 			{choicePoints.length === 0 ? (
 				<div className="text-center py-8 bg-slate-50 dark:bg-gray-800 rounded-lg border-2 border-dashed border-slate-300 dark:border-gray-600">
 					<p className="text-slate-600 dark:text-gray-400">

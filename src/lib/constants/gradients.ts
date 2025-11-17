@@ -16,6 +16,7 @@ export const GRADIENT_OPTIONS: GradientOption[] = [
 	{ value: "from-cyan-400 to-blue-500", label: "Cyan to Blue" },
 	{ value: "from-emerald-600 to-teal-700", label: "Emerald to Teal" },
 	{ value: "from-fuchsia-500 to-pink-600", label: "Fuchsia to Pink" },
+	{ value: "from-gray-400 to-slate-700", label: "Gray to Slate (Light)" },
 	{ value: "from-gray-700 to-slate-900", label: "Gray to Slate" },
 	{ value: "from-green-500 to-emerald-700", label: "Green to Emerald" },
 	{ value: "from-green-600 to-teal-600", label: "Green to Teal" },

@@ -82,14 +82,14 @@ export function ChoicePointItem({
 		}
 
 		// Find the maximum scene number based on the next choice point
-		let maxSceneNumber = maxScenes;
+		let maxSceneNumber = maxScenes - 1;
 		if (choicePointIndex < allChoicePoints.length - 1) {
 			// Must be less than the next choice point's scene number
 			maxSceneNumber = allChoicePoints[choicePointIndex + 1].scene_number - 1;
 		}
 
 		// Generate available scene numbers from min to max
-		return Array.from({ length: maxScenes }, (_, i) => i + 1).filter(
+		return Array.from({ length: maxScenes - 1 }, (_, i) => i + 1).filter(
 			(num) =>
 				num >= minSceneNumber &&
 				num <= maxSceneNumber &&
@@ -124,23 +124,33 @@ export function ChoicePointItem({
 					>
 						After Scene Number *
 					</label>
-					<select
-						id={`scene-number-${choicePointIndex}`}
-						value={choicePoint.scene_number}
-						onChange={(e) =>
-							onUpdate({
-								scene_number: Number.parseInt(e.target.value, 10),
-							})
-						}
-						className="w-full px-4 py-2 border border-slate-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-100"
-						required
-					>
-						{getAvailableSceneNumbers().map((num) => (
-							<option key={num} value={num}>
-								Scene {num}
-							</option>
-						))}
-					</select>
+					{getAvailableSceneNumbers().length === 0 ? (
+						<div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700 rounded-lg p-4">
+							<p className="text-sm text-amber-800 dark:text-amber-300">
+								No available scene numbers. The story has {maxScenes} scenes.
+								Please adjust the scene numbers of previous choice points to
+								make room for additional choices.
+							</p>
+						</div>
+					) : (
+						<select
+							id={`scene-number-${choicePointIndex}`}
+							value={choicePoint.scene_number}
+							onChange={(e) =>
+								onUpdate({
+									scene_number: Number.parseInt(e.target.value, 10),
+								})
+							}
+							className="w-full px-4 py-2 border border-slate-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-100"
+							required
+						>
+							{getAvailableSceneNumbers().map((num) => (
+								<option key={num} value={num}>
+									Scene {num}
+								</option>
+							))}
+						</select>
+					)}
 				</div>
 
 				{/* Prompt Text */}

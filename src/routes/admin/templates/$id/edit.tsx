@@ -12,6 +12,7 @@ import type { ChoicePoint } from "~/components/admin/ChoicePointForm";
 import { Button } from "~/components/Button";
 import { ErrorMessage } from "~/components/ErrorMessage";
 import { FormInput } from "~/components/FormInput";
+import { FormTextarea } from "~/components/FormTextarea";
 import { Heading } from "~/components/Heading";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
 import { useAdminTemplateQuery } from "~/hooks/useAdminTemplateQuery";
@@ -199,7 +200,6 @@ function EditTemplatePage() {
 								<ErrorMessage message={formError} />
 							</div>
 						)}
-
 						{/* Title */}
 						<FormInput
 							label="Title *"
@@ -210,27 +210,16 @@ function EditTemplatePage() {
 							}
 							required
 						/>
-
 						{/* Description */}
-						<div className="space-y-2">
-							<label
-								htmlFor="description"
-								className="block text-sm font-medium text-slate-900 dark:text-gray-100"
-							>
-								Description *
-							</label>
-							<textarea
-								id="description"
-								value={formData.description}
-								onChange={(e) =>
-									setFormData({ ...formData, description: e.target.value })
-								}
-								rows={4}
-								className="w-full px-4 py-2 border border-slate-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-100"
-								required
-							/>
-						</div>
-
+						<FormTextarea
+							label="Description *"
+							value={formData.description}
+							onChange={(e) =>
+								setFormData({ ...formData, description: e.target.value })
+							}
+							rows={4}
+							required
+						/>
 						{/* Base Tropes */}
 						<FormInput
 							label="Base Tropes *"
@@ -242,7 +231,6 @@ function EditTemplatePage() {
 							helperText="Separate multiple tropes with commas"
 							required
 						/>
-
 						{/* Estimated Scenes */}
 						<FormInput
 							label="Estimated Scenes *"
@@ -259,7 +247,6 @@ function EditTemplatePage() {
 							helperText="Approximate number of scenes (1-100)"
 							required
 						/>
-
 						{/* Cover Gradient */}
 						<div className="space-y-2">
 							<label
@@ -268,6 +255,16 @@ function EditTemplatePage() {
 							>
 								Cover Gradient *
 							</label>
+							{!GRADIENT_OPTIONS.find(
+								(opt) => opt.value === formData.cover_gradient,
+							) && (
+								<div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700 rounded-lg p-3">
+									<p className="text-sm text-amber-800 dark:text-amber-300">
+										Warning: Current gradient "{formData.cover_gradient}" is not
+										in the available options. Please select a valid gradient.
+									</p>
+								</div>
+							)}
 							<select
 								id="gradient"
 								value={formData.cover_gradient}
@@ -288,8 +285,7 @@ function EditTemplatePage() {
 									className={`h-24 rounded-lg bg-linear-to-br ${formData.cover_gradient}`}
 								/>
 							</div>
-						</div>
-
+						</div>{" "}
 						{/* Save Template Changes Button */}
 						<div className="pt-4 border-t border-slate-200 dark:border-gray-700">
 							<Button
