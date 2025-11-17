@@ -74,7 +74,24 @@ setting_location: coffee shop downtown
 </SCENE_META>
 ```
 
-### 2. Parsing
+**Important**: This metadata block is automatically filtered out during streaming and never shown to users.
+
+### 2. Streaming & Filtering
+
+When scenes are generated in real-time (streaming):
+
+- **Server-side filtering**: The streaming endpoint (`/api/stories/$id/scene/stream`) uses a smart buffering system
+- **Buffer size**: Maintains a 200-character buffer to detect `<SCENE_META>` opening tags
+- **Detection logic**:
+  - Scans incoming chunks for metadata block markers
+  - Stops streaming when `<SCENE_META>` is detected
+  - Holds metadata in buffer for final processing
+- **Clean output**: Only narrative content reaches the user
+- **Final parsing**: After streaming completes, full content is parsed via `parseSceneMeta()` for database storage
+
+**Why this matters**: Users see stories being written in real-time without technical metadata cluttering the experience.
+
+### 3. Parsing
 
 The `parseSceneMeta()` function extracts:
 
@@ -82,7 +99,7 @@ The `parseSceneMeta()` function extracts:
 - Structured metadata object
 - Generated summary
 
-### 3. Storage
+### 4. Storage
 
 Metadata is stored in the database alongside the scene content:
 
@@ -96,7 +113,7 @@ await cacheScene(
 );
 ```
 
-### 4. Context Usage
+### 5. Context Usage
 
 When generating the next scene:
 

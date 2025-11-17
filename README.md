@@ -8,6 +8,7 @@ Full-stack TypeScript app for AI-generated interactive romance novels. Users mak
 
 - 🔐 Authentication (Google OAuth + Email/Password)
 - 📚 AI-generated romance novels with choice-based branching
+- ⚡ Real-time streaming content generation (see stories being written!)
 - 🌳 Story branching system (explore alternative storylines)
 - ✏️ Edit story titles anytime
 - ❤️ Mark stories as favorites and filter by favorites

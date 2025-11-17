@@ -7,17 +7,17 @@ import {
 	GitBranch,
 	Home,
 	Info,
+	Loader2,
 	Sparkles,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { BranchConfirmationDialog } from "~/components/BranchConfirmationDialog";
 import { Button } from "~/components/Button";
-import { FullPageLoader } from "~/components/FullPageLoader";
 import { Heading } from "~/components/Heading";
 import { useBranchStoryMutation } from "~/hooks/useBranchStoryMutation";
 import { useCheckExistingBranch } from "~/hooks/useCheckExistingBranch";
 import { useMakeChoiceMutation } from "~/hooks/useMakeChoiceMutation";
-import { useStorySceneQuery } from "~/hooks/useStorySceneQuery";
+import { useStreamingScene } from "~/hooks/useStreamingScene";
 import { useUpdateProgressMutation } from "~/hooks/useUpdateProgressMutation";
 
 export const Route = createFileRoute("/story/$id/read")({
@@ -41,38 +41,44 @@ function ReadingPage() {
 	// Use scene from URL, fallback to null (which uses current_scene from API)
 	const currentSceneNumber = sceneFromUrl ?? null;
 
-	// Fetch scene data
-	const { data, isLoading, error } = useStorySceneQuery(id, currentSceneNumber);
+	// Use streaming hook for scene data
+	const streamingState = useStreamingScene(id, currentSceneNumber);
 
 	// Mutations
 	const choiceMutation = useMakeChoiceMutation(id);
 	const progressMutation = useUpdateProgressMutation(id);
 	const branchMutation = useBranchStoryMutation(id);
 
+	// Extract data from streaming state
+	const sceneMetadata = streamingState.metadata;
+	const sceneContent = streamingState.content;
+	const isGenerating = streamingState.isStreaming;
+	const error = streamingState.error;
+
 	// Check for existing branch when dialog is shown
 	const { data: existingBranchData, isLoading: isCheckingExistingBranch } =
 		useCheckExistingBranch(
 			id,
-			data?.scene.number ?? 0,
-			data?.choicePoint?.id ?? "",
+			sceneMetadata?.scene.number ?? 0,
+			sceneMetadata?.choicePoint?.id ?? "",
 			branchChoice ?? 0,
 			showBranchDialog &&
 				branchChoice !== null &&
-				!!data?.scene.number &&
-				!!data?.choicePoint?.id,
+				!!sceneMetadata?.scene.number &&
+				!!sceneMetadata?.choicePoint?.id,
 		);
 
 	// Update progress when viewing a scene beyond current progress
 	useEffect(() => {
 		if (
-			data &&
-			data.scene.number > data.story.currentScene &&
-			data.scene.number !== lastUpdatedSceneRef.current
+			sceneMetadata &&
+			sceneMetadata.scene.number > sceneMetadata.story.currentScene &&
+			sceneMetadata.scene.number !== lastUpdatedSceneRef.current
 		) {
-			lastUpdatedSceneRef.current = data.scene.number;
-			progressMutation.mutate({ currentScene: data.scene.number });
+			lastUpdatedSceneRef.current = sceneMetadata.scene.number;
+			progressMutation.mutate({ currentScene: sceneMetadata.scene.number });
 		}
-	}, [data, progressMutation]);
+	}, [sceneMetadata, progressMutation]);
 
 	const handleChoiceSuccess = (result: {
 		completed: boolean;
@@ -93,13 +99,13 @@ function ReadingPage() {
 	};
 
 	const handleMakeChoice = () => {
-		if (selectedOption === null || !data?.choicePoint) return;
+		if (selectedOption === null || !sceneMetadata?.choicePoint) return;
 
 		choiceMutation.mutate(
 			{
-				choicePointId: data.choicePoint.id,
+				choicePointId: sceneMetadata.choicePoint.id,
 				selectedOption,
-				currentScene: scene.number,
+				currentScene: sceneMetadata.scene.number,
 			},
 			{
 				onSuccess: handleChoiceSuccess,
@@ -108,13 +114,13 @@ function ReadingPage() {
 	};
 
 	const handleBranchChoice = (optionIndex: number) => {
-		if (!data?.choicePoint) return;
+		if (!sceneMetadata?.choicePoint) return;
 		setBranchChoice(optionIndex);
 		setShowBranchDialog(true);
 	};
 
 	const handleConfirmBranch = () => {
-		if (branchChoice === null || !data?.choicePoint) return;
+		if (branchChoice === null || !sceneMetadata?.choicePoint) return;
 
 		// If an existing branch exists, navigate to it instead
 		if (existingBranchData?.exists && existingBranchData.branch) {
@@ -124,7 +130,7 @@ function ReadingPage() {
 			navigate({
 				to: "/story/$id/read",
 				params: { id: existingBranchData.branch.id },
-				search: { scene: scene.number + 1 },
+				search: { scene: sceneMetadata.scene.number + 1 },
 			});
 			return;
 		}
@@ -132,8 +138,8 @@ function ReadingPage() {
 		// Otherwise create a new branch
 		branchMutation.mutate(
 			{
-				sceneNumber: scene.number,
-				choicePointId: data.choicePoint.id,
+				sceneNumber: sceneMetadata.scene.number,
+				choicePointId: sceneMetadata.choicePoint.id,
 				newChoice: branchChoice,
 			},
 			{
@@ -145,7 +151,7 @@ function ReadingPage() {
 					navigate({
 						to: "/story/$id/read",
 						params: { id: result.storyId },
-						search: { scene: scene.number + 1 },
+						search: { scene: sceneMetadata.scene.number + 1 },
 					});
 				},
 			},
@@ -153,14 +159,14 @@ function ReadingPage() {
 	};
 
 	const handleNavigateToExistingBranch = () => {
-		if (existingBranchData?.branch) {
+		if (existingBranchData?.branch && sceneMetadata) {
 			// Close dialog and reset state before navigating
 			setShowBranchDialog(false);
 			setBranchChoice(null);
 			navigate({
 				to: "/story/$id/read",
 				params: { id: existingBranchData.branch.id },
-				search: { scene: scene.number + 1 },
+				search: { scene: sceneMetadata.scene.number + 1 },
 			});
 		}
 	};
@@ -170,10 +176,7 @@ function ReadingPage() {
 		setSelectedOption(null);
 	};
 
-	if (isLoading) {
-		return <FullPageLoader message="Loading your story..." />;
-	}
-
+	// Show error if streaming failed
 	if (error) {
 		return (
 			<div className="min-h-screen bg-linear-to-br from-rose-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-900 flex items-center justify-center">
@@ -187,9 +190,7 @@ function ReadingPage() {
 						>
 							Oops! Something went wrong
 						</Heading>
-						<p className="text-gray-600 dark:text-gray-300">
-							{error instanceof Error ? error.message : "Failed to load scene"}
-						</p>
+						<p className="text-gray-600 dark:text-gray-300">{error}</p>
 					</div>
 					<Link
 						to="/library"
@@ -204,9 +205,16 @@ function ReadingPage() {
 		);
 	}
 
-	if (!data) return null;
+	// Wait for metadata before rendering
+	if (!sceneMetadata) {
+		return null;
+	}
 
-	const { scene, story, choicePoint, previousChoice } = data;
+	// Extract data from metadata
+	const scene = sceneMetadata.scene;
+	const story = sceneMetadata.story;
+	const choicePoint = sceneMetadata.choicePoint;
+	const previousChoice = sceneMetadata.previousChoice;
 	const progress = (scene.number / story.estimatedScenes) * 100;
 	const isLastScene = scene.number >= story.estimatedScenes;
 	const hasAlreadyMadeChoice = previousChoice !== null;
@@ -270,33 +278,51 @@ function ReadingPage() {
 			<main className="max-w-2xl mx-auto px-4 py-8 space-y-6">
 				{/* Scene Content */}
 				<div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 sm:p-8">
+					{/* Show streaming indicator while generating */}
+					{isGenerating && sceneContent && (
+						<div className="mb-4 flex items-center gap-2 text-purple-600 dark:text-purple-400 text-sm">
+							<Loader2 className="w-4 h-4 animate-spin" />
+							<span>Generating your story...</span>
+						</div>
+					)}
+
 					<div className="prose prose-lg max-w-none space-y-4">
-						{scene.content.split("\n\n").map((paragraph) => (
-							<p
-								key={paragraph}
-								className="text-gray-800 dark:text-gray-200 leading-relaxed font-garamond"
-							>
-								{paragraph}
-							</p>
-						))}
+						{sceneContent
+							? sceneContent.split("\n\n").map((paragraph: string) => (
+									<p
+										key={paragraph.substring(0, 50)}
+										className="text-gray-800 dark:text-gray-200 leading-relaxed font-garamond"
+									>
+										{paragraph}
+									</p>
+								))
+							: isGenerating && (
+									<div className="flex items-center justify-center py-12">
+										<Loader2 className="w-8 h-8 animate-spin text-purple-600 dark:text-purple-400" />
+									</div>
+								)}
 					</div>
 
-					{/* Reading stats */}
-					<div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
-						<div className="flex items-center gap-4">
-							<span>{scene.wordCount} words</span>
-							<span>~{Math.ceil(scene.wordCount / 200)} min read</span>
-						</div>
-						{!scene.cached && (
-							<div className="flex items-center gap-2 text-purple-600 dark:text-purple-400">
-								<Sparkles className="w-4 h-4" />
-								<span>Freshly generated</span>
+					{/* Reading stats - show when complete */}
+					{streamingState.isComplete && sceneContent && (
+						<div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
+							<div className="flex items-center gap-4">
+								<span>{sceneContent.split(/\s+/).length} words</span>
+								<span>
+									~{Math.ceil(sceneContent.split(/\s+/).length / 200)} min read
+								</span>
 							</div>
-						)}
-					</div>
+							{!scene.cached && (
+								<div className="flex items-center gap-2 text-purple-600 dark:text-purple-400">
+									<Sparkles className="w-4 h-4" />
+									<span>Freshly generated</span>
+								</div>
+							)}
+						</div>
+					)}
 				</div>
-				{/* Choice Point */}
-				{choicePoint && !isLastScene && (
+				{/* Choice Point - only show when streaming is complete */}
+				{streamingState.isComplete && choicePoint && !isLastScene && (
 					<div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 sm:p-8 space-y-6">
 						<div className="space-y-4">
 							<div className="flex items-center gap-2">
@@ -422,8 +448,8 @@ function ReadingPage() {
 						)}
 					</div>
 				)}{" "}
-				{/* No Choice Point - Continue to Next Scene */}
-				{!choicePoint && !isLastScene && (
+				{/* No Choice Point - Continue to Next Scene - only show when streaming is complete */}
+				{streamingState.isComplete && !choicePoint && !isLastScene && (
 					<div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 text-center space-y-6">
 						<p className="text-gray-600 dark:text-gray-300">
 							Ready to continue?
@@ -443,8 +469,8 @@ function ReadingPage() {
 						</Button>
 					</div>
 				)}
-				{/* Story Complete */}
-				{isLastScene && (
+				{/* Story Complete - only show when streaming is complete */}
+				{streamingState.isComplete && isLastScene && (
 					<div className="bg-linear-to-br from-purple-100 to-rose-100 dark:from-purple-900/30 dark:to-rose-900/30 rounded-xl shadow-lg p-8 text-center space-y-4">
 						<Sparkles className="w-16 h-16 text-rose-500 mx-auto" />
 						<div className="space-y-2">
@@ -535,7 +561,7 @@ function ReadingPage() {
 			</main>
 
 			{/* Branch Confirmation Dialog */}
-			{data && branchChoice !== null && (
+			{sceneMetadata && branchChoice !== null && (
 				<BranchConfirmationDialog
 					isOpen={showBranchDialog}
 					onClose={() => {

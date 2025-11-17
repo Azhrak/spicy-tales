@@ -59,13 +59,19 @@ A full-stack TypeScript application that generates personalized, interactive rom
 ### 4. Interactive Reading Experience
 
 - Scene-by-scene narrative display
+- **Real-time streaming**: AI-generated content streams to the user as it's being generated
+  - Header with title and progress appears immediately
+  - Story text streams in word-by-word for engaging experience
+  - No automatic scrolling (user maintains reading position)
+  - Metadata blocks (`<SCENE_META>`) automatically filtered from stream
+  - Loading indicators show generation status
 - AI-generated content based on:
   - User preferences
   - Previous choices
   - Novel template structure
-- Choice points appear at predefined scenes
+- Choice points appear at predefined scenes (only after streaming completes)
 - 3 options per choice with tone indicators
-- Scenes cached in DB for re-reading
+- Scenes cached in DB for re-reading (cached scenes load instantly without streaming)
 
 ### 5. Story Management
 
@@ -127,6 +133,43 @@ A full-stack TypeScript application that generates personalized, interactive rom
 - Cached AI-generated content
 - Unique per (story_id, scene_number)
 - Word count for analytics
+
+## Streaming Content Architecture
+
+### Real-time Scene Generation
+
+The app uses **Server-Sent Events (SSE)** to stream AI-generated content in real-time:
+
+**API Endpoint**: `/api/stories/$id/scene/stream`
+
+- Uses Vercel AI SDK's `streamText()` for AI streaming
+- Implements smart buffering to filter `<SCENE_META>` blocks
+- Keeps 200-char buffer to detect metadata tags before streaming
+- Streams clean content chunks via SSE events
+
+**Client-Side Hook**: `useStreamingScene()`
+
+- Connects to streaming endpoint via fetch API
+- Accumulates text chunks as they arrive
+- Manages states: `isStreaming`, `isComplete`, `error`
+- Handles cleanup with AbortController
+
+**User Experience**:
+
+1. User navigates to scene (or clicks "Continue")
+2. Header (title, progress bar) appears immediately
+3. Story content streams in as it's generated
+4. Loading indicator shows generation is in progress
+5. Metadata is stripped server-side (not visible to user)
+6. When complete, choice buttons appear
+7. Content is cached for instant replay
+
+**Performance**:
+
+- Cached scenes: Instant load (no streaming delay)
+- New scenes: Real-time generation (~10-30 seconds)
+- No artificial delays or page jumps
+- Smooth user experience with visual feedback
 
 ## AI Generation Strategy
 

@@ -61,6 +61,7 @@ import { Route as ApiAdminTemplatesBulkDeleteRouteImport } from './routes/api/ad
 import { Route as ApiAdminTemplatesIdRouteImport } from './routes/api/admin/templates/$id'
 import { Route as AdminUsersIdEditRouteImport } from './routes/admin/users/$id/edit'
 import { Route as AdminTemplatesIdEditRouteImport } from './routes/admin/templates/$id/edit'
+import { Route as ApiStoriesIdSceneStreamRouteImport } from './routes/api/stories/$id.scene.stream'
 import { Route as ApiAdminTemplatesIdStatusRouteImport } from './routes/api/admin/templates/$id.status'
 import { Route as ApiAdminTemplatesIdChoicePointsRouteImport } from './routes/api/admin/templates/$id/choice-points'
 
@@ -328,6 +329,11 @@ const AdminTemplatesIdEditRoute = AdminTemplatesIdEditRouteImport.update({
   path: '/admin/templates/$id/edit',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiStoriesIdSceneStreamRoute = ApiStoriesIdSceneStreamRouteImport.update({
+  id: '/stream',
+  path: '/stream',
+  getParentRoute: () => ApiStoriesIdSceneRoute,
+} as any)
 const ApiAdminTemplatesIdStatusRoute =
   ApiAdminTemplatesIdStatusRouteImport.update({
     id: '/status',
@@ -391,11 +397,12 @@ export interface FileRoutesByFullPath {
   '/api/stories/$id/branch': typeof ApiStoriesIdBranchRoute
   '/api/stories/$id/choose': typeof ApiStoriesIdChooseRoute
   '/api/stories/$id/favorite': typeof ApiStoriesIdFavoriteRoute
-  '/api/stories/$id/scene': typeof ApiStoriesIdSceneRoute
+  '/api/stories/$id/scene': typeof ApiStoriesIdSceneRouteWithChildren
   '/api/admin/templates': typeof ApiAdminTemplatesIndexRoute
   '/api/admin/users': typeof ApiAdminUsersIndexRoute
   '/api/admin/templates/$id/choice-points': typeof ApiAdminTemplatesIdChoicePointsRoute
   '/api/admin/templates/$id/status': typeof ApiAdminTemplatesIdStatusRoute
+  '/api/stories/$id/scene/stream': typeof ApiStoriesIdSceneStreamRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -447,11 +454,12 @@ export interface FileRoutesByTo {
   '/api/stories/$id/branch': typeof ApiStoriesIdBranchRoute
   '/api/stories/$id/choose': typeof ApiStoriesIdChooseRoute
   '/api/stories/$id/favorite': typeof ApiStoriesIdFavoriteRoute
-  '/api/stories/$id/scene': typeof ApiStoriesIdSceneRoute
+  '/api/stories/$id/scene': typeof ApiStoriesIdSceneRouteWithChildren
   '/api/admin/templates': typeof ApiAdminTemplatesIndexRoute
   '/api/admin/users': typeof ApiAdminUsersIndexRoute
   '/api/admin/templates/$id/choice-points': typeof ApiAdminTemplatesIdChoicePointsRoute
   '/api/admin/templates/$id/status': typeof ApiAdminTemplatesIdStatusRoute
+  '/api/stories/$id/scene/stream': typeof ApiStoriesIdSceneStreamRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -504,11 +512,12 @@ export interface FileRoutesById {
   '/api/stories/$id/branch': typeof ApiStoriesIdBranchRoute
   '/api/stories/$id/choose': typeof ApiStoriesIdChooseRoute
   '/api/stories/$id/favorite': typeof ApiStoriesIdFavoriteRoute
-  '/api/stories/$id/scene': typeof ApiStoriesIdSceneRoute
+  '/api/stories/$id/scene': typeof ApiStoriesIdSceneRouteWithChildren
   '/api/admin/templates/': typeof ApiAdminTemplatesIndexRoute
   '/api/admin/users/': typeof ApiAdminUsersIndexRoute
   '/api/admin/templates/$id/choice-points': typeof ApiAdminTemplatesIdChoicePointsRoute
   '/api/admin/templates/$id/status': typeof ApiAdminTemplatesIdStatusRoute
+  '/api/stories/$id/scene/stream': typeof ApiStoriesIdSceneStreamRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -567,6 +576,7 @@ export interface FileRouteTypes {
     | '/api/admin/users'
     | '/api/admin/templates/$id/choice-points'
     | '/api/admin/templates/$id/status'
+    | '/api/stories/$id/scene/stream'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -623,6 +633,7 @@ export interface FileRouteTypes {
     | '/api/admin/users'
     | '/api/admin/templates/$id/choice-points'
     | '/api/admin/templates/$id/status'
+    | '/api/stories/$id/scene/stream'
   id:
     | '__root__'
     | '/'
@@ -679,6 +690,7 @@ export interface FileRouteTypes {
     | '/api/admin/users/'
     | '/api/admin/templates/$id/choice-points'
     | '/api/admin/templates/$id/status'
+    | '/api/stories/$id/scene/stream'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -1098,6 +1110,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminTemplatesIdEditRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/stories/$id/scene/stream': {
+      id: '/api/stories/$id/scene/stream'
+      path: '/stream'
+      fullPath: '/api/stories/$id/scene/stream'
+      preLoaderRoute: typeof ApiStoriesIdSceneStreamRouteImport
+      parentRoute: typeof ApiStoriesIdSceneRoute
+    }
     '/api/admin/templates/$id/status': {
       id: '/api/admin/templates/$id/status'
       path: '/status'
@@ -1115,18 +1134,29 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface ApiStoriesIdSceneRouteChildren {
+  ApiStoriesIdSceneStreamRoute: typeof ApiStoriesIdSceneStreamRoute
+}
+
+const ApiStoriesIdSceneRouteChildren: ApiStoriesIdSceneRouteChildren = {
+  ApiStoriesIdSceneStreamRoute: ApiStoriesIdSceneStreamRoute,
+}
+
+const ApiStoriesIdSceneRouteWithChildren =
+  ApiStoriesIdSceneRoute._addFileChildren(ApiStoriesIdSceneRouteChildren)
+
 interface ApiStoriesIdRouteChildren {
   ApiStoriesIdBranchRoute: typeof ApiStoriesIdBranchRoute
   ApiStoriesIdChooseRoute: typeof ApiStoriesIdChooseRoute
   ApiStoriesIdFavoriteRoute: typeof ApiStoriesIdFavoriteRoute
-  ApiStoriesIdSceneRoute: typeof ApiStoriesIdSceneRoute
+  ApiStoriesIdSceneRoute: typeof ApiStoriesIdSceneRouteWithChildren
 }
 
 const ApiStoriesIdRouteChildren: ApiStoriesIdRouteChildren = {
   ApiStoriesIdBranchRoute: ApiStoriesIdBranchRoute,
   ApiStoriesIdChooseRoute: ApiStoriesIdChooseRoute,
   ApiStoriesIdFavoriteRoute: ApiStoriesIdFavoriteRoute,
-  ApiStoriesIdSceneRoute: ApiStoriesIdSceneRoute,
+  ApiStoriesIdSceneRoute: ApiStoriesIdSceneRouteWithChildren,
 }
 
 const ApiStoriesIdRouteWithChildren = ApiStoriesIdRoute._addFileChildren(

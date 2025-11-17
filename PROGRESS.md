@@ -1,7 +1,7 @@
 # Choose the Heat - Project Progress
 
 **Project**: Choose the Heat - AI-Enhanced Romance Novel App
-**Last Updated**: 2025-11-16 | **Status**: MVP Complete + Story Branching & Title Editing! 🎉
+**Last Updated**: 2025-11-17 | **Status**: MVP Complete + Streaming Content! 🎉
 📄 **Details**: See [SESSION_SUMMARY.md](SESSION_SUMMARY.md) for comprehensive recap
 
 ---
@@ -845,6 +845,87 @@ docker-compose up --build
 - No need to recreate stories for title changes
 - Ownership verification ensures security
 - Immediate feedback with loading/error states
+
+---
+
+### Phase 15.9: Real-Time Streaming Content Generation (100% Complete)
+
+**Status**: ✅ Complete (2025-11-17)
+
+**Overview**: Implemented real-time streaming of AI-generated story content, allowing users to see their stories being written word-by-word as the AI generates them. This creates a more engaging and immersive experience while maintaining clean output by automatically filtering technical metadata.
+
+**Implementation Files:**
+
+- ✅ `src/lib/ai/streaming.ts` - Streaming wrapper for Vercel AI SDK
+- ✅ `src/routes/api/stories/$id.scene.stream.ts` - SSE streaming endpoint
+- ✅ `src/hooks/useStreamingScene.ts` - React hook for consuming streams
+- ✅ `src/routes/story/$id.read.tsx` - Updated reading page with streaming UI
+
+**Streaming Architecture:**
+
+**Server-Side (SSE):**
+
+- Uses Server-Sent Events for efficient one-way streaming
+- Leverages Vercel AI SDK's `streamText()` function
+- Smart buffering system (200-char buffer) to detect and filter `<SCENE_META>` blocks
+- Streams clean narrative content only (metadata stripped in real-time)
+- Sends metadata event first, then content chunks, then done event
+- Caches complete scene after streaming finishes
+
+**Client-Side Hook:**
+
+- `useStreamingScene(storyId, sceneNumber)` hook manages streaming state
+- Connects via fetch API to streaming endpoint
+- Accumulates text chunks as they arrive
+- Provides states: `content`, `metadata`, `isStreaming`, `isComplete`, `error`
+- Handles cleanup with AbortController on unmount/navigation
+- Resets state when scene changes
+
+**Reading Page UI:**
+
+- Header with title and progress bar appears immediately
+- Content streams in paragraph by paragraph
+- Loading indicator with spinning icon during generation
+- No automatic scrolling (user maintains reading position)
+- Choice buttons only appear after streaming completes
+- "Freshly generated" badge for new content
+- Word count and reading time calculated on completion
+
+**Metadata Filtering:**
+
+- `<SCENE_META>` blocks are never shown to users
+- Buffer-based detection catches metadata before streaming
+- Regex cleanup for any remaining metadata in final buffer
+- Parsed metadata stored in database for context in future scenes
+- Clean user experience without technical implementation details
+
+**Performance:**
+
+- Cached scenes: Instant load (sent immediately via SSE)
+- New scenes: Real-time generation (~10-30 seconds typical)
+- No artificial delays or waiting screens
+- Smooth streaming with visual feedback
+- Efficient SSE protocol (low overhead)
+
+**User Experience:**
+
+1. User navigates to a scene or clicks "Continue"
+2. Header and progress bar appear instantly
+3. Story content begins streaming word-by-word
+4. Loading spinner shows generation is in progress
+5. User can read as content appears
+6. Metadata is invisible (filtered server-side)
+7. When complete, choices become available
+8. Scene is cached for instant future access
+
+**Benefits:**
+
+- More engaging experience watching AI write in real-time
+- Faster perceived performance (no waiting for full generation)
+- User maintains reading position (no auto-scroll)
+- Clean output without technical metadata
+- Cached scenes still load instantly
+- Works with all AI providers (OpenAI, Google, Anthropic, Mistral, xAI)
 
 ---
 
