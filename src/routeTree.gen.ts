@@ -14,6 +14,7 @@ import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PreferencesRouteImport } from './routes/preferences'
 import { Route as LibraryRouteImport } from './routes/library'
+import { Route as CookiesRouteImport } from './routes/cookies'
 import { Route as BrowseRouteImport } from './routes/browse'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
@@ -86,6 +87,11 @@ const PreferencesRoute = PreferencesRouteImport.update({
 const LibraryRoute = LibraryRouteImport.update({
   id: '/library',
   path: '/library',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CookiesRoute = CookiesRouteImport.update({
+  id: '/cookies',
+  path: '/cookies',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BrowseRoute = BrowseRouteImport.update({
@@ -338,6 +344,7 @@ const ApiAdminTemplatesIdChoicePointsRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/browse': typeof BrowseRoute
+  '/cookies': typeof CookiesRoute
   '/library': typeof LibraryRoute
   '/preferences': typeof PreferencesRoute
   '/privacy': typeof PrivacyRoute
@@ -393,6 +400,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/browse': typeof BrowseRoute
+  '/cookies': typeof CookiesRoute
   '/library': typeof LibraryRoute
   '/preferences': typeof PreferencesRoute
   '/privacy': typeof PrivacyRoute
@@ -449,6 +457,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/browse': typeof BrowseRoute
+  '/cookies': typeof CookiesRoute
   '/library': typeof LibraryRoute
   '/preferences': typeof PreferencesRoute
   '/privacy': typeof PrivacyRoute
@@ -506,6 +515,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/browse'
+    | '/cookies'
     | '/library'
     | '/preferences'
     | '/privacy'
@@ -561,6 +571,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/browse'
+    | '/cookies'
     | '/library'
     | '/preferences'
     | '/privacy'
@@ -616,6 +627,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/browse'
+    | '/cookies'
     | '/library'
     | '/preferences'
     | '/privacy'
@@ -672,6 +684,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BrowseRoute: typeof BrowseRoute
+  CookiesRoute: typeof CookiesRoute
   LibraryRoute: typeof LibraryRoute
   PreferencesRoute: typeof PreferencesRoute
   PrivacyRoute: typeof PrivacyRoute
@@ -754,6 +767,13 @@ declare module '@tanstack/react-router' {
       path: '/library'
       fullPath: '/library'
       preLoaderRoute: typeof LibraryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cookies': {
+      id: '/cookies'
+      path: '/cookies'
+      fullPath: '/cookies'
+      preLoaderRoute: typeof CookiesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/browse': {
@@ -1129,6 +1149,7 @@ const ApiAdminTemplatesIdRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BrowseRoute: BrowseRoute,
+  CookiesRoute: CookiesRoute,
   LibraryRoute: LibraryRoute,
   PreferencesRoute: PreferencesRoute,
   PrivacyRoute: PrivacyRoute,

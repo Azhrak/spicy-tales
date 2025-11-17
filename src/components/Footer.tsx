@@ -99,6 +99,12 @@ export function Footer() {
 							>
 								Terms of Service
 							</Link>
+							<Link
+								to="/cookies"
+								className="hover:text-romance-400 transition-colors"
+							>
+								Cookie Policy
+							</Link>
 						</div>
 					</div>
 				</div>

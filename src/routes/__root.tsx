@@ -9,6 +9,7 @@ import {
 } from "@tanstack/react-router";
 import { Heart } from "lucide-react";
 import { useState } from "react";
+import { CookieConsentBanner } from "~/components/CookieConsentBanner";
 import { Heading } from "~/components/Heading";
 import { PageBackground } from "~/components/PageBackground";
 import { ThemeProvider } from "~/components/ThemeProvider";
@@ -73,6 +74,7 @@ function RootComponent() {
 				<ThemeProvider theme={theme}>
 					<QueryClientProvider client={queryClient}>
 						<Outlet />
+						<CookieConsentBanner />
 						<ReactQueryDevtools initialIsOpen={false} />
 						<Scripts />
 					</QueryClientProvider>

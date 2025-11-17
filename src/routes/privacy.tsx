@@ -3,6 +3,7 @@ import { ArrowLeft } from "lucide-react";
 import { Footer } from "~/components/Footer";
 import { Heading } from "~/components/Heading";
 import { PageBackground } from "~/components/PageBackground";
+import { SESSION_COOKIE_NAME, SESSION_EXPIRY_DAYS } from "~/lib/auth/session";
 
 export const Route = createFileRoute("/privacy")({
 	component: PrivacyPolicy,
@@ -64,7 +65,6 @@ function PrivacyPolicy() {
 									</ul>
 								</div>
 							</section>
-
 							<section className="space-y-4">
 								<Heading level="h2" size="section">
 									2. How We Use Your Information
@@ -83,7 +83,6 @@ function PrivacyPolicy() {
 									<li>Comply with legal obligations</li>
 								</ul>
 							</section>
-
 							<section className="space-y-4">
 								<Heading level="h2" size="section">
 									3. AI-Generated Content
@@ -106,7 +105,6 @@ function PrivacyPolicy() {
 									</p>
 								</div>
 							</section>
-
 							<section className="space-y-4">
 								<Heading level="h2" size="section">
 									4. Data Storage and Security
@@ -118,7 +116,6 @@ function PrivacyPolicy() {
 									no method of transmission over the internet is 100% secure.
 								</p>
 							</section>
-
 							<section className="space-y-4">
 								<Heading level="h2" size="section">
 									5. Data Sharing
@@ -135,7 +132,6 @@ function PrivacyPolicy() {
 									<li>With your explicit consent</li>
 								</ul>
 							</section>
-
 							<section className="space-y-4">
 								<Heading level="h2" size="section">
 									6. Your Rights and Choices
@@ -149,19 +145,56 @@ function PrivacyPolicy() {
 									<li>Close your account at any time</li>
 								</ul>
 							</section>
-
 							<section className="space-y-4">
 								<Heading level="h2" size="section">
 									7. Cookies and Tracking
 								</Heading>
 								<p className="text-slate-700">
 									We use cookies and similar tracking technologies to maintain
-									your session, remember your preferences, and analyze how you
-									use our service. You can control cookies through your browser
-									settings.
+									your session and provide you with a secure experience. We only
+									use strictly necessary cookies that are essential for the
+									service to function.
 								</p>
-							</section>
 
+								<div className="bg-slate-50 rounded-md p-4 space-y-3">
+									<p className="text-slate-700 font-semibold">
+										Cookies We Use:
+									</p>
+									<div className="space-y-2 text-sm">
+										<div>
+											<span className="font-mono text-slate-900">
+												{SESSION_COOKIE_NAME}
+											</span>{" "}
+											- Authentication session ({SESSION_EXPIRY_DAYS} days)
+										</div>
+										<div>
+											<span className="font-mono text-slate-900">
+												oauth_state
+											</span>{" "}
+											- OAuth security token (10 minutes)
+										</div>
+									</div>
+								</div>
+
+								<p className="text-slate-700">
+									<strong>We do not use tracking or analytics cookies.</strong>{" "}
+									We do not track your browsing behavior across other websites,
+									build user profiles for advertising, or share your data with
+									advertising networks.
+								</p>
+
+								<p className="text-slate-700">
+									For detailed information about our cookie practices, including
+									how to manage cookies in your browser, please see our{" "}
+									<Link
+										to="/cookies"
+										className="text-romance-600 hover:text-romance-700 underline font-medium"
+									>
+										Cookie Policy
+									</Link>
+									.
+								</p>
+							</section>{" "}
 							<section className="space-y-4">
 								<Heading level="h2" size="section">
 									8. Children's Privacy
@@ -173,7 +206,6 @@ function PrivacyPolicy() {
 									please contact us immediately.
 								</p>
 							</section>
-
 							<section className="space-y-4">
 								<Heading level="h2" size="section">
 									9. Changes to This Policy
@@ -184,7 +216,6 @@ function PrivacyPolicy() {
 									on this page and updating the "Last updated" date.
 								</p>
 							</section>
-
 							<section className="space-y-4">
 								<Heading level="h2" size="section">
 									10. Contact Us

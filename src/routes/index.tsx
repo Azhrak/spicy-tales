@@ -130,6 +130,12 @@ function Home() {
 							>
 								Terms of Service
 							</Link>
+							<Link
+								to="/cookies"
+								className="hover:text-romance-400 dark:hover:text-romance-300 transition-colors"
+							>
+								Cookie Policy
+							</Link>
 						</div>
 						<p className="text-sm">
 							© {currentYear} Choose the Heat. Made with{" "}

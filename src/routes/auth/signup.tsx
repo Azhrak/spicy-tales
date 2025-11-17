@@ -8,6 +8,7 @@ import { FormInput } from "~/components/FormInput";
 import { GoogleAuthButton } from "~/components/GoogleAuthButton";
 import { Heading } from "~/components/Heading";
 import { PageBackground } from "~/components/PageBackground";
+import { useCookieConsent } from "~/hooks/useCookieConsent";
 import { useCurrentUserQuery } from "~/hooks/useCurrentUserQuery";
 import { ApiError, api } from "~/lib/api/client";
 
@@ -18,6 +19,7 @@ export const Route = createFileRoute("/auth/signup")({
 function SignupPage() {
 	const navigate = useNavigate();
 	const { data: currentUser } = useCurrentUserQuery();
+	const { hasConsent } = useCookieConsent();
 	const [name, setName] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
@@ -29,6 +31,13 @@ function SignupPage() {
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 		setError("");
+
+		if (!hasConsent) {
+			setError(
+				"Please accept our cookie policy to create an account. Click the 'Accept' button in the cookie notice at the bottom of the page.",
+			);
+			return;
+		}
 
 		if (password !== confirmPassword) {
 			setError("Passwords do not match");
@@ -72,6 +81,12 @@ function SignupPage() {
 	};
 
 	const handleGoogleSignup = () => {
+		if (!hasConsent) {
+			setError(
+				"Please accept our cookie policy to create an account. Click the 'Accept' button in the cookie notice at the bottom of the page.",
+			);
+			return;
+		}
 		window.location.href = "/api/auth/google";
 	};
 
