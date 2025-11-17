@@ -90,3 +90,7 @@ body {
   font-family: "EB Garamond", serif;
   font-size: 1.25rem;
 }
+
+button {
+  cursor: pointer;
+}

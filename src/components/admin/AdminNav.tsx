@@ -4,6 +4,7 @@ import {
 	FileText,
 	LayoutDashboard,
 	ScrollText,
+	Tags,
 	Users,
 } from "lucide-react";
 import type { UserRole } from "~/lib/db/types";
@@ -33,6 +34,12 @@ export function AdminNav({ currentPath, userRole }: AdminNavProps) {
 			label: "Templates",
 			path: "/admin/templates",
 			icon: FileText,
+			roles: ["editor", "admin"] as UserRole[],
+		},
+		{
+			label: "Tropes",
+			path: "/admin/tropes",
+			icon: Tags,
 			roles: ["editor", "admin"] as UserRole[],
 		},
 		{

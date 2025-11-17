@@ -1,15 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "~/lib/api/client";
+import type { TemplateFormData } from "~/lib/validation/templates";
 import { adminTemplateQueryKey } from "./useAdminTemplateQuery";
 import { adminTemplatesQueryKey } from "./useAdminTemplatesQuery";
-
-interface TemplateFormData {
-	title: string;
-	description: string;
-	base_tropes: string;
-	estimated_scenes: number;
-	cover_gradient: string;
-}
 
 export const updateTemplateMutationKey = (templateId: string) =>
 	["updateTemplate", templateId] as const;
@@ -27,7 +20,7 @@ export function useUpdateTemplateMutation(templateId: string) {
 			api.patch(`/api/admin/templates/${templateId}`, {
 				title: data.title,
 				description: data.description,
-				base_tropes: data.base_tropes.split(",").map((t) => t.trim()),
+				base_tropes: data.base_tropes,
 				estimated_scenes: data.estimated_scenes,
 				cover_gradient: data.cover_gradient,
 			}),

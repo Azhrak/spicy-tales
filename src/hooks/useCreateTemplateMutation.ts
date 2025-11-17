@@ -2,15 +2,11 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { ChoicePoint } from "~/components/admin/ChoicePointForm";
 import { api } from "~/lib/api/client";
 import type { TemplateStatus } from "~/lib/db/types";
+import type { TemplateFormData as BaseTemplateFormData } from "~/lib/validation/templates";
 import { adminDashboardQueryKey } from "./useAdminDashboardQuery";
 import { adminTemplatesQueryKey } from "./useAdminTemplatesQuery";
 
-interface TemplateFormData {
-	title: string;
-	description: string;
-	base_tropes: string;
-	estimated_scenes: number;
-	cover_gradient: string;
+interface TemplateFormData extends BaseTemplateFormData {
 	choicePoints?: ChoicePoint[];
 }
 
@@ -38,7 +34,7 @@ export function useCreateTemplateMutation() {
 			const payload = {
 				title: data.title,
 				description: data.description,
-				base_tropes: data.base_tropes.split(",").map((t) => t.trim()),
+				base_tropes: data.base_tropes,
 				estimated_scenes: data.estimated_scenes,
 				cover_gradient: data.cover_gradient,
 				...(data.choicePoints &&

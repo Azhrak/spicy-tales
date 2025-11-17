@@ -8,13 +8,13 @@ export interface ValidationResult {
 export interface TemplateFormData {
 	title: string;
 	description: string;
-	base_tropes: string;
+	base_tropes: string[];
 	estimated_scenes: number;
 	cover_gradient: string;
 }
 
 /**
- * Validates template form data
+ * Validates template form data (basic sync validation)
  */
 export function validateTemplateForm(data: TemplateFormData): ValidationResult {
 	if (!data.title.trim()) {
@@ -25,7 +25,7 @@ export function validateTemplateForm(data: TemplateFormData): ValidationResult {
 		return { valid: false, error: "Description is required" };
 	}
 
-	if (!data.base_tropes.trim()) {
+	if (!Array.isArray(data.base_tropes) || data.base_tropes.length === 0) {
 		return { valid: false, error: "At least one trope is required" };
 	}
 

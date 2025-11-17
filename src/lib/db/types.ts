@@ -107,6 +107,15 @@ export interface Sessions {
 	user_id: string;
 }
 
+export interface Tropes {
+	created_at: Generated<Timestamp>;
+	description: string | null;
+	id: Generated<string>;
+	key: string;
+	label: string;
+	updated_at: Generated<Timestamp>;
+}
+
 export interface Users {
 	avatar_url: string | null;
 	created_at: Generated<Timestamp>;
@@ -143,6 +152,7 @@ export interface DB {
 	password_accounts: PasswordAccounts;
 	scenes: Scenes;
 	sessions: Sessions;
+	tropes: Tropes;
 	user_stories: UserStories;
 	users: Users;
 }

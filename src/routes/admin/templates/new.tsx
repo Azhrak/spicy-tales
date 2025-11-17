@@ -3,6 +3,7 @@ import { ArrowLeft, Save } from "lucide-react";
 import { useState } from "react";
 import { AdminLayout, ChoicePointForm } from "~/components/admin";
 import type { ChoicePoint } from "~/components/admin/ChoicePointForm";
+import { TropeSelector } from "~/components/admin/TropeSelector";
 import { Button } from "~/components/Button";
 import { ErrorMessage } from "~/components/ErrorMessage";
 import { FormInput } from "~/components/FormInput";
@@ -11,17 +12,17 @@ import { LoadingSpinner } from "~/components/LoadingSpinner";
 import { useCreateTemplateMutation } from "~/hooks/useCreateTemplateMutation";
 import { useCurrentUserQuery } from "~/hooks/useCurrentUserQuery";
 import { GRADIENT_OPTIONS } from "~/lib/constants/gradients";
+import {
+	type TemplateFormData,
+	validateChoicePoints,
+	validateTemplateForm,
+} from "~/lib/validation/templates";
 
 export const Route = createFileRoute("/admin/templates/new")({
 	component: NewTemplatePage,
 });
 
-interface TemplateFormData {
-	title: string;
-	description: string;
-	base_tropes: string;
-	estimated_scenes: number;
-	cover_gradient: string;
+interface ExtendedTemplateFormData extends TemplateFormData {
 	choicePoints: ChoicePoint[];
 }
 
@@ -33,10 +34,10 @@ interface CreateTemplateResponse {
 
 function NewTemplatePage() {
 	const navigate = useNavigate();
-	const [formData, setFormData] = useState<TemplateFormData>({
+	const [formData, setFormData] = useState<ExtendedTemplateFormData>({
 		title: "",
 		description: "",
-		base_tropes: "",
+		base_tropes: [],
 		estimated_scenes: 10,
 		cover_gradient: "from-purple-600 to-pink-600",
 		choicePoints: [],
@@ -75,44 +76,18 @@ function NewTemplatePage() {
 		e.preventDefault();
 		setFormError(null);
 
-		// Validation
-		if (!formData.title.trim()) {
-			setFormError("Title is required");
-			return;
-		}
-		if (!formData.description.trim()) {
-			setFormError("Description is required");
-			return;
-		}
-		if (!formData.base_tropes.trim()) {
-			setFormError("At least one trope is required");
-			return;
-		}
-		if (formData.estimated_scenes < 1 || formData.estimated_scenes > 100) {
-			setFormError("Estimated scenes must be between 1 and 100");
+		// Validate template form
+		const templateValidation = validateTemplateForm(formData);
+		if (!templateValidation.valid) {
+			setFormError(templateValidation.error || "Invalid form data");
 			return;
 		}
 
 		// Validate choice points
-		if (formData.choicePoints.length > 0) {
-			for (const cp of formData.choicePoints) {
-				if (!cp.prompt_text.trim()) {
-					setFormError("All choice points must have a prompt text");
-					return;
-				}
-				if (cp.options.length < 2 || cp.options.length > 4) {
-					setFormError("Each choice point must have 2-4 options");
-					return;
-				}
-				for (const opt of cp.options) {
-					if (!opt.text.trim() || !opt.tone.trim() || !opt.impact.trim()) {
-						setFormError(
-							"All option fields (text, tone, impact) must be filled",
-						);
-						return;
-					}
-				}
-			}
+		const choicePointsValidation = validateChoicePoints(formData.choicePoints);
+		if (!choicePointsValidation.valid) {
+			setFormError(choicePointsValidation.error || "Invalid choice points");
+			return;
 		}
 
 		createMutation.mutate(formData, {
@@ -183,15 +158,13 @@ function NewTemplatePage() {
 						</div>
 
 						{/* Base Tropes */}
-						<FormInput
-							label="Base Tropes *"
-							type="text"
-							value={formData.base_tropes}
-							onChange={(e) =>
-								setFormData({ ...formData, base_tropes: e.target.value })
+						<TropeSelector
+							label="Base Tropes"
+							selectedTropeKeys={formData.base_tropes}
+							onChange={(tropeKeys) =>
+								setFormData({ ...formData, base_tropes: tropeKeys })
 							}
-							placeholder="e.g., enemies-to-lovers, royalty, slow burn"
-							helperText="Separate multiple tropes with commas"
+							helperText="Select one or more tropes that define this story template"
 							required
 						/>
 

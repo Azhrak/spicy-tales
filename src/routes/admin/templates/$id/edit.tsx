@@ -9,6 +9,7 @@ import {
 	TemplateStatusManager,
 } from "~/components/admin";
 import type { ChoicePoint } from "~/components/admin/ChoicePointForm";
+import { TropeSelector } from "~/components/admin/TropeSelector";
 import { Button } from "~/components/Button";
 import { ErrorMessage } from "~/components/ErrorMessage";
 import { FormInput } from "~/components/FormInput";
@@ -57,7 +58,7 @@ function EditTemplatePage() {
 		setFormData({
 			title: templateData.template.title,
 			description: templateData.template.description,
-			base_tropes: templateData.template.base_tropes.join(", "),
+			base_tropes: templateData.template.base_tropes,
 			estimated_scenes: templateData.template.estimated_scenes,
 			cover_gradient: templateData.template.cover_gradient,
 		});
@@ -221,14 +222,13 @@ function EditTemplatePage() {
 							required
 						/>
 						{/* Base Tropes */}
-						<FormInput
-							label="Base Tropes *"
-							type="text"
-							value={formData.base_tropes}
-							onChange={(e) =>
-								setFormData({ ...formData, base_tropes: e.target.value })
+						<TropeSelector
+							label="Base Tropes"
+							selectedTropeKeys={formData.base_tropes}
+							onChange={(tropeKeys) =>
+								setFormData({ ...formData, base_tropes: tropeKeys })
 							}
-							helperText="Separate multiple tropes with commas"
+							helperText="Select one or more tropes that define this story template"
 							required
 						/>
 						{/* Estimated Scenes */}
