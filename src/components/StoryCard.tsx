@@ -56,7 +56,9 @@ export function StoryCard({
 				<div
 					className={`h-40 bg-linear-to-br ${coverGradient} flex items-center justify-center cursor-pointer hover:opacity-95 transition-opacity relative`}
 				>
-					<BookOpen className="w-16 h-16 text-white opacity-50" />
+					{/* Dark mode overlay to tone down bright gradients */}
+					<div className="absolute inset-0 bg-black/20 dark:block hidden" />
+					<BookOpen className="w-16 h-16 text-white opacity-50 relative z-10" />
 					{/* Favorite button overlay */}
 					<button
 						type="button"
@@ -66,7 +68,7 @@ export function StoryCard({
 							onToggleFavorite(id, !isFavorite);
 						}}
 						disabled={isTogglingFavorite}
-						className="absolute top-3 right-3 p-2 bg-white/90 dark:bg-slate-800/90 hover:bg-white dark:hover:bg-slate-800 rounded-full transition-colors disabled:opacity-50 cursor-pointer"
+						className="absolute top-3 right-3 p-2 bg-white/90 dark:bg-slate-800/90 hover:bg-white dark:hover:bg-slate-800 rounded-full transition-colors disabled:opacity-50 cursor-pointer z-10"
 						title={isFavorite ? "Remove from favorites" : "Add to favorites"}
 					>
 						<Heart

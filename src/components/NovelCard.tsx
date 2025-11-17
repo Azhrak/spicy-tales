@@ -24,15 +24,16 @@ export function NovelCard({
 			{/* Gradient Cover */}
 			<Link to="/template/$id" params={{ id }}>
 				<div
-					className={`h-48 bg-linear-to-br ${coverGradient} flex items-center justify-center cursor-pointer hover:opacity-95 transition-opacity`}
+					className={`h-48 bg-linear-to-br ${coverGradient} flex items-center justify-center cursor-pointer hover:opacity-95 transition-opacity relative`}
 				>
+					{/* Dark mode overlay to tone down bright gradients */}
+					<div className="absolute inset-0 bg-black/20 dark:block hidden" />
 					<BookOpen
-						className="w-20 h-20 text-white opacity-80"
+						className="w-20 h-20 text-white opacity-80 relative z-10"
 						strokeWidth={1.5}
 					/>
 				</div>
-			</Link>
-
+			</Link>{" "}
 			{/* Content */}
 			<div className="p-6 space-y-4 flex flex-col flex-1">
 				<div className="space-y-3">
